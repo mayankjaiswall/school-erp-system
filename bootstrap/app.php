@@ -17,18 +17,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-// Load additional route files if they exist
-$extraRoutes = [
-    __DIR__ . '/../routes/frontend.php',
-    __DIR__ . '/../routes/admin.php',
-    __DIR__ . '/../routes/teacher.php',
-    __DIR__ . '/../routes/student.php',
-];
-
-foreach ($extraRoutes as $routeFile) {
-    if (file_exists($routeFile)) {
-        require $routeFile;
-    }
-}
+// Additional route files are loaded from routes/web.php after the
+// framework has finished bootstrapping so facades are available.
 
 return $app;
