@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Load additional route files (frontend, admin, teacher, student)
 $extraRoutes = [
     'frontend.php',
