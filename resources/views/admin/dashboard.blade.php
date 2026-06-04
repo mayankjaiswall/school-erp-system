@@ -1,96 +1,121 @@
-<!doctype html>
-<html lang="en">
+@extends('layouts.admin')
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Super Admin Dashboard — EduERP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: Inter, Arial, Helvetica, sans-serif;
-      background: #f8fafc;
-      margin: 0
-    }
+@section('title', 'Dashboard')
 
-    .topbar {
-      background: #fff;
-      padding: 18px 28px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 6px 20px rgba(2, 6, 23, .06)
-    }
+@section('page-title', 'Super Admin Dashboard')
 
-    .brand {
-      font-weight: 700;
-      color: #111827
-    }
+@section('content')
 
-    .container {
-      max-width: 1200px;
-      margin: 28px auto;
-      padding: 0 24px
-    }
+<div class="row g-4">
 
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 6px 18px rgba(2, 6, 23, .04)
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 18px
-    }
-
-    .stat {
-      padding: 18px;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #eef2ff, #f8fafc)
-    }
-
-    a.logout {
-      color: #ef4444;
-      text-decoration: none;
-      font-weight: 600
-    }
-  </style>
-</head>
-
-<body>
-  <div class="topbar">
-    <div class="brand">EduERP — Super Admin</div>
-    <div>
-      <form method="POST" action="/logout" style="display:inline">@csrf<button style="background:none;border:none;color:#4f46e5;font-weight:700;cursor:pointer">Logout</button></form>
+    <div class="col-md-3">
+        <div class="dashboard-card card-blue">
+            <h6>Total Schools</h6>
+            <h2>{{ $totalSchools ?? 0 }}</h2>
+            <small>Registered Schools</small>
+        </div>
     </div>
-  </div>
 
-  <div class="container">
-    <div class="card">
-      <h2>Welcome, Super Admin</h2>
-      <p style="color:#475569">Overview of your SaaS instance</p>
-
-      <div class="grid">
-        <div class="stat">
-          <h3>Schools</h3>
-          <p style="font-weight:800;font-size:1.6rem">500+</p>
+    <div class="col-md-3">
+        <div class="dashboard-card card-green">
+            <h6>Total Users</h6>
+            <h2>{{ $totalUsers ?? 1 }}</h2>
+            <small>System Users</small>
         </div>
-        <div class="stat">
-          <h3>Active Students</h3>
-          <p style="font-weight:800;font-size:1.6rem">1.2M+</p>
-        </div>
-        <div class="stat">
-          <h3>Pending Requests</h3>
-          <p style="font-weight:800;font-size:1.6rem">12</p>
-        </div>
-      </div>
-
     </div>
-  </div>
-</body>
 
-</html>
+    <div class="col-md-3">
+        <div class="dashboard-card card-orange">
+            <h6>Roles</h6>
+            <h2>{{ $totalRoles ?? 7 }}</h2>
+            <small>Available Roles</small>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="dashboard-card card-purple">
+            <h6>Active Schools</h6>
+            <h2>{{ $activeSchools ?? 0 }}</h2>
+            <small>Currently Active</small>
+        </div>
+    </div>
+
+</div>
+
+<div class="content-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">
+            Recent Schools
+        </h5>
+
+        <a href="#" class="btn btn-primary btn-sm">
+            Add School
+        </a>
+    </div>
+
+    <table class="table table-hover align-middle">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>School Name</th>
+                <th>Code</th>
+                <th>Email</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td colspan="5" class="text-center text-muted">
+                    No schools found.
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="content-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0">
+            Recent Users
+        </h5>
+    </div>
+
+    <table class="table table-hover align-middle">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>1</td>
+                <td>Super Admin</td>
+                <td>admin@eduerp.com</td>
+                <td>
+                    <span class="badge bg-primary">
+                        Super Admin
+                    </span>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+@endsection
