@@ -71,6 +71,33 @@
             font-size: 18px;
         }
 
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 22px;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        .sidebar-menu a:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .sidebar-menu a.active-menu {
+            background: linear-gradient(90deg,#2563eb,#3b82f6);
+            color: white;
+            /* border-radius: 0 30px 30px 0; */
+            /* margin-right: 10px; */
+            font-weight: 600;
+        }
+
+        .sidebar-menu a.active-menu i {
+            color: white;
+        }
+
         /* Main Content */
 
         .main-content {
@@ -195,12 +222,14 @@
 
         <div class="sidebar-menu">
 
-            <a href="{{ url('/admin/dashboard') }}">
+            <a href="{{ url('/admin/dashboard') }}"
+            class="{{ request()->is('admin/dashboard') ? 'active-menu' : '' }}">
                 <i class="bi bi-speedometer2"></i>
                 Dashboard
             </a>
 
-            <a href="#">
+            <a href="{{ route('schools.index') }}"
+            class="{{ request()->routeIs('schools.*') ? 'active-menu' : '' }}">
                 <i class="bi bi-buildings"></i>
                 Schools
             </a>
