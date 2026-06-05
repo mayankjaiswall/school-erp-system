@@ -67,17 +67,45 @@
         </thead>
 
         <tbody>
+            @foreach($recentSchools as $school)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
 
+                <td>
+                    {{ $school->name }}
+                </td>
+
+                <td>
+                    {{ $school->code }}
+                </td>
+
+                <td>
+                    {{ $school->email }}
+                </td>
+
+                <td>
+                    @if($school->status)
+                    <span class="badge bg-success">
+                        Active
+                    </span>
+                    @else
+                    <span class="badge bg-secondary">
+                        Inactive
+                    </span>
+                    @endif
+                </td>
+
+            </tr>
+            @if($recentSchools->isEmpty())
             <tr>
                 <td colspan="5" class="text-center text-muted">
                     No schools found.
                 </td>
             </tr>
-
+            @endif
+            @endforeach
         </tbody>
-
     </table>
-
 </div>
 
 <div class="content-card">
@@ -87,9 +115,7 @@
             Recent Users
         </h5>
     </div>
-
     <table class="table table-hover align-middle">
-
         <thead>
             <tr>
                 <th>#</th>
@@ -98,24 +124,26 @@
                 <th>Role</th>
             </tr>
         </thead>
-
         <tbody>
-
+            @forelse($recentUsers as $user)
             <tr>
-                <td>1</td>
-                <td>Super Admin</td>
-                <td>admin@eduerp.com</td>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $user->name }}</td>
+                <td>{{ $user->email }}</td>
                 <td>
                     <span class="badge bg-primary">
-                        Super Admin
+                        {{ $user->role->name ?? 'N/A' }}
                     </span>
                 </td>
             </tr>
-
+            @empty
+            <tr>
+                <td colspan="4" class="text-center text-muted">
+                    No users found.
+                </td>
+            </tr>
+            @endforelse
         </tbody>
-
     </table>
-
 </div>
-
 @endsection

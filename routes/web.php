@@ -25,6 +25,12 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('admin.dashboard');
 
-    Route::resource('schools', SchoolController::class);
+    // School management routes
+    Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
+    Route::get('/schools/create', [SchoolController::class, 'create'])->name('schools.create');
+    Route::post('/schools', [SchoolController::class, 'store'])->name('schools.store');
+    Route::get('/schools/{id}/edit', [SchoolController::class, 'edit'])->name('schools.edit');
+    Route::put('/schools/{id}', [SchoolController::class, 'update'])->name('schools.update');
+    Route::delete('/schools/{id}', [SchoolController::class, 'destroy'])->name('schools.destroy');
 
 });

@@ -181,6 +181,35 @@
             margin: 20px;
         }
 
+        .content-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            margin-top: 25px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #334155;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .btn-sm {
+            margin-right: 4px;
+        }
+
+        .badge {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
         /* Responsive */
 
         @media(max-width:991px){
@@ -206,6 +235,7 @@
             }
 
         }
+
 
     </style>
 </head>
