@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\School;
+
 class UserController extends Controller
 {
     public function index()
@@ -28,19 +29,30 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:30',
             'role_id' => 'required|exists:roles,id',
             'school_id' => 'required|exists:schools,id',
             'status' => 'required|boolean',
         ]);
 
-         User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
             'school_id' => $request->school_id,
             'status' => $request->status,
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'User created successfully.',
+                'redirect' => route('users.index'),
+                'user' => $user,
+            ]);
+        }
+
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
@@ -60,6 +72,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
+            'phone' => 'nullable|string|max:30',
             'role_id' => 'required|exists:roles,id',
             'school_id' => 'required|exists:schools,id',
             'status' => 'required|boolean',
@@ -67,6 +80,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->phone = $request->phone;
         if ($request->password) {
             $user->password = bcrypt($request->password);
         }
@@ -74,6 +88,14 @@ class UserController extends Controller
         $user->school_id = $request->school_id;
         $user->status = $request->status;
         $user->save();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'User updated successfully.',
+                'redirect' => route('users.index'),
+                'user' => $user,
+            ]);
+        }
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }

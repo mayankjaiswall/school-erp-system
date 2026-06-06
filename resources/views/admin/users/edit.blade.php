@@ -56,13 +56,13 @@
     </p>
 </div>
 <div class="form-card">
-    <form action="{{ route('users.update', $user->id) }}" method="POST">
+    <form action="{{ route('users.update', $user->id) }}" method="POST" data-ajax-user-form>
         @csrf
         @method('PUT')
         <div class="row">
             <div class="col-md-6 mb-4">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" name="name"id="name" value="{{ $user->name }}" class="form-control"required>
+                <input type="text" name="name" id="name" value="{{ $user->name }}" class="form-control" required>
             </div>
             <div class="col-md-6 mb-4">
                 <label for="email" class="form-label">Email</label>
@@ -104,6 +104,11 @@
             </div>
 
             <div class="col-md-6 mb-4">
+                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-4">
                 <label for="status" class="form-label">Status</label>
                 <select name="status" accesskey="" id="status" class="form-select">
                     <option value="1" {{ $user->status == 1 ? 'selected' : '' }}> Active</option>
@@ -119,3 +124,7 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/admin-user-form.js') }}"></script>
+@endpush
