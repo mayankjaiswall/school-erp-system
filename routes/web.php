@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Principal\DashboardController as PrincipalDashboardController;
 
 // Load additional route files
 $extraRoutes = [
@@ -52,4 +53,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     //
+});
+
+Route::middleware('auth')->prefix('principal')->group(function () {
+
+    Route::get('/dashboard', [PrincipalDashboardController::class, 'index'])
+        ->name('principal.dashboard');
+
 });

@@ -236,33 +236,30 @@
             Edu<span>ERP</span>
         </div>
         <div class="sidebar-menu">
-            <a href="{{ url('/admin/dashboard') }}"
-                class="{{ request()->is('admin/dashboard') ? 'active-menu' : '' }}">
+            <a href="{{ url('/principal/dashboard') }}"
+                class="{{ request()->is('principal/dashboard') ? 'active-menu' : '' }}">
                 <i class="bi bi-speedometer2"></i>
                 <span>Dashboard</span>
             </a>
 
-            @if(auth()->user()->role->slug == 'super_admin')
-            <a href="{{ route('schools.index') }}"
-                class="{{ request()->routeIs('schools.*') ? 'active-menu' : '' }}">
-                <i class="bi bi-buildings"></i>
-                <span>Schools</span>
+            <a href="{{ url('/principal/teachers') }}"
+                class="{{ request()->is('principal/teachers') ? 'active-menu' : '' }}">
+                <i class="bi bi-person-badge"></i>
+                <span>Teachers</span>
             </a>
-            <a href="{{ route('roles.index') }}"
-                class="{{ request()->routeIs('roles.*') ? 'active-menu' : '' }}">
-                <i class="bi bi-shield-lock"></i>
-                <span>Roles</span>
-            </a>
-            <a href="{{ route('users.index') }}"
-                class="{{ request()->routeIs('users.*') ? 'active-menu' : '' }}">
+
+            <a href="#"
+                class="#">
                 <i class="bi bi-people"></i>
-                <span>Users</span>
+                <span>Students</span>
             </a>
-            @endif
-            <a href="#">
-                <i class="bi bi-file-earmark-bar-graph"></i>
-                <span>Reports</span>
+            
+             <a href="#"
+                class="#">
+                <i class="bi bi-journal-bookmark"></i>
+                <span>Classes</span>
             </a>
+
             <a href="#">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
