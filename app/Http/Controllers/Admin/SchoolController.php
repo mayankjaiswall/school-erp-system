@@ -39,7 +39,8 @@ class SchoolController extends Controller
 
     public function show(string $id)
     {
-        //
+        $school = School::findOrFail($id);
+        return view('admin.schools.show', compact('school'));
     }
 
     public function edit(string $id)
