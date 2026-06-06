@@ -246,13 +246,15 @@
                 <i class="bi bi-buildings"></i>
                 <span>Schools</span>
             </a>
-            <a href="#">
-                <i class="bi bi-people"></i>
-                <span>Users</span>
-            </a>
-            <a href="#">
+            <a href="{{ route('roles.index') }}"
+                class="{{ request()->routeIs('roles.*') ? 'active-menu' : '' }}">
                 <i class="bi bi-shield-lock"></i>
                 <span>Roles</span>
+            </a>
+            <a href="{{ route('users.index') }}"
+                class="{{ request()->routeIs('users.*') ? 'active-menu' : '' }}">
+                <i class="bi bi-people"></i>
+                <span>Users</span>
             </a>
             <a href="#">
                 <i class="bi bi-file-earmark-bar-graph"></i>
