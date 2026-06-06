@@ -51,4 +51,5 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
+    //
 });
