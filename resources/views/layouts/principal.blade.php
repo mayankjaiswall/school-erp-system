@@ -243,7 +243,7 @@
             </a>
 
             <a href="{{ url('/principal/teachers') }}"
-                class="{{ request()->is('principal/teachers') ? 'active-menu' : '' }}">
+            class="{{ request()->is('principal/teachers*') ? 'active-menu' : '' }}">
                 <i class="bi bi-person-badge"></i>
                 <span>Teachers</span>
             </a>

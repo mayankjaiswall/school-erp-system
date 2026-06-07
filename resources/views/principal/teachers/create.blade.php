@@ -60,8 +60,7 @@
 </div>
 
 <div class="form-card">
-
-    <form action="{{ route('teachers.store') }}" method="POST">
+    <form id="teacherForm" action="{{ route('teachers.store') }}" method="POST">
         @csrf
         <div class="row g-4">
             <div class="col-md-6">
@@ -138,37 +137,54 @@
                     </option>
                 </select>
             </div>
-
             <div class="col-md-6">
                 <label class="form-label">
                     School
                 </label>
                 <input type="text" name="school_name" class="form-control" value="{{ $school->name }}" disabled>
+                <input type="hidden" name="school_id" value="{{ $school->id }}">
             </div>
         </div>
-
         <div class="action-footer d-flex justify-content-between">
-
             <a href="{{ route('teachers.index') }}"
                class="btn btn-light border">
-
                 <i class="bi bi-arrow-left"></i>
                 Back
-
             </a>
-
             <button type="submit"
                     class="btn btn-primary">
-
                 <i class="bi bi-save"></i>
                 Save Teacher
-
             </button>
-
         </div>
-
     </form>
-
 </div>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#teacherForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('teachers.index') }}";
+                    }
+                });
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    });
+});
+</script>
 @endsection

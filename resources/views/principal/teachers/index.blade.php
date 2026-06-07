@@ -276,18 +276,18 @@
                     </td>
 
                     <td>
-                        <a href="#"
+                        <a href="{{ route('teachers.show', $teacher->id) }}"
                         class="btn-action btn-view"
                         title="View">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="#"
+                        <a href="{{ route('teachers.edit', $teacher->id) }}"
                         class="btn-action btn-edit"
                         title="Edit">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <form id="delete-form-{{ $teacher->id }}"
-                            action="#"
+                            action="{{ route('teachers.destroy', $teacher->id) }}"
                             method="POST"
                             class="d-inline">
                             @csrf

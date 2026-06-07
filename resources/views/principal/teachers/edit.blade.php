@@ -1,0 +1,177 @@
+@extends('layouts.principal')
+
+@section('title', 'Edit Teacher')
+
+@section('page-title', 'Edit Teacher')
+
+@section('content')
+
+<style>
+    .form-page-header{
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
+        color:#fff;
+        padding:30px;
+        border-radius:20px;
+        margin-bottom:25px;
+        box-shadow:0 15px 35px rgba(37,99,235,.25);
+    }
+
+    .form-card{
+        background:#fff;
+        border-radius:20px;
+        padding:30px;
+        border:1px solid #e2e8f0;
+        box-shadow:0 8px 20px rgba(15,23,42,.05);
+    }
+
+    .form-label{
+        font-weight:600;
+        color:#334155;
+        margin-bottom:8px;
+    }
+
+    .form-control,
+    .form-select{
+        border-radius:12px;
+        min-height:48px;
+        border:1px solid #dbe2ea;
+    }
+
+    .form-control:focus,
+    .form-select:focus{
+        box-shadow:none;
+        border-color:#2563eb;
+    }
+
+    .action-footer{
+        border-top:1px solid #e2e8f0;
+        padding-top:20px;
+        margin-top:30px;
+    }
+</style>
+
+<div class="form-page-header">
+    <h2 class="mb-2">Edit Teacher</h2>
+    <p class="mb-0 opacity-75">
+        Update teacher information.
+    </p>
+</div>
+
+<div class="form-card">
+
+<form id="teacherEditForm" action="{{ route('teachers.update', $teacher->id) }}" method="POST">
+    @csrf
+    @method('PUT')
+    <div class="row g-4">
+        <div class="col-md-6">
+            <label class="form-label">Teacher Name</label>
+            <input type="text"
+                   name="name"
+                   class="form-control"
+                   value="{{ $teacher->name }}"
+                   required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Email Address</label>
+            <input type="email"
+                   name="email"
+                   class="form-control"
+                   value="{{ $teacher->email }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Phone Number</label>
+            <input type="text"
+                   name="phone"
+                   class="form-control"
+                   value="{{ $teacher->phone }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Gender</label>
+            <select name="gender" class="form-select">
+                <option value="male" {{ $teacher->gender == 'male' ? 'selected' : '' }}>Male</option>
+                <option value="female" {{ $teacher->gender == 'female' ? 'selected' : '' }}>Female</option>
+                <option value="other" {{ $teacher->gender == 'other' ? 'selected' : '' }}>Other</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Qualification</label>
+            <input type="text"
+                   name="qualification"
+                   class="form-control"
+                   value="{{ $teacher->qualification }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Experience (Years)</label>
+            <input type="number"
+                   name="experience"
+                   class="form-control"
+                   value="{{ $teacher->experience }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+                <option value="1" {{ $teacher->status == 1 ? 'selected' : '' }}>Active</option>
+                <option value="0" {{ $teacher->status == 0 ? 'selected' : '' }}>Inactive</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="action-footer d-flex justify-content-between">
+
+        <a href="{{ route('teachers.index') }}"
+           class="btn btn-light border">
+            <i class="bi bi-arrow-left"></i>
+            Back
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i>
+            Update Teacher
+        </button>
+    </div>
+</form>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    $('#teacherEditForm').submit(function (e) {
+
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
+
+            success: function (response) {
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Updated!',
+                    text: response.message
+                }).then(() => {
+                    window.location.href = "{{ route('teachers.index') }}";
+                });
+
+            },
+
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+
+    });
+
+});
+</script>
+
+@endsection
