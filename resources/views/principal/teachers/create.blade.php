@@ -1,0 +1,174 @@
+@extends('layouts.principal')
+
+@section('title', 'Create Teacher')
+
+@section('page-title', 'Create Teacher')
+
+@section('content')
+
+<style>
+    .form-page-header{
+        background: linear-gradient(135deg,#2563eb,#1d4ed8);
+        color:#fff;
+        padding:30px;
+        border-radius:20px;
+        margin-bottom:25px;
+        box-shadow:0 15px 35px rgba(37,99,235,.25);
+    }
+
+    .form-card{
+        background:#fff;
+        border-radius:20px;
+        padding:30px;
+        border:1px solid #e2e8f0;
+        box-shadow:0 8px 20px rgba(15,23,42,.05);
+    }
+
+    .form-label{
+        font-weight:600;
+        color:#334155;
+        margin-bottom:8px;
+    }
+
+    .form-control,
+    .form-select{
+        border-radius:12px;
+        min-height:48px;
+        border:1px solid #dbe2ea;
+    }
+
+    .form-control:focus,
+    .form-select:focus{
+        box-shadow:none;
+        border-color:#2563eb;
+    }
+
+    .action-footer{
+        border-top:1px solid #e2e8f0;
+        padding-top:20px;
+        margin-top:30px;
+    }
+</style>
+
+<div class="form-page-header">
+    <h2 class="mb-2">
+        Create New Teacher
+    </h2>
+    <p class="mb-0 opacity-75">
+        Add a new teacher to your ERP platform.
+    </p>
+</div>
+
+<div class="form-card">
+
+    <form action="{{ route('teachers.store') }}" method="POST">
+        @csrf
+        <div class="row g-4">
+            <div class="col-md-6">
+                <label class="form-label">
+                    Teacher Name
+                </label>
+
+                <input type="text" name="name" class="form-control" placeholder="Enter teacher name" required>
+            </div>
+
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Email Address
+                </label>
+
+                <input type="email" name="email" class="form-control" placeholder="teacher@example.com">
+
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Phone Number
+                </label>
+                <input type="text" name="phone" class="form-control" placeholder="+91 XXXXX XXXXX">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Gender
+                </label>
+                <select name="gender" class="form-select">
+                    <option value="" disabled selected>
+                        Select Gender
+                    </option>
+                    <option value="male">
+                        Male
+                    </option>
+                    <option value="female">
+                        Female
+                    </option>
+                    <option value="other">
+                        Other
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">
+                    Qualification
+                </label>
+                <input type="text" name="qualification" class="form-control" placeholder="Enter teacher qualification">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Experience (Years)
+                </label>
+                <input type="number" name="experience" class="form-control" placeholder="Enter teacher experience">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Status
+                </label>
+                <select name="status" class="form-select">
+                <option value="" disabled selected>
+                    Select Status
+                </option>
+                    <option value="1">
+                        Active
+                    </option>
+                    <option value="0">
+                        Inactive
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    School
+                </label>
+                <input type="text" name="school_name" class="form-control" value="{{ $school->name }}" disabled>
+            </div>
+        </div>
+
+        <div class="action-footer d-flex justify-content-between">
+
+            <a href="{{ route('teachers.index') }}"
+               class="btn btn-light border">
+
+                <i class="bi bi-arrow-left"></i>
+                Back
+
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+
+                <i class="bi bi-save"></i>
+                Save Teacher
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@endsection

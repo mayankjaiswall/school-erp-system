@@ -10,6 +10,7 @@ use App\Http\Controllers\Principal\DashboardController as PrincipalDashboardCont
 // Load additional route files
 $extraRoutes = [
     'frontend.php',
+    'principal.php',
     'admin.php',
     'teacher.php',
     'student.php',
@@ -53,11 +54,4 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     //
-});
-
-Route::middleware('auth')->prefix('principal')->group(function () {
-
-    Route::get('/dashboard', [PrincipalDashboardController::class, 'index'])
-        ->name('principal.dashboard');
-
 });
