@@ -249,16 +249,17 @@
             </a>
 
             <a href="#"
+               class="#">
+               <i class="bi bi-journal-bookmark"></i>
+               <span>Classes</span>
+           </a>
+           
+            <a href="#"
                 class="#">
                 <i class="bi bi-people"></i>
                 <span>Students</span>
             </a>
             
-             <a href="#"
-                class="#">
-                <i class="bi bi-journal-bookmark"></i>
-                <span>Classes</span>
-            </a>
 
             <a href="#">
                 <i class="bi bi-gear"></i>
