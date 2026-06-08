@@ -3,18 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\School;
+use App\Models\SchoolClass; 
 
 class ClassController extends Controller
 {
     //
     public function index()
     {
-        // Code to list classes
+        $classes = SchoolClass::all(); // Assuming you have a SchoolClass model
+        return view('classes.index', compact('classes'));
     }
     
     public function create()
     {
-        // Code to show form to create a class
+        $school = School::where('id', auth()->user()->school_id)->first();
+        return view('classes.create', compact('school'));
     }
 
 

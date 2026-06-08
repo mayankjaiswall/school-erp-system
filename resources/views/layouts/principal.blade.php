@@ -248,17 +248,12 @@
                 <span>Teachers</span>
             </a>
 
-            <a href="#"
-               class="#">
+            <a href="{{ url('/principal/classes') }}"
+               class="{{ request()->is('principal/classes*') ? 'active-menu' : '' }}">
                <i class="bi bi-journal-bookmark"></i>
                <span>Classes</span>
            </a>
            
-            <a href="#"
-                class="#">
-                <i class="bi bi-people"></i>
-                <span>Students</span>
-            </a>
             
 
             <a href="#">
