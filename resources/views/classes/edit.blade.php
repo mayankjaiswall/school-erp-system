@@ -1,8 +1,8 @@
 @extends('layouts.principal')
 
-@section('title', 'Create Class')
+@section('title', 'Edit Class')
 
-@section('page-title', 'Create Class')
+@section('page-title', 'Edit Class')
 
 @section('content')
 
@@ -52,51 +52,52 @@
 
 <div class="form-page-header">
     <h2 class="mb-2">
-        Create New Class
+        Edit Class
     </h2>
     <p class="mb-0 opacity-75">
-        Add a new class to your ERP platform.
+        Update the details of your class.
     </p>
 </div>
 
 <div class="form-card">
-    <form id="classForm" action="{{ route('classes.store') }}" method="POST">
+    <form id="classForm" action="{{ route('classes.update', $class->id) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="row g-4">
             <div class="col-md-6">
                 <label class="form-label">
                     Class Name
                 </label>
 
-                <input type="text" name="name" class="form-control" placeholder="Enter class name" required>
+                <input type="text" name="name" class="form-control" placeholder="Enter class name" value="{{ $class->name }}" required>
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">
                     Section
                 </label>
-                <input type="text" name="section" class="form-control" placeholder="Enter class section">
+                <input type="text" name="section" class="form-control" placeholder="Enter class section" value="{{ $class->section }}">
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">
                     Class Code
                 </label>
-                <input type="text" name="class_code" class="form-control" placeholder="Enter class code">
+                <input type="text" name="class_code" class="form-control" placeholder="Enter class code" value="{{ $class->class_code }}">
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">
                     Capacity
                 </label>
-                <input type="number" name="capacity" class="form-control" placeholder="Enter class capacity">
+                <input type="number" name="capacity" class="form-control" placeholder="Enter class capacity" value="{{ $class->capacity }}">
             </div>
 
             <div class="col-md-6">
                 <label class="form-label">
                     Description
                 </label>
-                <input type="text" name="description" class="form-control" placeholder="Enter class description">
+                <input type="text" name="description" class="form-control" placeholder="Enter class description" value="{{ $class->description }}">
             </div>
 
             <div class="col-md-6">
@@ -107,10 +108,10 @@
                 <option value="" disabled selected>
                     Select Status
                 </option>
-                    <option value="1">
+                    <option value="1" {{ $class->status == 1 ? 'selected' : '' }}>
                         Active
                     </option>
-                    <option value="0">
+                    <option value="0" {{ $class->status == 0 ? 'selected' : '' }}>
                         Inactive
                     </option>
                 </select>
@@ -132,7 +133,7 @@
             <button type="submit"
                     class="btn btn-primary">
                 <i class="bi bi-save"></i>
-                Save Class
+                Update Class
             </button>
         </div>
     </form>
@@ -149,13 +150,10 @@ $(document).ready(function () {
             success: function (response) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Success!',
-                    text: response.message,
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = "{{ route('classes.index') }}";
-                    }
+                    title: 'Updated!',
+                    text: response.message
+                }).then(() => {
+                    window.location.href = "{{ route('classes.index') }}";
                 });
             },
             error: function (xhr) {
@@ -165,4 +163,5 @@ $(document).ready(function () {
     });
 });
 </script>
+
 @endsection

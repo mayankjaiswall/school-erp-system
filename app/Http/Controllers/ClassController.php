@@ -24,12 +24,35 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
-        // Code to store a new class
+        // Validate and store class data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'section' => 'nullable|string|max:255',
+            'class_code' => 'required|string|max:255|unique:school_classes,class_code',
+            'school_id' => 'required|exists:schools,id',
+            'capacity' => 'nullable|integer',
+            'description' => 'nullable|string',
+            'status' => 'required|in:1,0',
+        ]);
+
+        SchoolClass::create([
+            'name' => $request->name,
+            'section' => $request->section,
+            'class_code' => $request->class_code,
+            'school_id' => $request->school_id,
+            'capacity' => $request->capacity,
+            'description' => $request->description,
+            'status' => $request->status,
+        ]);
+
+        return response()->json(['success' => true,'message' => 'Class created successfully.']);
     }
 
     public function edit($id)
     {
-        // Code to show form to edit a class
+        $class = SchoolClass::where('school_id', auth()->user()->school_id)->findOrFail($id);
+        $school = School::where('id', auth()->user()->school_id)->first();
+        return view('classes.edit', compact('class', 'school'));
     }
 
     public function update(Request $request, $id)
@@ -39,7 +62,8 @@ class ClassController extends Controller
 
     public function show($id)
     {
-        // Code to show details of a class
+        $class = SchoolClass::where('school_id', auth()->user()->school_id)->findOrFail($id);
+        return view('classes.show', compact('class'));
     }
 
     public function destroy($id)

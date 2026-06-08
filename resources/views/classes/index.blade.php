@@ -213,8 +213,6 @@
                 <tr>
                     <th>#</th>
                     <th>Class</th>
-                    <th>Teacher</th>
-                    <th>Phone</th>
                     <th>Status</th>
                     <th>Created</th>
                     <th width="170">Actions</th>
@@ -225,57 +223,29 @@
             <tbody>
 
             @forelse($classes as $class)
-
                 <tr>
-
                     <td>{{ $loop->iteration }}</td>
-
                     <td>
-
                         <div class="d-flex align-items-center gap-3">
-
-                            <div class="class-avatar">
-                                {{ strtoupper(substr($class->name,0,1)) }}
-                            </div>
-
                             <div>
-
                                 <strong>{{ $class->name }}</strong>
-
-                                <div class="small text-muted">
-                                    {{ $class->email }}
-                                </div>
-
                             </div>
-
                         </div>
-
                     </td>
-
-                    <td>{{ $class->phone }}</td>
-
                     <td>
-
                         @if($class->status)
-
                             <span class="status-pill active">
                                 Active
                             </span>
-
                         @else
-
                             <span class="status-pill inactive">
                                 Inactive
                             </span>
-
                         @endif
-
                     </td>
-
                     <td>
                         {{ $class->created_at->format('d M Y') }}
                     </td>
-
                     <td>
                         <a href="{{ route('classes.show', $class->id) }}"
                         class="btn-action btn-view"
