@@ -178,7 +178,7 @@
 
         <div class="stats-card">
 
-            <h3>{{ $classes->count() }}</h3>
+            <h3 id="totalClassesCount">{{ $classes->count() }}</h3>
 
             <span>Total Classes</span>
 
@@ -198,7 +198,7 @@
             Classes Directory
         </h5>
 
-        <div class="text-muted">
+        <div class="text-muted" id="recordsFoundCount">
             {{ $classes->count() }} Records Found
         </div>
 
@@ -220,11 +220,11 @@
 
             </thead>
 
-            <tbody>
+            <tbody id="classesTableBody">
 
             @forelse($classes as $class)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
+                <tr id="class-row-{{ $class->id }}">
+                    <td class="class-row-number">{{ $loop->iteration }}</td>
                     <td>
                         <div class="d-flex align-items-center gap-3">
                             <div>
@@ -281,88 +281,6 @@
 
                 </tr>
 
-                <!-- Delete Modal -->
-
-                <div class="modal fade"
-                     id="deleteClassModal{{ $class->id }}"
-                     tabindex="-1"
-                     aria-hidden="true">
-
-                    <div class="modal-dialog modal-dialog-centered">
-
-                        <div class="modal-content border-0 shadow-lg">
-
-                            <div class="modal-header bg-danger text-white">
-
-                                <h5 class="modal-title">
-                                    Confirm Class Deletion
-                                </h5>
-
-                                <button type="button"
-                                        class="btn-close btn-close-white"
-                                        data-bs-dismiss="modal">
-                                </button>
-
-                            </div>
-
-                            <div class="modal-body text-center py-4">
-
-                                <i class="bi bi-exclamation-triangle-fill text-danger"
-                                   style="font-size:60px;">
-                                </i>
-
-                                <h4 class="mt-3">
-                                    Delete Class?
-                                </h4>
-
-                                <p class="text-muted">
-                                    You are about to delete
-                                </p>
-
-                                <h5 class="fw-bold text-primary">
-                                    {{ $class->name }}
-                                </h5>
-
-                                <p class="text-danger mb-0 mt-3">
-                                    This action cannot be undone.
-                                </p>
-
-                            </div>
-
-                            <div class="modal-footer">
-
-                                <button type="button"
-                                        class="btn btn-light border"
-                                        data-bs-dismiss="modal">
-
-                                    Cancel
-
-                                </button>
-
-                                <form action="#"
-                                      method="POST">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit"
-                                            class="btn btn-danger">
-
-                                        <i class="bi bi-trash"></i>
-                                        Delete Class
-
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
             @empty
 
                 <tr>
@@ -395,9 +313,10 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 
-function confirmDelete(id, schoolName)
+function confirmDelete(id, className)
 {
     Swal.fire({
 
@@ -452,7 +371,7 @@ function confirmDelete(id, schoolName)
 
         cancelButtonColor: '#64748b',
 
-        confirmButtonText: 'Delete School',
+        confirmButtonText: 'Delete Class',
 
         cancelButtonText: 'Cancel',
 
@@ -466,12 +385,66 @@ function confirmDelete(id, schoolName)
 
         if(result.isConfirmed)
         {
-            document
-                .getElementById('delete-form-' + id)
-                .submit();
+            deleteClass(id);
         }
 
     });
+}
+
+function deleteClass(id)
+{
+    const form = document.getElementById('delete-form-' + id);
+    const button = form.querySelector('.btn-delete');
+    const formData = new FormData(form);
+
+    button.disabled = true;
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (!data.success) {
+            throw new Error(data.message || 'Unable to delete class.');
+        }
+
+        document.getElementById('class-row-' + id).remove();
+        updateClassCounts();
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Deleted',
+            text: data.message,
+            timer: 1600,
+            showConfirmButton: false
+        });
+    })
+    .catch((error) => {
+        button.disabled = false;
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Delete failed',
+            text: error.message
+        });
+    });
+}
+
+function updateClassCounts()
+{
+    const rows = document.querySelectorAll('#classesTableBody tr[id^="class-row-"]');
+    const total = rows.length;
+
+    rows.forEach((row, index) => {
+        row.querySelector('.class-row-number').textContent = index + 1;
+    });
+
+    document.getElementById('totalClassesCount').textContent = total;
+    document.getElementById('recordsFoundCount').textContent = total + ' Records Found';
 }
 
 </script>

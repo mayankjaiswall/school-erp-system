@@ -66,8 +66,20 @@ class ClassController extends Controller
         return view('classes.show', compact('class'));
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        // Code to delete a class
+        $class = SchoolClass::where('school_id', auth()->user()->school_id)->findOrFail($id);
+        $class->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Class deleted successfully.',
+            ]);
+        }
+
+        return redirect()
+            ->route('classes.index')
+            ->with('success', 'Class deleted successfully.');
     }
 }
