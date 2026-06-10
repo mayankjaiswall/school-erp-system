@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Principal\DashboardController;
 use App\Http\Controllers\Principal\TeacherController;
 use App\Http\Controllers\Principal\StudentController;
+use App\Http\Controllers\Principal\SubjectController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -35,6 +36,17 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
         Route::get('/students/{id}', [StudentController::class, 'show'])->name('students.show');
         Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+        // Subject management routes
+        Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+        Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
+        Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
+        Route::get('/subjects/{id}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
+        Route::put('/subjects/{id}', [SubjectController::class, 'update'])->name('subjects.update');
+        Route::get('/subjects/{id}', [SubjectController::class, 'show'])->name('subjects.show');
+        Route::delete('/subjects/{id}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+
+        
     
         
 });
