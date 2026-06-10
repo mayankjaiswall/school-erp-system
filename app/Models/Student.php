@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Student extends Model
+{
+    protected $fillable = [
+        'school_id',
+        'class_id',
+        'admission_no',
+        'roll_no',
+        'name',
+        'email',
+        'phone',
+        'gender',
+        'dob',
+        'address',
+        'photo',
+        'status',
+    ];
+
+    protected $casts = [
+        'dob' => 'date',
+        'status' => 'boolean',
+    ];
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(SchoolClass::class, 'class_id');
+    }
+}

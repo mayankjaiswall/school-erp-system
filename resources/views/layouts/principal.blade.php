@@ -253,6 +253,12 @@
                <i class="bi bi-journal-bookmark"></i>
                <span>Classes</span>
            </a>
+
+            <a href="{{ url('/principal/students') }}"
+               class="{{ request()->is('principal/students*') ? 'active-menu' : '' }}">
+               <i class="bi bi-mortarboard"></i>
+               <span>Students</span>
+           </a>
            
             
 
