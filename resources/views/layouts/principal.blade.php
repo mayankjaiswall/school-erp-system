@@ -265,6 +265,12 @@
                <i class="bi bi-book"></i>
                <span>Subjects</span>
            </a>
+
+            <a href="{{ url('/principal/teacher-subjects') }}"
+               class="{{ request()->is('principal/teacher-subjects*') ? 'active-menu' : '' }}">
+               <i class="bi bi-diagram-3"></i>
+               <span>Teacher Subjects</span>
+           </a>
            
             
 

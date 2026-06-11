@@ -5,6 +5,7 @@ use App\Http\Controllers\Principal\DashboardController;
 use App\Http\Controllers\Principal\TeacherController;
 use App\Http\Controllers\Principal\StudentController;
 use App\Http\Controllers\Principal\SubjectController;
+use App\Http\Controllers\Principal\TeacherSubjectController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -45,6 +46,15 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::put('/subjects/{id}', [SubjectController::class, 'update'])->name('subjects.update');
         Route::get('/subjects/{id}', [SubjectController::class, 'show'])->name('subjects.show');
         Route::delete('/subjects/{id}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+
+        // Teacher subject assignment routes
+        Route::get('/teacher-subjects', [TeacherSubjectController::class, 'index'])->name('teacher-subjects.index');
+        Route::get('/teacher-subjects/create', [TeacherSubjectController::class, 'create'])->name('teacher-subjects.create');
+        Route::post('/teacher-subjects', [TeacherSubjectController::class, 'store'])->name('teacher-subjects.store');
+        Route::get('/teacher-subjects/{id}/edit', [TeacherSubjectController::class, 'edit'])->name('teacher-subjects.edit');
+        Route::put('/teacher-subjects/{id}', [TeacherSubjectController::class, 'update'])->name('teacher-subjects.update');
+        Route::get('/teacher-subjects/{id}', [TeacherSubjectController::class, 'show'])->name('teacher-subjects.show');
+        Route::delete('/teacher-subjects/{id}', [TeacherSubjectController::class, 'destroy'])->name('teacher-subjects.destroy');
 
         
     
