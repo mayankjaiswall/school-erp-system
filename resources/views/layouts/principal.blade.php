@@ -25,9 +25,11 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 270px;
+            width: 290px;
             height: 100vh;
-            background: #0f172a;
+            background:
+                linear-gradient(180deg, rgba(30, 41, 59, .95), rgba(15, 23, 42, 1)),
+                #0f172a;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -36,55 +38,117 @@
         }
 
         .logo {
-            padding: 28px 24px;
+            padding: 24px 24px 20px;
             font-size: 28px;
             font-weight: 700;
             border-bottom: 1px solid rgba(255, 255, 255, .08);
+            line-height: 1;
         }
 
         .logo span {
             color: #3b82f6;
         }
 
+        .logo small {
+            display: block;
+            color: #94a3b8;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .08em;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
         .sidebar-menu {
             flex: 1;
-            padding: 20px 15px;
+            padding: 18px 14px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #334155 transparent;
+        }
+
+        .sidebar-section {
+            margin-bottom: 16px;
+        }
+
+        .sidebar-section-title {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            margin: 18px 12px 8px;
+            text-transform: uppercase;
         }
 
         .sidebar-menu a {
             display: flex;
             align-items: center;
-            gap: 14px;
-            color: #94a3b8;
+            gap: 12px;
+            color: #cbd5e1;
             text-decoration: none;
-            padding: 14px 18px;
-            border-radius: 14px;
-            margin-bottom: 8px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            margin-bottom: 4px;
             transition: .25s ease;
             font-weight: 500;
+            min-height: 42px;
+            position: relative;
         }
 
         .sidebar-menu a i {
-            font-size: 18px;
+            align-items: center;
+            background: rgba(148, 163, 184, .12);
+            border-radius: 8px;
+            color: #93c5fd;
+            display: inline-flex;
+            flex: 0 0 30px;
+            font-size: 16px;
+            height: 30px;
+            justify-content: center;
+            width: 30px;
         }
 
         .sidebar-menu a:hover {
-            background: #1e293b;
+            background: rgba(30, 41, 59, .9);
             color: #fff;
             transform: translateX(4px);
         }
 
+        .sidebar-menu a:hover i {
+            background: rgba(59, 130, 246, .18);
+            color: #bfdbfe;
+        }
+
         .sidebar-menu a.active-menu {
-            background: linear-gradient(135deg,
-                    #2563eb,
-                    #3b82f6);
+            background: #2563eb;
             color: #fff;
             font-weight: 600;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, .35);
+            box-shadow: 0 10px 24px rgba(37, 99, 235, .28);
         }
 
         .sidebar-menu a.active-menu i {
+            background: rgba(255, 255, 255, .16);
             color: #fff;
+        }
+
+        .sidebar-menu a.disabled-link {
+            color: #64748b;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .sidebar-menu a.disabled-link i {
+            background: rgba(100, 116, 139, .12);
+            color: #64748b;
+        }
+
+        .sidebar-menu a.disabled-link::after {
+            content: "Soon";
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            margin-left: auto;
+            text-transform: uppercase;
         }
 
         .logout-wrapper {
@@ -102,7 +166,7 @@
         /* =========================MAIN CONTENT========================= */
 
         .main-content {
-            margin-left: 270px;
+            margin-left: 290px;
             min-height: 100vh;
         }
 
@@ -208,11 +272,11 @@
         @media(max-width:991px) {
 
             .sidebar {
-                width: 220px;
+                width: 245px;
             }
 
             .main-content {
-                margin-left: 220px;
+                margin-left: 245px;
             }
 
         }
@@ -234,55 +298,109 @@
     <div class="sidebar">
         <div class="logo">
             Edu<span>ERP</span>
+            <small>Principal Panel</small>
         </div>
         <div class="sidebar-menu">
-            <a href="{{ url('/principal/dashboard') }}"
-                class="{{ request()->is('principal/dashboard') ? 'active-menu' : '' }}">
-                <i class="bi bi-speedometer2"></i>
-                <span>Dashboard</span>
-            </a>
+            <div class="sidebar-section">
+                <a href="{{ route('principal.dashboard') }}"
+                    class="{{ request()->routeIs('principal.dashboard') ? 'active-menu' : '' }}">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
 
-            <a href="{{ route('principal.users.index') }}"
-               class="{{ request()->routeIs('principal.users.*') ? 'active-menu' : '' }}">
-               <i class="bi bi-people"></i>
-               <span>Users</span>
-           </a>           
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">School Administration</div>
+                <a href="{{ route('principal.users.index') }}"
+                    class="{{ request()->routeIs('principal.users.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-people"></i>
+                    <span>Users</span>
+                </a>
+                <a href="{{ route('teachers.index') }}"
+                    class="{{ request()->routeIs('teachers.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Teachers</span>
+                </a>
+                <a href="{{ route('students.index') }}"
+                    class="{{ request()->routeIs('students.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-mortarboard"></i>
+                    <span>Students</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-person-hearts"></i>
+                    <span>Parents</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-person-workspace"></i>
+                    <span>HODs</span>
+                </a>
+            </div>
 
-            <a href="{{ url('/principal/teachers') }}"
-            class="{{ request()->is('principal/teachers*') ? 'active-menu' : '' }}">
-                <i class="bi bi-person-badge"></i>
-                <span>Teachers</span>
-            </a>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Academics</div>
+                <a href="{{ route('classes.index') }}"
+                    class="{{ request()->routeIs('classes.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-journal-bookmark"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="{{ route('subjects.index') }}"
+                    class="{{ request()->routeIs('subjects.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-book"></i>
+                    <span>Subjects</span>
+                </a>
+                <a href="{{ route('teacher-subjects.index') }}"
+                    class="{{ request()->routeIs('teacher-subjects.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-diagram-3"></i>
+                    <span>Teacher Subjects</span>
+                </a>
+            </div>
 
-            <a href="{{ url('/principal/classes') }}"
-               class="{{ request()->is('principal/classes*') ? 'active-menu' : '' }}">
-               <i class="bi bi-journal-bookmark"></i>
-               <span>Classes</span>
-           </a>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Attendance</div>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-clipboard2-check"></i>
+                    <span>Student Attendance</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-calendar2-check"></i>
+                    <span>Teacher Attendance</span>
+                </a>
+            </div>
 
-            <a href="{{ url('/principal/students') }}"
-               class="{{ request()->is('principal/students*') ? 'active-menu' : '' }}">
-               <i class="bi bi-mortarboard"></i>
-               <span>Students</span>
-           </a>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Examination</div>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-file-earmark-text"></i>
+                    <span>Exams</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-pencil-square"></i>
+                    <span>Marks Entry</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-award"></i>
+                    <span>Report Cards</span>
+                </a>
+            </div>
 
-            <a href="{{ url('/principal/subjects') }}"
-               class="{{ request()->is('principal/subjects*') ? 'active-menu' : '' }}">
-               <i class="bi bi-book"></i>
-               <span>Subjects</span>
-           </a>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Reports</div>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span>Attendance Reports</span>
+                </a>
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-bar-chart-line"></i>
+                    <span>Academic Reports</span>
+                </a>
+            </div>
 
-            <a href="{{ url('/principal/teacher-subjects') }}"
-               class="{{ request()->is('principal/teacher-subjects*') ? 'active-menu' : '' }}">
-               <i class="bi bi-diagram-3"></i>
-               <span>Teacher Subjects</span>
-           </a>
-            
-
-            <a href="#">
-                <i class="bi bi-gear"></i>
-                <span>Settings</span>
-            </a>
+            <div class="sidebar-section">
+                <a href="#" class="disabled-link" aria-disabled="true">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
         </div>
         <div class="logout-wrapper">
             <form action="{{ route('logout') }}" method="POST">

@@ -896,7 +896,7 @@
         </ul>
 
         <div class="nav-cta">
-            <a href="#" class="btn-nav-login">Log In</a>
+            <a href="{{ route('login') }}" class="btn-nav-login">Log In</a>
             <a href="#" class="btn-nav-get-started">Get Started</a>
         </div>
         <div class="hamburger" id="hamburger">
