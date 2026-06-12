@@ -187,8 +187,8 @@
 
     <div class="col-md-3">
         <div class="stats-card">
-            <h3>{{ $teacher->id }}</h3>
-            <span>Teacher ID</span>
+            <h3>{{ $teacher->employee_code ?? 'N/A' }}</h3>
+            <span>Employee Code</span>
         </div>
     </div>
 
@@ -214,6 +214,15 @@
                 <i class="bi bi-telephone-fill"></i>
             </h3>
             <span>Phone Available</span>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="stats-card">
+            <h3>
+                <i class="bi {{ $teacher->user_id ? 'bi-link-45deg' : 'bi-link' }}"></i>
+            </h3>
+            <span>{{ $teacher->user_id ? 'Login Linked' : 'Login Not Linked' }}</span>
         </div>
     </div>
 
@@ -245,6 +254,20 @@
 
             <h5>
                 {{ $teacher->email }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="info-card">
+
+            <small>Employee Code</small>
+
+            <h5>
+                {{ $teacher->employee_code ?? 'N/A' }}
             </h5>
 
         </div>
@@ -287,6 +310,62 @@
 
             <h5>
                 {{ $teacher->phone ?? 'N/A' }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="info-card">
+
+            <small>Qualification</small>
+
+            <h5>
+                {{ $teacher->qualification ?? 'N/A' }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="info-card">
+
+            <small>Experience</small>
+
+            <h5>
+                {{ is_null($teacher->experience) ? 'N/A' : $teacher->experience . ' Years' }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="info-card">
+
+            <small>Joining Date</small>
+
+            <h5>
+                {{ $teacher->joining_date ? $teacher->joining_date->format('d M Y') : 'N/A' }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="info-card">
+
+            <small>Linked User ID</small>
+
+            <h5>
+                {{ $teacher->user_id ?? 'N/A' }}
             </h5>
 
         </div>

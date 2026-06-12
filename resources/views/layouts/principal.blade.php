@@ -242,6 +242,12 @@
                 <span>Dashboard</span>
             </a>
 
+            <a href="{{ route('principal.users.index') }}"
+               class="{{ request()->routeIs('principal.users.*') ? 'active-menu' : '' }}">
+               <i class="bi bi-people"></i>
+               <span>Users</span>
+           </a>           
+
             <a href="{{ url('/principal/teachers') }}"
             class="{{ request()->is('principal/teachers*') ? 'active-menu' : '' }}">
                 <i class="bi bi-person-badge"></i>
@@ -271,7 +277,6 @@
                <i class="bi bi-diagram-3"></i>
                <span>Teacher Subjects</span>
            </a>
-           
             
 
             <a href="#">

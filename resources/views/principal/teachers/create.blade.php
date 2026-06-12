@@ -72,12 +72,20 @@
             </div>
 
             <div class="col-md-6">
+                <label class="form-label">
+                    Employee Code
+                </label>
+
+                <input type="text" name="employee_code" class="form-control" placeholder="EMP-001" required>
+            </div>
+
+            <div class="col-md-6">
 
                 <label class="form-label">
                     Email Address
                 </label>
 
-                <input type="email" name="email" class="form-control" placeholder="teacher@example.com">
+                <input type="email" name="email" class="form-control" placeholder="teacher@example.com" required>
 
             </div>
 
@@ -123,6 +131,27 @@
 
             <div class="col-md-6">
                 <label class="form-label">
+                    Joining Date
+                </label>
+                <input type="date" name="joining_date" class="form-control">
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Login Password
+                </label>
+                <input type="password" name="password" class="form-control" placeholder="Minimum 8 characters" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
+                    Confirm Password
+                </label>
+                <input type="password" name="password_confirmation" class="form-control" placeholder="Re-enter password" required>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">
                     Status
                 </label>
                 <select name="status" class="form-select">
@@ -142,7 +171,6 @@
                     School
                 </label>
                 <input type="text" name="school_name" class="form-control" value="{{ $school->name }}" disabled>
-                <input type="hidden" name="school_id" value="{{ $school->id }}">
             </div>
         </div>
         <div class="action-footer d-flex justify-content-between">
@@ -181,7 +209,17 @@ $(document).ready(function () {
                 });
             },
             error: function (xhr) {
-                console.log(xhr.responseText);
+                let message = 'Please check the form and try again.';
+
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    message = Object.values(xhr.responseJSON.errors)[0][0];
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Unable to save teacher',
+                    text: message
+                });
             }
         });
     });

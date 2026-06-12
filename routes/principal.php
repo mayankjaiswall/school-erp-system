@@ -6,6 +6,7 @@ use App\Http\Controllers\Principal\TeacherController;
 use App\Http\Controllers\Principal\StudentController;
 use App\Http\Controllers\Principal\SubjectController;
 use App\Http\Controllers\Principal\TeacherSubjectController;
+use App\Http\Controllers\Principal\UserController as PrincipalUserController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -56,7 +57,8 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::get('/teacher-subjects/{id}', [TeacherSubjectController::class, 'show'])->name('teacher-subjects.show');
         Route::delete('/teacher-subjects/{id}', [TeacherSubjectController::class, 'destroy'])->name('teacher-subjects.destroy');
 
-        
+        // Principal user management routes
+        Route::resource('users', PrincipalUserController::class)->names('principal.users');
     
         
 });

@@ -73,11 +73,21 @@
         </div>
 
         <div class="col-md-6">
+            <label class="form-label">Employee Code</label>
+            <input type="text"
+                   name="employee_code"
+                   class="form-control"
+                   value="{{ $teacher->employee_code }}"
+                   required>
+        </div>
+
+        <div class="col-md-6">
             <label class="form-label">Email Address</label>
             <input type="email"
                    name="email"
                    class="form-control"
-                   value="{{ $teacher->email }}">
+                   value="{{ $teacher->email }}"
+                   required>
         </div>
 
         <div class="col-md-6">
@@ -111,6 +121,30 @@
                    name="experience"
                    class="form-control"
                    value="{{ $teacher->experience }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Joining Date</label>
+            <input type="date"
+                   name="joining_date"
+                   class="form-control"
+                   value="{{ optional($teacher->joining_date)->format('Y-m-d') }}">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">New Login Password</label>
+            <input type="password"
+                   name="password"
+                   class="form-control"
+                   placeholder="Leave blank to keep current password">
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Confirm New Password</label>
+            <input type="password"
+                   name="password_confirmation"
+                   class="form-control"
+                   placeholder="Re-enter new password">
         </div>
 
         <div class="col-md-6">
@@ -165,7 +199,17 @@ $(document).ready(function () {
             },
 
             error: function (xhr) {
-                console.log(xhr.responseText);
+                let message = 'Please check the form and try again.';
+
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    message = Object.values(xhr.responseJSON.errors)[0][0];
+                }
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Unable to update teacher',
+                    text: message
+                });
             }
         });
 

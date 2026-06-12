@@ -213,7 +213,9 @@
                 <tr>
                     <th>#</th>
                     <th>Teacher</th>
+                    <th>Employee Code</th>
                     <th>Phone</th>
+                    <th>Login</th>
                     <th>Status</th>
                     <th>Created</th>
                     <th width="170">Actions</th>
@@ -251,7 +253,21 @@
 
                     </td>
 
+                    <td>{{ $teacher->employee_code ?? 'N/A' }}</td>
+
                     <td>{{ $teacher->phone }}</td>
+
+                    <td>
+                        @if($teacher->user_id)
+                            <span class="status-pill active">
+                                Linked
+                            </span>
+                        @else
+                            <span class="status-pill inactive">
+                                Not Linked
+                            </span>
+                        @endif
+                    </td>
 
                     <td>
 
@@ -396,7 +412,7 @@
 
                 <tr>
 
-                    <td colspan="7">
+                    <td colspan="9">
 
                         <div class="empty-state">
 
