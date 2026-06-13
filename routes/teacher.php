@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Principal\TeacherController;
+use App\Http\Controllers\Teacher\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +12,6 @@ use App\Http\Controllers\Principal\TeacherController;
 |
 */
 
-Route::prefix('teacher')->name('teacher.')->group(function () {
-    // TODO: Add teacher routes here (classes, attendance, marks, etc.)
+Route::middleware('auth')->prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

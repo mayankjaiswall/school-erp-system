@@ -31,6 +31,9 @@ class LoginController extends Controller
             if ($user->role && $user->role->slug === 'principal') {
                 return redirect('/principal/dashboard');
             }
+            if ($user->role && $user->role->slug === 'teacher') {
+                return redirect('/teacher/dashboard');
+            }
             return redirect('/dashboard');
         }
 
