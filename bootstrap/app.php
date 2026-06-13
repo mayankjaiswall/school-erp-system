@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Session\TokenMismatchException;
 
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,7 +15,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (TokenMismatchException $exception, $request) {
+            return redirect('/login')
+                ->with('error', 'Session expired. Please login again.');
+        });
     })->create();
 
 // Additional route files are loaded from routes/web.php after the

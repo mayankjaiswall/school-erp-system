@@ -250,6 +250,12 @@
             </div>
         @endif
 
+        @if(session('error'))
+            <div class="error-box">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
 
