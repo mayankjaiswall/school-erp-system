@@ -120,7 +120,12 @@
                 <input type="text"
                        name="phone"
                        class="form-control"
-                       placeholder="+91 XXXXX XXXXX">
+                       inputmode="numeric"
+                       maxlength="10"
+                       pattern="[0-9]{10}"
+                       placeholder="10 digit phone number"
+                       title="Enter exactly 10 digits"
+                       oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
 
             </div>
 

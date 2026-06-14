@@ -205,17 +205,17 @@
                 Quick Actions
             </h5>
 
-            <a href="#"
+            <a href="{{ route('teachers.create') }}"
                class="btn btn-primary quick-btn">
                 Add Teacher
             </a>
 
-            <a href="#"
+            <a href="{{ route('students.create') }}"
                class="btn btn-success quick-btn">
                 Add Student
             </a>
 
-            <a href="#"
+            <a href="{{ route('classes.create') }}"
                class="btn btn-warning text-white quick-btn">
                 Create Class
             </a>
@@ -250,10 +250,12 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->name }}</td>
-                    <td>{{ $student->class_name ?? '-' }}</td>
                     <td>
-                        <span class="badge bg-success">
-                            Active
+                        {{ $student->class?->name ?? '-' }}{{ $student->class?->section ? ' - '.$student->class->section : '' }}
+                    </td>
+                    <td>
+                        <span class="badge {{ $student->status ? 'bg-success' : 'bg-secondary' }}">
+                            {{ $student->status ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                 </tr>

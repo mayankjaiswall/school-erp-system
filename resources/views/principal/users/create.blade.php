@@ -69,7 +69,16 @@
 
             <div class="col-md-6 mb-4">
                 <label for="phone" class="form-label">Phone</label>
-                <input type="text" name="phone" id="phone" value="{{ old('phone') }}" class="form-control">
+                <input type="text"
+                       name="phone"
+                       id="phone"
+                       value="{{ old('phone') }}"
+                       class="form-control"
+                       inputmode="numeric"
+                       maxlength="10"
+                       pattern="[0-9]{10}"
+                       title="Enter exactly 10 digits"
+                       oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
             </div>
 
             <div class="col-md-6 mb-4">

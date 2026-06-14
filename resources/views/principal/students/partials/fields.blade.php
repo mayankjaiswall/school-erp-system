@@ -28,7 +28,16 @@
     </div>
     <div class="col-md-6">
         <label class="form-label">Phone Number</label>
-        <input type="text" name="phone" class="form-control" value="{{ old('phone', $student?->phone) }}" placeholder="+91 XXXXX XXXXX">
+        <input type="text"
+               name="phone"
+               class="form-control"
+               value="{{ old('phone', $student?->phone) }}"
+               inputmode="numeric"
+               maxlength="10"
+               pattern="[0-9]{10}"
+               placeholder="10 digit phone number"
+               title="Enter exactly 10 digits"
+               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
     </div>
     <div class="col-md-6">
         <label class="form-label">Gender</label>

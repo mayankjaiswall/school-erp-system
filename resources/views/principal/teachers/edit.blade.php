@@ -95,7 +95,12 @@
             <input type="text"
                    name="phone"
                    class="form-control"
-                   value="{{ $teacher->phone }}">
+                   value="{{ $teacher->phone }}"
+                   inputmode="numeric"
+                   maxlength="10"
+                   pattern="[0-9]{10}"
+                   title="Enter exactly 10 digits"
+                   oninput="this.value = this.value.replace(/\D/g, '').slice(0, 10)">
         </div>
 
         <div class="col-md-6">

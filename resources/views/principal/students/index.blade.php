@@ -43,8 +43,23 @@
 </div>
 
 <div class="table-card">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <h5 class="mb-0">Students Directory</h5>
+        <form action="{{ route('students.index') }}" method="GET" class="d-flex gap-2" role="search">
+            <input type="search"
+                   name="search"
+                   value="{{ $search ?? '' }}"
+                   class="form-control"
+                   placeholder="Search students..."
+                   style="min-width:260px">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-search"></i>
+                Search
+            </button>
+            @if(!empty($search))
+                <a href="{{ route('students.index') }}" class="btn btn-light border">Clear</a>
+            @endif
+        </form>
         <div class="text-muted" id="recordsFoundCount">{{ $students->count() }} Records Found</div>
     </div>
 
