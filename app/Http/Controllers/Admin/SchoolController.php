@@ -10,9 +10,21 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::latest()->get();
+        $search = trim((string) request('search'));
 
-        return view('admin.schools.index', compact('schools'));
+        $schools = School::when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('code', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.schools.index', compact('schools', 'search'));
     }
 
     public function create()
@@ -27,7 +39,7 @@ class SchoolController extends Controller
             'code' => 'required|string|max:50',
             'email' => 'nullable|email|max:255',
             'address' => 'nullable|string|max:500',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|digits:10',
             'status' => 'required|boolean',
         ]);
 
@@ -56,7 +68,7 @@ class SchoolController extends Controller
             'code' => 'required|string|max:50',
             'email' => 'nullable|email|max:255',
             'address' => 'nullable|string|max:500',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|digits:10',
             'status' => 'required|boolean',
         ]);
         $school = School::findOrFail($id);

@@ -12,8 +12,28 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $search = trim((string) request('search'));
+
+        $users = User::with(['role', 'school'])
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhereHas('role', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('slug', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('school', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('code', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.users.index', compact('users', 'search'));
     }
 
     public function create()
@@ -29,7 +49,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'phone' => 'nullable|string|max:30',
+            'phone' => 'nullable|digits:10',
             'role_id' => 'required|exists:roles,id',
             'school_id' => 'required|exists:schools,id',
             'status' => 'required|boolean',
@@ -72,7 +92,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'phone' => 'nullable|string|max:30',
+            'phone' => 'nullable|digits:10',
             'role_id' => 'required|exists:roles,id',
             'school_id' => 'required|exists:schools,id',
             'status' => 'required|boolean',

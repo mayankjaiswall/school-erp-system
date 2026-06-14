@@ -11,8 +11,18 @@ class RoleController extends Controller
     //Role index
     public function index()
     {
-        $roles = Role::latest()->get();
-        return view('admin.roles.index', compact('roles'));
+        $search = trim((string) request('search'));
+
+        $roles = Role::when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('slug', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.roles.index', compact('roles', 'search'));
     }
 
     //Role create

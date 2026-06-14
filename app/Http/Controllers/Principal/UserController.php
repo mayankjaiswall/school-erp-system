@@ -21,14 +21,27 @@ class UserController extends Controller
         'student',
     ];
 
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->query('search'));
+
         $users = User::with('role')
             ->where('school_id', $this->schoolId())
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhereHas('role', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('slug', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
             ->get();
 
-        return view('principal.users.index', compact('users'));
+        return view('principal.users.index', compact('users', 'search'));
     }
 
     public function create()
@@ -153,7 +166,7 @@ class UserController extends Controller
                 'max:255',
                 Rule::unique('users', 'email')->ignore($userId),
             ],
-            'phone' => 'nullable|string|max:30',
+            'phone' => 'nullable|digits:10',
             'password' => [$userId ? 'nullable' : 'required', 'string', 'min:8', 'confirmed'],
             'role_id' => [
                 'required',

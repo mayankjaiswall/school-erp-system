@@ -16,13 +16,24 @@ use Illuminate\Validation\Rule;
 class TeacherController extends Controller
 {
     //Teacher index
-    public function index()
+    public function index(Request $request)
     {  
+        $search = trim((string) $request->query('search'));
+
         $teachers = Teacher::with('user')
             ->where('school_id', auth()->user()->school_id)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('employee_code', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
             ->get();
 
-        return view('principal.teachers.index', compact('teachers'));
+        return view('principal.teachers.index', compact('teachers', 'search'));
     }
 
     //Teacher create
@@ -46,7 +57,7 @@ class TeacherController extends Controller
                 'unique:teachers,email',
                 'unique:users,email',
             ],
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|digits:10',
             'employee_code' => [
                 'required',
                 'string',
@@ -118,7 +129,7 @@ class TeacherController extends Controller
                 Rule::unique('teachers', 'email')->ignore($teacher->id),
                 Rule::unique('users', 'email')->ignore($teacher->user_id),
             ],
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|digits:10',
             'employee_code' => [
                 'required',
                 'string',

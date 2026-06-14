@@ -13,14 +13,33 @@ use Illuminate\Validation\Rule;
 
 class TeacherSubjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->query('search'));
+
         $assignments = TeacherSubject::with(['teacher', 'schoolClass', 'subject'])
             ->where('school_id', auth()->user()->school_id)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->whereHas('teacher', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('employee_code', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('subject', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('code', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('schoolClass', function ($query) use ($search) {
+                        $query->where('name', 'like', "%{$search}%")
+                            ->orWhere('section', 'like', "%{$search}%");
+                    });
+                });
+            })
             ->latest()
             ->get();
 
-        return view('principal.teacher-subjects.index', compact('assignments'));
+        return view('principal.teacher-subjects.index', compact('assignments', 'search'));
     }
 
     public function create()

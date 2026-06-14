@@ -11,14 +11,29 @@ use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = trim((string) $request->query('search'));
+
         $students = Student::with('class')
             ->where('school_id', auth()->user()->school_id)
+            ->when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('admission_no', 'like', "%{$search}%")
+                        ->orWhere('roll_no', 'like', "%{$search}%")
+                        ->orWhereHas('class', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('section', 'like', "%{$search}%");
+                        });
+                });
+            })
             ->latest()
             ->get();
 
-        return view('principal.students.index', compact('students'));
+        return view('principal.students.index', compact('students', 'search'));
     }
 
     public function create()
@@ -110,7 +125,7 @@ class StudentController extends Controller
             'roll_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|digits:10',
             'gender' => 'nullable|in:male,female,other',
             'dob' => 'nullable|date',
             'address' => 'nullable|string',
