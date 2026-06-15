@@ -184,13 +184,6 @@
                    class="form-control"
                    placeholder="Search users..."
                    style="min-width:260px">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i>
-                Search
-            </button>
-            @if(!empty($search))
-                <a href="{{ route('users.index') }}" class="btn btn-light border">Clear</a>
-            @endif
         </form>
         <div class="text-muted">
             {{ $users->count() }} Records Found

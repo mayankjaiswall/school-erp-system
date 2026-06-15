@@ -52,13 +52,6 @@
                    class="form-control"
                    placeholder="Search assignments..."
                    style="min-width:260px">
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i>
-                Search
-            </button>
-            @if(!empty($search))
-                <a href="{{ route('teacher-subjects.index') }}" class="btn btn-light border">Clear</a>
-            @endif
         </form>
         <div class="text-muted" id="recordsFoundCount">{{ $assignments->count() }} Records Found</div>
     </div>

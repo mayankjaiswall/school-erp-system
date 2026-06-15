@@ -267,6 +267,28 @@
             font-size: 12px;
         }
 
+        form[role="search"] {
+            max-width: 360px;
+            width: 100%;
+        }
+
+        form[role="search"] input[type="search"] {
+            border: 2px solid #2563eb;
+            border-radius: 6px;
+            min-width: 260px;
+            width: 100%;
+        }
+
+        form[role="search"] input[type="search"]:focus {
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .15);
+        }
+
+        form[role="search"] button[type="submit"],
+        form[role="search"] .btn {
+            display: none;
+        }
+
         /* =========================RESPONSIVE========================= */
 
         @media(max-width:991px) {
@@ -431,6 +453,34 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('form[role="search"]').forEach((form) => {
+                const input = form.querySelector('input[type="search"][name="search"]');
+
+                if (!input) {
+                    return;
+                }
+
+                let timer = null;
+
+                input.addEventListener('input', () => {
+                    clearTimeout(timer);
+
+                    timer = setTimeout(() => {
+                        const value = input.value.trim();
+
+                        if (value === '') {
+                            window.location.href = form.action;
+                            return;
+                        }
+
+                        form.submit();
+                    }, 450);
+                });
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 
