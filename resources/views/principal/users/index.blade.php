@@ -104,7 +104,7 @@
 
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">School Users</h5>
+        <h5 class="mb-0">School Users {{ $users->count() }}</h5>
         <form action="{{ route('principal.users.index') }}" method="GET" class="d-flex gap-2" role="search">
             <input type="search"
                    name="search"
@@ -113,7 +113,6 @@
                    placeholder="Search users..."
                    style="min-width:260px">
         </form>
-        <span class="text-muted">{{ $users->count() }} Records Found</span>
     </div>
 
     <div class="table-responsive">

@@ -195,7 +195,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
 
         <h5 class="mb-0">
-            Teachers Directory
+            Teachers  {{ $teachers->count() }}
         </h5>
 
         <form action="{{ route('teachers.index') }}" method="GET" class="d-flex gap-2" role="search">
@@ -206,10 +206,6 @@
                    placeholder="Search teachers..."
                    style="min-width:260px">
         </form>
-
-        <div class="text-muted">
-            {{ $teachers->count() }} Records Found
-        </div>
 
     </div>
 

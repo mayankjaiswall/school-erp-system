@@ -44,7 +44,7 @@
 
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Subjects Directory</h5>
+        <h5 class="mb-0">Subjects Directory {{ $subjects->count() }}</h5>
         <form action="{{ route('subjects.index') }}" method="GET" class="d-flex gap-2" role="search">
             <input type="search"
                    name="search"
@@ -53,7 +53,6 @@
                    placeholder="Search subjects..."
                    style="min-width:260px">
         </form>
-        <div class="text-muted" id="recordsFoundCount">{{ $subjects->count() }} Records Found</div>
     </div>
 
     <div class="table-responsive">

@@ -44,7 +44,7 @@
 
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Assignments Directory</h5>
+        <h5 class="mb-0">Assignments Directory {{ $assignments->count() }}</h5>
         <form action="{{ route('teacher-subjects.index') }}" method="GET" class="d-flex gap-2" role="search">
             <input type="search"
                    name="search"
@@ -53,7 +53,6 @@
                    placeholder="Search assignments..."
                    style="min-width:260px">
         </form>
-        <div class="text-muted" id="recordsFoundCount">{{ $assignments->count() }} Records Found</div>
     </div>
 
     <div class="table-responsive">
