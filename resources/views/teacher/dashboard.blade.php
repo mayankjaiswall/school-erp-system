@@ -165,9 +165,9 @@
     <div class="col-lg-4">
         <div class="content-card">
             <h5 class="mb-4">Quick Actions</h5>
-            <a href="#" class="btn btn-primary quick-btn disabled">Take Attendance</a>
+            <a href="{{ route('teacher.attendance.index') }}" class="btn btn-primary quick-btn">Take Attendance</a>
             <a href="#" class="btn btn-success quick-btn disabled">Enter Marks</a>
-            <a href="#" class="btn btn-warning text-white quick-btn disabled">View Reports</a>
+            <a href="{{ route('teacher.attendance.report') }}" class="btn btn-warning text-white quick-btn">View Reports</a>
         </div>
     </div>
 </div>

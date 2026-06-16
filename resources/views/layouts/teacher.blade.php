@@ -270,7 +270,7 @@
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-section-title">My Work</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.classes.index') }}" class="{{ request()->routeIs('teacher.classes.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-journal-bookmark"></i>
                     <span>My Classes</span>
                 </a>
@@ -285,11 +285,11 @@
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Attendance</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.attendance.index') }}" class="{{ request()->routeIs('teacher.attendance.index') ? 'active-menu' : '' }}">
                     <i class="bi bi-clipboard2-check"></i>
                     <span>Take Attendance</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.attendance.report') }}" class="{{ request()->routeIs('teacher.attendance.report') ? 'active-menu' : '' }}">
                     <i class="bi bi-calendar2-check"></i>
                     <span>Attendance Reports</span>
                 </a>

@@ -7,6 +7,7 @@ use App\Http\Controllers\Principal\StudentController;
 use App\Http\Controllers\Principal\SubjectController;
 use App\Http\Controllers\Principal\TeacherSubjectController;
 use App\Http\Controllers\Principal\UserController as PrincipalUserController;
+use App\Http\Controllers\Principal\PrincipalAttendanceController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -56,6 +57,11 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::put('/teacher-subjects/{id}', [TeacherSubjectController::class, 'update'])->name('teacher-subjects.update');
         Route::get('/teacher-subjects/{id}', [TeacherSubjectController::class, 'show'])->name('teacher-subjects.show');
         Route::delete('/teacher-subjects/{id}', [TeacherSubjectController::class, 'destroy'])->name('teacher-subjects.destroy');
+
+        // Student attendance routes
+        Route::get('/attendance', [PrincipalAttendanceController::class, 'index'])->name('principal.attendance.index');
+        Route::get('/attendance/filter', [PrincipalAttendanceController::class, 'filter'])->name('principal.attendance.filter');
+        Route::get('/attendance/{id}', [PrincipalAttendanceController::class, 'show'])->name('principal.attendance.show');
 
         // Principal user management routes
         Route::resource('users', PrincipalUserController::class)->names('principal.users');

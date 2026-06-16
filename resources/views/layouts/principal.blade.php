@@ -379,7 +379,8 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Attendance</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.attendance.index') }}"
+                    class="{{ request()->routeIs('principal.attendance.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-clipboard2-check"></i>
                     <span>Student Attendance</span>
                 </a>
@@ -407,7 +408,8 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Reports</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.attendance.index') }}"
+                    class="{{ request()->routeIs('principal.attendance.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-graph-up-arrow"></i>
                     <span>Attendance Reports</span>
                 </a>
