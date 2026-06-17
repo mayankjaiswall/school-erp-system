@@ -296,7 +296,7 @@
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Examination</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.marks.index') }}" class="{{ request()->routeIs('teacher.marks.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-pencil-square"></i>
                     <span>Marks Entry</span>
                 </a>

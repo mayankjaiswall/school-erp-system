@@ -41,4 +41,9 @@ class SchoolClass extends Model
     {
         return $this->hasMany(AttendanceSession::class, 'class_id');
     }
+
+    public function marks()
+    {
+        return $this->hasMany(Mark::class, 'class_id');
+    }
 }

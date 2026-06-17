@@ -392,13 +392,15 @@
 
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Examination</div>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.exams.index') }}"
+                    class="{{ request()->routeIs('principal.exams.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-file-earmark-text"></i>
                     <span>Exams</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.reports.results') }}"
+                    class="{{ request()->routeIs('principal.reports.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-pencil-square"></i>
-                    <span>Marks Entry</span>
+                    <span>Results</span>
                 </a>
                 <a href="#" class="disabled-link" aria-disabled="true">
                     <i class="bi bi-award"></i>
@@ -413,7 +415,8 @@
                     <i class="bi bi-graph-up-arrow"></i>
                     <span>Attendance Reports</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.reports.results') }}"
+                    class="{{ request()->routeIs('principal.reports.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-bar-chart-line"></i>
                     <span>Academic Reports</span>
                 </a>
