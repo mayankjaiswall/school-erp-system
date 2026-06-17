@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\TeacherAttendanceController;
+use App\Http\Controllers\Teacher\TeacherMarksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,7 @@ Route::middleware('auth')->prefix('teacher')->name('teacher.')->group(function (
     Route::get('/attendance/students/{class}', [TeacherAttendanceController::class, 'getStudents'])->name('attendance.students');
     Route::post('/attendance/save', [TeacherAttendanceController::class, 'saveAttendance'])->name('attendance.save');
     Route::get('/attendance/report', [TeacherAttendanceController::class, 'report'])->name('attendance.report');
+    Route::get('/marks', [TeacherMarksController::class, 'index'])->name('marks.index');
+    Route::get('/marks/students', [TeacherMarksController::class, 'loadStudents'])->name('marks.students');
+    Route::post('/marks/save', [TeacherMarksController::class, 'saveMarks'])->name('marks.save');
 });

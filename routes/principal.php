@@ -8,6 +8,8 @@ use App\Http\Controllers\Principal\SubjectController;
 use App\Http\Controllers\Principal\TeacherSubjectController;
 use App\Http\Controllers\Principal\UserController as PrincipalUserController;
 use App\Http\Controllers\Principal\PrincipalAttendanceController;
+use App\Http\Controllers\Principal\ExamController;
+use App\Http\Controllers\Principal\ResultController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -62,6 +64,19 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::get('/attendance', [PrincipalAttendanceController::class, 'index'])->name('principal.attendance.index');
         Route::get('/attendance/filter', [PrincipalAttendanceController::class, 'filter'])->name('principal.attendance.filter');
         Route::get('/attendance/{id}', [PrincipalAttendanceController::class, 'show'])->name('principal.attendance.show');
+
+        // Exam management routes
+        Route::get('/exams', [ExamController::class, 'index'])->name('principal.exams.index');
+        Route::get('/exams/create', [ExamController::class, 'create'])->name('principal.exams.create');
+        Route::post('/exams', [ExamController::class, 'store'])->name('principal.exams.store');
+        Route::get('/exams/{id}/edit', [ExamController::class, 'edit'])->name('principal.exams.edit');
+        Route::put('/exams/{id}', [ExamController::class, 'update'])->name('principal.exams.update');
+        Route::delete('/exams/{id}', [ExamController::class, 'destroy'])->name('principal.exams.destroy');
+
+        // Result report routes
+        Route::get('/reports/results', [ResultController::class, 'index'])->name('principal.reports.results');
+        Route::get('/reports/results/class', [ResultController::class, 'classResult'])->name('principal.reports.class-result');
+        Route::get('/reports/results/subject', [ResultController::class, 'subjectResult'])->name('principal.reports.subject-result');
 
         // Principal user management routes
         Route::resource('users', PrincipalUserController::class)->names('principal.users');
