@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\TeacherAttendanceController;
 use App\Http\Controllers\Teacher\TeacherMarksController;
+use App\Http\Controllers\ReportCardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,9 @@ Route::middleware('auth')->prefix('teacher')->name('teacher.')->group(function (
     Route::get('/marks', [TeacherMarksController::class, 'index'])->name('marks.index');
     Route::get('/marks/students', [TeacherMarksController::class, 'loadStudents'])->name('marks.students');
     Route::post('/marks/save', [TeacherMarksController::class, 'saveMarks'])->name('marks.save');
+    Route::get('/report-cards', [ReportCardController::class, 'index'])->name('report-cards.index');
+    Route::get('/report-cards/students', [ReportCardController::class, 'getStudents'])->name('report-cards.students');
+    Route::get('/report-cards/generate', [ReportCardController::class, 'generate'])->name('report-cards.generate');
+    Route::get('/report-cards/download-pdf', [ReportCardController::class, 'downloadPdf'])->name('report-cards.download-pdf');
+    Route::get('/report-cards/print', [ReportCardController::class, 'print'])->name('report-cards.print');
 });

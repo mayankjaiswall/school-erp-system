@@ -10,6 +10,7 @@ use App\Http\Controllers\Principal\UserController as PrincipalUserController;
 use App\Http\Controllers\Principal\PrincipalAttendanceController;
 use App\Http\Controllers\Principal\ExamController;
 use App\Http\Controllers\Principal\ResultController;
+use App\Http\Controllers\ReportCardController;
 use App\Http\Controllers\ClassController;
 
 Route::middleware('auth')->prefix('principal')->group(function () {
@@ -77,6 +78,13 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::get('/reports/results', [ResultController::class, 'index'])->name('principal.reports.results');
         Route::get('/reports/results/class', [ResultController::class, 'classResult'])->name('principal.reports.class-result');
         Route::get('/reports/results/subject', [ResultController::class, 'subjectResult'])->name('principal.reports.subject-result');
+
+        // Report card routes
+        Route::get('/report-cards', [ReportCardController::class, 'index'])->name('principal.report-cards.index');
+        Route::get('/report-cards/students', [ReportCardController::class, 'getStudents'])->name('principal.report-cards.students');
+        Route::get('/report-cards/generate', [ReportCardController::class, 'generate'])->name('principal.report-cards.generate');
+        Route::get('/report-cards/download-pdf', [ReportCardController::class, 'downloadPdf'])->name('principal.report-cards.download-pdf');
+        Route::get('/report-cards/print', [ReportCardController::class, 'print'])->name('principal.report-cards.print');
 
         // Principal user management routes
         Route::resource('users', PrincipalUserController::class)->names('principal.users');
