@@ -300,7 +300,7 @@
                     <i class="bi bi-pencil-square"></i>
                     <span>Marks Entry</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.report-cards.index') }}" class="{{ request()->routeIs('teacher.report-cards.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-award"></i>
                     <span>Report Cards</span>
                 </a>
