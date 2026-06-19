@@ -14,6 +14,7 @@ $extraRoutes = [
     'admin.php',
     'teacher.php',
     'student.php',
+    'parent.php',
 ];
 
 foreach ($extraRoutes as $file) {
@@ -24,7 +25,7 @@ foreach ($extraRoutes as $file) {
     }
 }
 
-Route::middleware('auth')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     // School management routes
     Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');

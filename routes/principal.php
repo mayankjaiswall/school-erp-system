@@ -10,10 +10,11 @@ use App\Http\Controllers\Principal\UserController as PrincipalUserController;
 use App\Http\Controllers\Principal\PrincipalAttendanceController;
 use App\Http\Controllers\Principal\ExamController;
 use App\Http\Controllers\Principal\ResultController;
+use App\Http\Controllers\Principal\ParentManagementController;
 use App\Http\Controllers\ReportCardController;
 use App\Http\Controllers\ClassController;
 
-Route::middleware('auth')->prefix('principal')->group(function () {
+Route::middleware(['auth', 'role:principal'])->prefix('principal')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('principal.dashboard');
         // Teacher management routes
@@ -42,6 +43,15 @@ Route::middleware('auth')->prefix('principal')->group(function () {
         Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
         Route::get('/students/{id}', [StudentController::class, 'show'])->name('students.show');
         Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+        // Parent management routes
+        Route::get('/parents', [ParentManagementController::class, 'index'])->name('principal.parents.index');
+        Route::get('/parents/create', [ParentManagementController::class, 'create'])->name('principal.parents.create');
+        Route::post('/parents', [ParentManagementController::class, 'store'])->name('principal.parents.store');
+        Route::get('/parents/{id}', [ParentManagementController::class, 'show'])->name('principal.parents.show');
+        Route::get('/parents/{id}/edit', [ParentManagementController::class, 'edit'])->name('principal.parents.edit');
+        Route::put('/parents/{id}', [ParentManagementController::class, 'update'])->name('principal.parents.update');
+        Route::delete('/parents/{id}', [ParentManagementController::class, 'destroy'])->name('principal.parents.destroy');
 
         // Subject management routes
         Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');

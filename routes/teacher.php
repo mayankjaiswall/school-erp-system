@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\TeacherAttendanceController;
 use App\Http\Controllers\Teacher\TeacherMarksController;
+use App\Http\Controllers\Teacher\TeacherRemarksController;
 use App\Http\Controllers\ReportCardController;
 
 /*
@@ -15,7 +16,7 @@ use App\Http\Controllers\ReportCardController;
 |
 */
 
-Route::middleware('auth')->prefix('teacher')->name('teacher.')->group(function () {
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/my-classes', [DashboardController::class, 'index'])->name('classes.index');
     Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
@@ -30,4 +31,6 @@ Route::middleware('auth')->prefix('teacher')->name('teacher.')->group(function (
     Route::get('/report-cards/generate', [ReportCardController::class, 'generate'])->name('report-cards.generate');
     Route::get('/report-cards/download-pdf', [ReportCardController::class, 'downloadPdf'])->name('report-cards.download-pdf');
     Route::get('/report-cards/print', [ReportCardController::class, 'print'])->name('report-cards.print');
+    Route::get('/remarks', [TeacherRemarksController::class, 'index'])->name('remarks.index');
+    Route::post('/remarks', [TeacherRemarksController::class, 'store'])->name('remarks.store');
 });
