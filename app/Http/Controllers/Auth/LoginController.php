@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -16,10 +15,17 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
+        $validated = $request->validate([
+            'email' => ['required', 'string'],
             'password' => ['required'],
         ]);
+
+        $loginField = filter_var($validated['email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        $credentials = [
+            $loginField => $validated['email'],
+            'password' => $validated['password'],
+            'status' => 1,
+        ];
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
@@ -33,6 +39,9 @@ class LoginController extends Controller
             }
             if ($user->role && $user->role->slug === 'teacher') {
                 return redirect('/teacher/dashboard');
+            }
+            if ($user->role && $user->role->slug === 'parent') {
+                return redirect('/parent/dashboard');
             }
             return redirect('/dashboard');
         }

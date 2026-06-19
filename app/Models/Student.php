@@ -45,4 +45,16 @@ class Student extends Model
     {
         return $this->hasMany(Mark::class);
     }
+
+    public function parents()
+    {
+        return $this->belongsToMany(ParentModel::class, 'student_parent', 'student_id', 'parent_id')
+            ->withPivot('relationship')
+            ->withTimestamps();
+    }
+
+    public function teacherRemarks()
+    {
+        return $this->hasMany(TeacherRemark::class);
+    }
 }
