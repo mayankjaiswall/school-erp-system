@@ -304,6 +304,10 @@
                     <i class="bi bi-award"></i>
                     <span>Report Cards</span>
                 </a>
+                <a href="{{ route('teacher.remarks.index') }}" class="{{ request()->routeIs('teacher.remarks.*') ? 'active-menu' : '' }}">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span>Teacher Remarks</span>
+                </a>
             </div>
             <div class="sidebar-section">
                 <a href="#" class="disabled-link" aria-disabled="true">

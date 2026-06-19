@@ -49,4 +49,9 @@ class Teacher extends Model
     {
         return $this->hasMany(Mark::class);
     }
+
+    public function teacherRemarks()
+    {
+        return $this->hasMany(TeacherRemark::class);
+    }
 }

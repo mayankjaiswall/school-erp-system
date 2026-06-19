@@ -260,15 +260,15 @@
             @csrf
 
             <div class="form-group">
-                <label>Email Address</label>
+                <label>Email Address or Mobile Number</label>
 
                 <div class="input-box">
-                    <i class="bi bi-envelope"></i>
+                    <i class="bi bi-person"></i>
                     <input
-                        type="email"
+                        type="text"
                         name="email"
                         value="{{ old('email') }}"
-                        placeholder="Enter your email"
+                        placeholder="Enter email or mobile number"
                         required>
                 </div>
             </div>

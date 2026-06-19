@@ -49,4 +49,9 @@ class User extends Authenticatable
         return $this->hasOne(Teacher::class);
     }
 
+    public function parentProfile()
+    {
+        return $this->hasOne(ParentModel::class);
+    }
+
 }

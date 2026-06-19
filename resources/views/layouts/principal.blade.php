@@ -348,7 +348,8 @@
                     <i class="bi bi-mortarboard"></i>
                     <span>Students</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('principal.parents.index') }}"
+                    class="{{ request()->routeIs('principal.parents.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-person-hearts"></i>
                     <span>Parents</span>
                 </a>
