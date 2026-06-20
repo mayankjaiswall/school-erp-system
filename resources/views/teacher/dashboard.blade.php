@@ -106,7 +106,37 @@
 
 <div class="welcome-banner">
     <h2>Welcome, {{ auth()->user()->name }}</h2>
-    <p class="mb-0">View your assigned classes, subjects and students.</p>
+    <p class="mb-0">
+        {{ $teacher->designation ?? 'Teacher' }}
+        @if($teacher->primarySubject)
+            &bull; Subject Specialist: {{ $teacher->primarySubject->name }}
+        @endif
+    </p>
+</div>
+
+<div class="content-card mt-0 mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-md-3">
+            <small class="text-muted fw-semibold">Teacher Name</small>
+            <div class="fw-bold">{{ $teacher->name }}</div>
+        </div>
+        <div class="col-md-3">
+            <small class="text-muted fw-semibold">Designation</small>
+            <div class="fw-bold">{{ $teacher->designation ?? 'N/A' }}</div>
+        </div>
+        <div class="col-md-2">
+            <small class="text-muted fw-semibold">Primary Subject</small>
+            <div class="fw-bold">{{ $teacher->primarySubject?->name ?? 'N/A' }}</div>
+        </div>
+        <div class="col-md-2">
+            <small class="text-muted fw-semibold">Qualification</small>
+            <div class="fw-bold">{{ $teacher->qualification ?? 'N/A' }}</div>
+        </div>
+        <div class="col-md-2">
+            <small class="text-muted fw-semibold">Experience</small>
+            <div class="fw-bold">{{ is_null($teacher->display_experience) ? 'N/A' : $teacher->display_experience . ' Years' }}</div>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">
@@ -166,7 +196,8 @@
         <div class="content-card">
             <h5 class="mb-4">Quick Actions</h5>
             <a href="{{ route('teacher.attendance.index') }}" class="btn btn-primary quick-btn">Take Attendance</a>
-            <a href="#" class="btn btn-success quick-btn disabled">Enter Marks</a>
+            <a href="{{ route('teacher.marks.index') }}" class="btn btn-success quick-btn">Enter Marks</a>
+            <a href="{{ route('teacher.profile') }}" class="btn btn-outline-primary quick-btn">View Profile</a>
             <a href="{{ route('teacher.attendance.report') }}" class="btn btn-warning text-white quick-btn">View Reports</a>
         </div>
     </div>

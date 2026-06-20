@@ -219,6 +219,9 @@
                     <th>#</th>
                     <th>Teacher</th>
                     <th>Employee Code</th>
+                    <th>Primary Subject</th>
+                    <th>Qualification</th>
+                    <th>Experience</th>
                     <th>Phone</th>
                     <th>Login</th>
                     <th>Status</th>
@@ -259,6 +262,12 @@
                     </td>
 
                     <td>{{ $teacher->employee_code ?? 'N/A' }}</td>
+
+                    <td>{{ $teacher->primarySubject?->name ?? 'N/A' }}</td>
+
+                    <td>{{ $teacher->qualification ?? 'N/A' }}</td>
+
+                    <td>{{ is_null($teacher->display_experience) ? 'N/A' : $teacher->display_experience . ' Years' }}</td>
 
                     <td>{{ $teacher->phone }}</td>
 
@@ -417,7 +426,7 @@
 
                 <tr>
 
-                    <td colspan="9">
+                    <td colspan="11">
 
                         <div class="empty-state">
 

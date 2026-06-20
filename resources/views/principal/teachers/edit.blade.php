@@ -117,15 +117,19 @@
             <input type="text"
                    name="qualification"
                    class="form-control"
-                   value="{{ $teacher->qualification }}">
+                   value="{{ $teacher->qualification }}"
+                   required>
         </div>
 
         <div class="col-md-6">
             <label class="form-label">Experience (Years)</label>
             <input type="number"
-                   name="experience"
+                   name="experience_years"
                    class="form-control"
-                   value="{{ $teacher->experience }}">
+                   min="0"
+                   max="60"
+                   value="{{ $teacher->display_experience }}"
+                   required>
         </div>
 
         <div class="col-md-6">
@@ -133,7 +137,29 @@
             <input type="date"
                    name="joining_date"
                    class="form-control"
-                   value="{{ optional($teacher->joining_date)->format('Y-m-d') }}">
+                   value="{{ optional($teacher->joining_date)->format('Y-m-d') }}"
+                   required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Designation</label>
+            <input type="text"
+                   name="designation"
+                   class="form-control"
+                   value="{{ $teacher->designation }}"
+                   required>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Primary Subject</label>
+            <select name="primary_subject_id" class="form-select" required>
+                <option value="" disabled>Select primary subject</option>
+                @foreach($subjects as $subject)
+                    <option value="{{ $subject->id }}" {{ $teacher->primary_subject_id == $subject->id ? 'selected' : '' }}>
+                        {{ $subject->name }} ({{ $subject->code }})
+                    </option>
+                @endforeach
+            </select>
         </div>
 
         <div class="col-md-6">

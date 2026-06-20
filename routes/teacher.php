@@ -18,6 +18,7 @@ use App\Http\Controllers\ReportCardController;
 
 Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/my-classes', [DashboardController::class, 'index'])->name('classes.index');
     Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance/students/{class}', [TeacherAttendanceController::class, 'getStudents'])->name('attendance.students');

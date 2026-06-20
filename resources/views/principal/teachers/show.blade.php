@@ -158,7 +158,7 @@
             </h2>
 
             <p class="teacher-subtitle">
-                Teacher Management Information & Details
+                {{ $teacher->designation ?? 'Teacher' }} @if($teacher->primarySubject) &bull; {{ $teacher->primarySubject->name }} Specialist @endif
             </p>
 
         </div>
@@ -187,42 +187,29 @@
 
     <div class="col-md-3">
         <div class="stats-card">
-            <h3>{{ $teacher->employee_code ?? 'N/A' }}</h3>
-            <span>Employee Code</span>
+            <h3>{{ $workload['assigned_classes'] }}</h3>
+            <span>Assigned Classes</span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stats-card">
-            <h3>{{ $teacher->email }}</h3>
-            <span>Email</span>
+            <h3>{{ $workload['assigned_subjects'] }}</h3>
+            <span>Assigned Subjects</span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stats-card">
-            <h3>
-                <i class="bi bi-envelope-fill"></i>
-            </h3>
-            <span>Email Registered</span>
+            <h3>{{ $workload['total_students'] }}</h3>
+            <span>Total Students</span>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="stats-card">
-            <h3>
-                <i class="bi bi-telephone-fill"></i>
-            </h3>
-            <span>Phone Available</span>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="stats-card">
-            <h3>
-                <i class="bi {{ $teacher->user_id ? 'bi-link-45deg' : 'bi-link' }}"></i>
-            </h3>
-            <span>{{ $teacher->user_id ? 'Login Linked' : 'Login Not Linked' }}</span>
+            <h3>{{ $workload['attendance_records'] }}</h3>
+            <span>Attendance Records</span>
         </div>
     </div>
 
@@ -288,6 +275,34 @@
 
     </div>
 
+    <div class="col-md-4">
+
+        <div class="info-card">
+
+            <small>Designation</small>
+
+            <h5>
+                {{ $teacher->designation ?? 'N/A' }}
+            </h5>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="info-card">
+
+            <small>Primary Subject</small>
+
+            <h5>
+                {{ $teacher->primarySubject?->name ?? 'N/A' }}
+            </h5>
+
+        </div>
+
+    </div>
+
     <div class="col-md-6">
 
         <div class="info-card">
@@ -337,7 +352,7 @@
             <small>Experience</small>
 
             <h5>
-                {{ is_null($teacher->experience) ? 'N/A' : $teacher->experience . ' Years' }}
+                {{ is_null($teacher->display_experience) ? 'N/A' : $teacher->display_experience . ' Years' }}
             </h5>
 
         </div>
@@ -374,17 +389,49 @@
 
 </div>
 
-<!-- Address Section -->
+<div class="row g-4 mt-2">
+    <div class="col-md-3">
+        <div class="stats-card">
+            <h3>{{ $workload['marks_records'] }}</h3>
+            <span>Marks Records Submitted</span>
+        </div>
+    </div>
+</div>
 
 <div class="address-card">
 
     <h5>
-        <i class="bi bi-geo-alt-fill text-primary"></i>
-        Address Information
+        <i class="bi bi-journal-bookmark-fill text-primary"></i>
+        Assigned Classes
     </h5>
 
     <p>
-        {{ $teacher->address ?? 'Address not available.' }}
+        @forelse($assignedClasses as $class)
+            <span class="badge bg-primary me-2 mb-2">
+                {{ $class->name }}{{ $class->section ? ' - '.$class->section : '' }}
+            </span>
+        @empty
+            No classes assigned.
+        @endforelse
+    </p>
+
+</div>
+
+<div class="address-card">
+
+    <h5>
+        <i class="bi bi-book-fill text-primary"></i>
+        Assigned Subjects
+    </h5>
+
+    <p>
+        @forelse($assignedSubjects as $subject)
+            <span class="badge bg-success me-2 mb-2">
+                {{ $subject->name }}
+            </span>
+        @empty
+            No subjects assigned.
+        @endforelse
     </p>
 
 </div>
