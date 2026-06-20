@@ -75,7 +75,9 @@
                             <div class="teacher-avatar">{{ strtoupper(substr($assignment->teacher?->name ?? 'T',0,1)) }}</div>
                             <div>
                                 <strong>{{ $assignment->teacher?->name ?? 'N/A' }}</strong>
-                                <div class="small text-muted">{{ $assignment->teacher?->email ?? 'No email' }}</div>
+                                <div class="small text-muted">
+                                    Specialist: {{ $assignment->teacher?->primarySubject?->name ?? 'N/A' }}
+                                </div>
                             </div>
                         </div>
                     </td>
@@ -172,7 +174,10 @@ function updateAssignmentCounts()
     });
 
     document.getElementById('totalAssignmentsCount').textContent = total;
-    document.getElementById('recordsFoundCount').textContent = total + ' Records Found';
+    const recordsFoundCount = document.getElementById('recordsFoundCount');
+    if (recordsFoundCount) {
+        recordsFoundCount.textContent = total + ' Records Found';
+    }
 }
 </script>
 @endsection

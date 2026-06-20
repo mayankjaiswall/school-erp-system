@@ -9,6 +9,7 @@ class Teacher extends Model
     protected $fillable = [
         'user_id',
         'school_id',
+        'primary_subject_id',
         'employee_code',
         'name',
         'email',
@@ -16,7 +17,9 @@ class Teacher extends Model
         'gender',
         'qualification',
         'experience',
+        'experience_years',
         'joining_date',
+        'designation',
         'image',
         'status',
     ];
@@ -40,6 +43,11 @@ class Teacher extends Model
         return $this->hasMany(TeacherSubject::class);
     }
 
+    public function primarySubject()
+    {
+        return $this->belongsTo(Subject::class, 'primary_subject_id');
+    }
+
     public function attendanceSessions()
     {
         return $this->hasMany(AttendanceSession::class);
@@ -53,5 +61,10 @@ class Teacher extends Model
     public function teacherRemarks()
     {
         return $this->hasMany(TeacherRemark::class);
+    }
+
+    public function getDisplayExperienceAttribute(): ?int
+    {
+        return $this->experience_years ?? $this->experience;
     }
 }

@@ -267,6 +267,10 @@
                     <i class="bi bi-speedometer2"></i>
                     <span>Dashboard</span>
                 </a>
+                <a href="{{ route('teacher.profile') }}" class="{{ request()->routeIs('teacher.profile') ? 'active-menu' : '' }}">
+                    <i class="bi bi-person-badge"></i>
+                    <span>My Profile</span>
+                </a>
             </div>
             <div class="sidebar-section">
                 <div class="sidebar-section-title">My Work</div>

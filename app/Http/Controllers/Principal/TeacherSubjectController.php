@@ -17,7 +17,7 @@ class TeacherSubjectController extends Controller
     {
         $search = trim((string) $request->query('search'));
 
-        $assignments = TeacherSubject::with(['teacher', 'schoolClass', 'subject'])
+        $assignments = TeacherSubject::with(['teacher.primarySubject', 'schoolClass', 'subject'])
             ->where('school_id', auth()->user()->school_id)
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
@@ -51,6 +51,7 @@ class TeacherSubjectController extends Controller
     {
         $schoolId = auth()->user()->school_id;
         $validated = $this->validatedData($request, $schoolId);
+        unset($validated['allow_specialization_override']);
         $validated['school_id'] = $schoolId;
 
         TeacherSubject::create($validated);
@@ -76,6 +77,7 @@ class TeacherSubjectController extends Controller
         $assignment = $this->schoolAssignment($id);
         $schoolId = auth()->user()->school_id;
         $validated = $this->validatedData($request, $schoolId, $assignment->id);
+        unset($validated['allow_specialization_override']);
 
         $assignment->update($validated);
 
@@ -130,6 +132,7 @@ class TeacherSubjectController extends Controller
                     ->where('school_class_id', $request->school_class_id)
                     ->ignore($assignmentId),
             ],
+            'allow_specialization_override' => ['nullable', 'boolean'],
         ], [
             'subject_id.unique' => 'This class subject is already assigned to a teacher.',
         ]);
@@ -147,6 +150,28 @@ class TeacherSubjectController extends Controller
             if (!$subjectBelongsToClass) {
                 $validator->errors()->add('subject_id', 'Selected subject does not belong to the selected class.');
             }
+
+            if (!$request->teacher_id) {
+                return;
+            }
+
+            $teacher = Teacher::with('primarySubject')
+                ->where('school_id', $schoolId)
+                ->find($request->teacher_id);
+            $subject = Subject::where('school_id', $schoolId)->find($request->subject_id);
+
+            if (!$teacher || !$subject || !$teacher->primarySubject) {
+                return;
+            }
+
+            $sameSpecialization = strcasecmp($teacher->primarySubject->name, $subject->name) === 0;
+
+            if (!$sameSpecialization && !$request->boolean('allow_specialization_override')) {
+                $validator->errors()->add(
+                    'subject_id',
+                    "{$teacher->name} is a {$teacher->primarySubject->name} specialist. Select {$teacher->primarySubject->name} or enable specialization override."
+                );
+            }
         });
 
         return $validator->validate();
@@ -157,7 +182,8 @@ class TeacherSubjectController extends Controller
         $schoolId = auth()->user()->school_id;
 
         return [
-            'teachers' => Teacher::where('school_id', $schoolId)
+            'teachers' => Teacher::with('primarySubject')
+                ->where('school_id', $schoolId)
                 ->where('status', 1)
                 ->orderBy('name')
                 ->get(),

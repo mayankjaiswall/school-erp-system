@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Principal;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\School;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\AttendanceSession;
+use App\Models\Mark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,14 +24,18 @@ class TeacherController extends Controller
     {  
         $search = trim((string) $request->query('search'));
 
-        $teachers = Teacher::with('user')
+        $teachers = Teacher::with(['user', 'primarySubject'])
             ->where('school_id', auth()->user()->school_id)
             ->when($search, function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
                         ->orWhere('phone', 'like', "%{$search}%")
-                        ->orWhere('employee_code', 'like', "%{$search}%");
+                        ->orWhere('employee_code', 'like', "%{$search}%")
+                        ->orWhere('qualification', 'like', "%{$search}%")
+                        ->orWhereHas('primarySubject', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
                 });
             })
             ->latest()
@@ -40,7 +48,9 @@ class TeacherController extends Controller
     public function create()
     {
         $school = School::where('id', auth()->user()->school_id)->first();
-        return view('principal.teachers.create', compact('school'));
+        $subjects = $this->primarySubjectOptions();
+
+        return view('principal.teachers.create', compact('school', 'subjects'));
     }
 
     //Teacher store
@@ -64,9 +74,14 @@ class TeacherController extends Controller
                 'max:255',
                 Rule::unique('teachers', 'employee_code')->where('school_id', $schoolId),
             ],
-            'qualification' => 'nullable|string|max:255',
-            'experience' => 'nullable|integer|min:0',
-            'joining_date' => 'nullable|date',
+            'primary_subject_id' => [
+                'required',
+                Rule::exists('subjects', 'id')->where('school_id', $schoolId)->where('status', 1),
+            ],
+            'qualification' => 'required|string|max:255',
+            'experience_years' => 'required|integer|min:0|max:60',
+            'joining_date' => 'required|date',
+            'designation' => 'required|string|max:255',
             'gender' => 'nullable|string',
             'status' => 'required|in:1,0',
             'password' => 'required|string|min:8|confirmed',
@@ -86,13 +101,16 @@ class TeacherController extends Controller
             Teacher::create([
                 'user_id' => $user->id,
                 'school_id' => $schoolId,
+                'primary_subject_id' => $validated['primary_subject_id'],
                 'employee_code' => $validated['employee_code'],
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'] ?? null,
-                'qualification' => $validated['qualification'] ?? null,
-                'experience' => $validated['experience'] ?? null,
-                'joining_date' => $validated['joining_date'] ?? null,
+                'qualification' => $validated['qualification'],
+                'experience' => $validated['experience_years'],
+                'experience_years' => $validated['experience_years'],
+                'joining_date' => $validated['joining_date'],
+                'designation' => $validated['designation'],
                 'gender' => $validated['gender'] ?? null,
                 'status' => $validated['status'],
             ]);
@@ -105,11 +123,12 @@ class TeacherController extends Controller
     //Teacher edit
     public function edit($id)
     {
-        $teacher = Teacher::with('user')
+        $teacher = Teacher::with(['user', 'primarySubject'])
             ->where('school_id', auth()->user()->school_id)
             ->findOrFail($id);
+        $subjects = $this->primarySubjectOptions();
 
-        return view('principal.teachers.edit', compact('teacher'));
+        return view('principal.teachers.edit', compact('teacher', 'subjects'));
     }
 
     //Teacher update
@@ -138,9 +157,14 @@ class TeacherController extends Controller
                     ->where('school_id', $schoolId)
                     ->ignore($teacher->id),
             ],
-            'qualification' => 'nullable|string|max:255',
-            'experience' => 'nullable|integer|min:0',
-            'joining_date' => 'nullable|date',
+            'primary_subject_id' => [
+                'required',
+                Rule::exists('subjects', 'id')->where('school_id', $schoolId)->where('status', 1),
+            ],
+            'qualification' => 'required|string|max:255',
+            'experience_years' => 'required|integer|min:0|max:60',
+            'joining_date' => 'required|date',
+            'designation' => 'required|string|max:255',
             'gender' => 'nullable|string',
             'status' => 'required|in:1,0',
             'password' => 'nullable|string|min:8|confirmed',
@@ -179,13 +203,16 @@ class TeacherController extends Controller
             $user->save();
 
             $teacher->fill([
+                'primary_subject_id' => $validated['primary_subject_id'],
                 'employee_code' => $validated['employee_code'],
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'] ?? null,
-                'qualification' => $validated['qualification'] ?? null,
-                'experience' => $validated['experience'] ?? null,
-                'joining_date' => $validated['joining_date'] ?? null,
+                'qualification' => $validated['qualification'],
+                'experience' => $validated['experience_years'],
+                'experience_years' => $validated['experience_years'],
+                'joining_date' => $validated['joining_date'],
+                'designation' => $validated['designation'],
                 'gender' => $validated['gender'] ?? null,
                 'status' => $validated['status'],
             ]);
@@ -199,11 +226,42 @@ class TeacherController extends Controller
     //Teacher show
     public function show($id)
     {
-        $teacher = Teacher::with(['school', 'user'])
+        $teacher = Teacher::with([
+                'school',
+                'user',
+                'primarySubject',
+                'teacherSubjects.schoolClass.students',
+                'teacherSubjects.subject',
+            ])
             ->where('school_id', auth()->user()->school_id)
             ->findOrFail($id);
 
-        return view('principal.teachers.show', compact('teacher'));
+        $classIds = $teacher->teacherSubjects->pluck('school_class_id')->unique()->values();
+        $subjectIds = $teacher->teacherSubjects->pluck('subject_id')->unique()->values();
+
+        $workload = [
+            'assigned_classes' => $classIds->count(),
+            'assigned_subjects' => $subjectIds->count(),
+            'total_students' => $classIds->isEmpty()
+                ? 0
+                : Student::where('school_id', $teacher->school_id)->whereIn('class_id', $classIds)->count(),
+            'attendance_records' => AttendanceSession::where('teacher_id', $teacher->id)->count(),
+            'marks_records' => Mark::where('teacher_id', $teacher->id)->count(),
+        ];
+
+        $assignedClasses = $teacher->teacherSubjects
+            ->pluck('schoolClass')
+            ->filter()
+            ->unique('id')
+            ->values();
+
+        $assignedSubjects = $teacher->teacherSubjects
+            ->pluck('subject')
+            ->filter()
+            ->unique('id')
+            ->values();
+
+        return view('principal.teachers.show', compact('teacher', 'workload', 'assignedClasses', 'assignedSubjects'));
     }
 
     //Teacher destroy
@@ -228,5 +286,16 @@ class TeacherController extends Controller
     private function teacherRoleId(): int
     {
         return Role::where('slug', 'teacher')->firstOrFail()->id;
+    }
+
+    private function primarySubjectOptions()
+    {
+        return Subject::where('school_id', auth()->user()->school_id)
+            ->where('status', 1)
+            ->orderBy('name')
+            ->orderBy('code')
+            ->get()
+            ->unique(fn (Subject $subject) => strtolower($subject->name))
+            ->values();
     }
 }
