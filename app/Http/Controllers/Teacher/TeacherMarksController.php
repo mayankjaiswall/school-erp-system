@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Models\Exam;
 use App\Models\Mark;
-use App\Models\SchoolClass;
 use App\Models\Student;
-use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +18,7 @@ class TeacherMarksController extends Controller
     {
         $teacher = $this->teacher();
         $assignments = $teacher->teacherSubjects()
-            ->with(['schoolClass', 'subject'])
+            ->with('schoolClass')
             ->get();
 
         $classes = $assignments
@@ -31,37 +28,13 @@ class TeacherMarksController extends Controller
             ->unique('id')
             ->values();
 
-        $subjects = $assignments
-            ->pluck('subject')
-            ->filter()
-            ->where('status', 1)
-            ->unique('id')
-            ->values();
-
-        $subjectOptions = $subjects
-            ->map(fn (Subject $subject) => [
-                'id' => $subject->id,
-                'class_id' => $subject->class_id,
-                'name' => $subject->name,
-                'code' => $subject->code,
-            ])
-            ->values();
-
-        $assignmentMap = $assignments
-            ->filter(fn (TeacherSubject $assignment) => $assignment->schoolClass && $assignment->subject)
-            ->map(fn (TeacherSubject $assignment) => [
-                'class_id' => $assignment->school_class_id,
-                'subject_id' => $assignment->subject_id,
-            ])
-            ->values();
-
         $exams = Exam::where('school_id', auth()->user()->school_id)
             ->where('status', 1)
             ->orderByDesc('exam_date')
             ->orderBy('name')
             ->get();
 
-        return view('teacher.marks.index', compact('teacher', 'exams', 'classes', 'subjects', 'subjectOptions', 'assignmentMap'));
+        return view('teacher.marks.index', compact('teacher', 'exams', 'classes'));
     }
 
     public function loadStudents(Request $request)
@@ -78,13 +51,11 @@ class TeacherMarksController extends Controller
                 'required',
                 Rule::exists('school_classes', 'id')->where('school_id', $schoolId)->where('status', 1),
             ],
-            'subject_id' => [
-                'required',
-                Rule::exists('subjects', 'id')->where('school_id', $schoolId)->where('status', 1),
-            ],
         ])->after(function ($validator) use ($request, $teacher, $schoolId) {
             $this->validateAssignment($validator, $request, $teacher, $schoolId);
         })->validate();
+
+        $validated['subject_id'] = $teacher->primary_subject_id;
 
         $existingMarks = Mark::where('school_id', $schoolId)
             ->where('exam_id', $validated['exam_id'])
@@ -135,10 +106,6 @@ class TeacherMarksController extends Controller
                 'required',
                 Rule::exists('school_classes', 'id')->where('school_id', $schoolId)->where('status', 1),
             ],
-            'subject_id' => [
-                'required',
-                Rule::exists('subjects', 'id')->where('school_id', $schoolId)->where('status', 1),
-            ],
             'max_marks' => ['required', 'numeric', 'gt:0', 'max:9999'],
             'marks' => ['required', 'array'],
             'marks.*.marks_obtained' => ['required', 'numeric', 'min:0'],
@@ -184,6 +151,7 @@ class TeacherMarksController extends Controller
         });
 
         $validated = $validator->validate();
+        $validated['subject_id'] = $teacher->primary_subject_id;
 
         DB::transaction(function () use ($validated, $teacher, $schoolId) {
             foreach ($validated['marks'] as $studentId => $mark) {
@@ -217,34 +185,29 @@ class TeacherMarksController extends Controller
 
         return auth()->user()
             ->teacher()
-            ->with(['teacherSubjects.schoolClass', 'teacherSubjects.subject'])
+            ->with(['primarySubject', 'teacherSubjects.schoolClass'])
             ->firstOrFail();
     }
 
     private function validateAssignment($validator, Request $request, Teacher $teacher, int $schoolId): void
     {
-        if (!$request->filled(['class_id', 'subject_id'])) {
+        if (!$request->filled('class_id')) {
+            return;
+        }
+
+        if (!$teacher->primary_subject_id) {
+            $validator->errors()->add('subject_id', 'This teacher does not have a Primary Subject assigned.');
             return;
         }
 
         $assigned = $teacher->teacherSubjects()
             ->where('school_id', $schoolId)
             ->where('school_class_id', $request->input('class_id'))
-            ->where('subject_id', $request->input('subject_id'))
+            ->where('subject_id', $teacher->primary_subject_id)
             ->exists();
 
         if (!$assigned) {
-            $validator->errors()->add('subject_id', 'You are not assigned to this class and subject.');
-            return;
-        }
-
-        $subjectBelongsToClass = Subject::where('school_id', $schoolId)
-            ->where('id', $request->input('subject_id'))
-            ->where('class_id', $request->input('class_id'))
-            ->exists();
-
-        if (!$subjectBelongsToClass) {
-            $validator->errors()->add('subject_id', 'Selected subject does not belong to the selected class.');
+            $validator->errors()->add('class_id', 'You are not assigned to this class for your Primary Subject.');
         }
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.principal')
 
-@section('title', 'Teacher Subjects')
-@section('page-title', 'Teacher Subject Assignment')
+@section('title', 'Teacher Assignments')
+@section('page-title', 'Teacher Class Assignment')
 
 @section('content')
 <style>
@@ -25,8 +25,8 @@
 
 <div class="assignment-list-header">
     <div>
-        <h2>Teacher Subject Assignment</h2>
-        <p class="mb-0 opacity-75">Map teachers to class-wise subjects.</p>
+        <h2>Teacher Class Assignment</h2>
+        <p class="mb-0 opacity-75">Assign subject-specialist teachers to classes.</p>
     </div>
     <a href="{{ route('teacher-subjects.create') }}" class="btn btn-light">
         <i class="bi bi-plus-circle"></i> Assign Teacher
@@ -61,7 +61,8 @@
                 <tr>
                     <th>#</th>
                     <th>Teacher</th>
-                    <th>Assignment</th>
+                    <th>Primary Subject</th>
+                    <th>Assigned Class</th>
                     <th>Created</th>
                     <th width="170">Actions</th>
                 </tr>
@@ -82,12 +83,11 @@
                         </div>
                     </td>
                     <td>
-                        <div class="assignment-chain">
-                            <strong>{{ $assignment->subject?->name ?? 'N/A' }}</strong>
-                            <i class="bi bi-arrow-right chain-arrow"></i>
-                            <span>{{ $assignment->schoolClass?->name }}{{ $assignment->schoolClass?->section ? ' - '.$assignment->schoolClass->section : '' }}</span>
-                        </div>
-                        <div class="small text-muted">{{ $assignment->subject?->code ?? 'N/A' }}</div>
+                        <strong>{{ $assignment->teacher?->primarySubject?->name ?? $assignment->subject?->name ?? 'N/A' }}</strong>
+                        <div class="small text-muted">{{ $assignment->teacher?->primarySubject?->code ?? $assignment->subject?->code ?? 'Primary Subject' }}</div>
+                    </td>
+                    <td>
+                        {{ $assignment->schoolClass?->name }}{{ $assignment->schoolClass?->section ? ' - '.$assignment->schoolClass->section : '' }}
                     </td>
                     <td>{{ $assignment->created_at->format('d M Y') }}</td>
                     <td>
@@ -96,7 +96,7 @@
                         <form id="delete-form-{{ $assignment->id }}" action="{{ route('teacher-subjects.destroy', $assignment->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn-action btn-delete" title="Delete" onclick="confirmDelete('{{ $assignment->id }}','{{ addslashes($assignment->teacher?->name ?? 'Teacher') }}','{{ addslashes($assignment->subject?->name ?? 'Subject') }}')">
+                            <button type="button" class="btn-action btn-delete" title="Delete" onclick="confirmDelete('{{ $assignment->id }}','{{ addslashes($assignment->teacher?->name ?? 'Teacher') }}','{{ addslashes($assignment->teacher?->primarySubject?->name ?? $assignment->subject?->name ?? 'Primary Subject') }}')">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>
@@ -108,7 +108,7 @@
                         <div class="empty-state">
                             <i class="bi bi-diagram-3"></i>
                             <h5>No Assignment Found</h5>
-                            <p>Start by assigning a teacher to a class subject.</p>
+                            <p>Start by assigning a specialist teacher to a class.</p>
                         </div>
                     </td>
                 </tr>

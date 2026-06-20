@@ -1,14 +1,14 @@
 @extends('layouts.principal')
 
-@section('title', 'Assign Teacher Subject')
-@section('page-title', 'Assign Teacher Subject')
+@section('title', 'Assign Teacher Class')
+@section('page-title', 'Assign Teacher Class')
 
 @section('content')
 @include('principal.teacher-subjects.partials.form-styles')
 
 <div class="form-page-header">
-    <h2 class="mb-2">Assign Teacher to Subject</h2>
-    <p class="mb-0 opacity-75">Connect teacher, class, and subject into one teaching responsibility.</p>
+    <h2 class="mb-2">Assign Teacher to Class</h2>
+    <p class="mb-0 opacity-75">Select a specialist teacher and class. The subject comes from the teacher profile.</p>
 </div>
 
 <div class="form-card">

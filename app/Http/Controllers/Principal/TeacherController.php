@@ -237,11 +237,9 @@ class TeacherController extends Controller
             ->findOrFail($id);
 
         $classIds = $teacher->teacherSubjects->pluck('school_class_id')->unique()->values();
-        $subjectIds = $teacher->teacherSubjects->pluck('subject_id')->unique()->values();
-
         $workload = [
             'assigned_classes' => $classIds->count(),
-            'assigned_subjects' => $subjectIds->count(),
+            'assigned_subjects' => $teacher->primary_subject_id ? 1 : 0,
             'total_students' => $classIds->isEmpty()
                 ? 0
                 : Student::where('school_id', $teacher->school_id)->whereIn('class_id', $classIds)->count(),
@@ -255,11 +253,7 @@ class TeacherController extends Controller
             ->unique('id')
             ->values();
 
-        $assignedSubjects = $teacher->teacherSubjects
-            ->pluck('subject')
-            ->filter()
-            ->unique('id')
-            ->values();
+        $assignedSubjects = $teacher->primarySubject ? collect([$teacher->primarySubject]) : collect();
 
         return view('principal.teachers.show', compact('teacher', 'workload', 'assignedClasses', 'assignedSubjects'));
     }

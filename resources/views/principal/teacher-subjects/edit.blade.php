@@ -1,14 +1,14 @@
 @extends('layouts.principal')
 
-@section('title', 'Edit Teacher Subject')
-@section('page-title', 'Edit Teacher Subject')
+@section('title', 'Edit Teacher Class')
+@section('page-title', 'Edit Teacher Class')
 
 @section('content')
 @include('principal.teacher-subjects.partials.form-styles')
 
 <div class="form-page-header">
-    <h2 class="mb-2">Edit Teacher Subject Assignment</h2>
-    <p class="mb-0 opacity-75">Update the teacher, class, or subject mapping.</p>
+    <h2 class="mb-2">Edit Teacher Class Assignment</h2>
+    <p class="mb-0 opacity-75">Update the teacher or class. The subject is taken from the teacher profile.</p>
 </div>
 
 <div class="form-card">

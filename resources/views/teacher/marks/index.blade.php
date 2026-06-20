@@ -32,10 +32,8 @@
             </select>
         </div>
         <div class="col-lg-3">
-            <label for="subject_id" class="form-label fw-semibold">Subject</label>
-            <select id="subject_id" class="form-select" disabled>
-                <option value="">Select subject</option>
-            </select>
+            <label class="form-label fw-semibold">Primary Subject</label>
+            <input type="text" class="form-control" value="{{ $teacher->primarySubject?->name ?? 'No Primary Subject' }}" disabled>
         </div>
         <div class="col-lg-3">
             <label for="max_marks" class="form-label fw-semibold">Max Marks</label>
@@ -53,7 +51,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
             <h5 class="mb-1">Student Marks</h5>
-            <small id="marksStatus" class="text-muted">Select exam, class, and subject to load students.</small>
+            <small id="marksStatus" class="text-muted">Select exam and class to load students for {{ $teacher->primarySubject?->name ?? 'your Primary Subject' }}.</small>
         </div>
         <button type="button" id="saveMarksBtn" class="btn btn-primary" disabled>
             <i class="bi bi-save"></i> Save Marks
@@ -63,7 +61,7 @@
     <form id="marksForm">
         <input type="hidden" name="exam_id" id="form_exam_id">
         <input type="hidden" name="class_id" id="form_class_id">
-        <input type="hidden" name="subject_id" id="form_subject_id">
+        <input type="hidden" name="subject_id" id="form_subject_id" value="{{ $teacher->primary_subject_id }}">
         <input type="hidden" name="max_marks" id="form_max_marks">
 
         <div class="table-responsive">
@@ -92,8 +90,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
 $(function () {
-    const subjects = @json($subjectOptions);
-    const assignments = @json($assignmentMap);
     const loadUrl = "{{ route('teacher.marks.students') }}";
     const saveUrl = "{{ route('teacher.marks.save') }}";
     const csrfToken = "{{ csrf_token() }}";
@@ -121,29 +117,13 @@ $(function () {
         $('#studentsTable').html(`<tr><td colspan="5" class="empty-state">${message}</td></tr>`);
     }
 
-    function populateSubjects() {
-        const classId = Number($('#class_id').val());
-        const allowedSubjectIds = assignments
-            .filter((assignment) => Number(assignment.class_id) === classId)
-            .map((assignment) => Number(assignment.subject_id));
-
-        const options = subjects
-            .filter((subject) => Number(subject.class_id) === classId && allowedSubjectIds.includes(Number(subject.id)))
-            .map((subject) => `<option value="${subject.id}">${escapeHtml(subject.name)}${subject.code ? ' (' + escapeHtml(subject.code) + ')' : ''}</option>`)
-            .join('');
-
-        $('#subject_id').html('<option value="">Select subject</option>' + options);
-        $('#subject_id').prop('disabled', !classId || options.length === 0);
-    }
-
     function validateSelection() {
         const examId = $('#exam_id').val();
         const classId = $('#class_id').val();
-        const subjectId = $('#subject_id').val();
         const maxMarks = Number($('#max_marks').val());
 
-        if (!examId || !classId || !subjectId || !maxMarks || maxMarks <= 0) {
-            Swal.fire({icon:'warning', title:'Selection required', text:'Select exam, class, subject, and valid max marks.'});
+        if (!examId || !classId || !maxMarks || maxMarks <= 0) {
+            Swal.fire({icon:'warning', title:'Selection required', text:'Select exam, class, and valid max marks.'});
             return false;
         }
 
@@ -163,8 +143,7 @@ $(function () {
             dataType: 'json',
             data: {
                 exam_id: $('#exam_id').val(),
-                class_id: $('#class_id').val(),
-                subject_id: $('#subject_id').val()
+                class_id: $('#class_id').val()
             },
             success: function (response) {
                 if (response.max_marks) {
@@ -173,7 +152,6 @@ $(function () {
 
                 $('#form_exam_id').val($('#exam_id').val());
                 $('#form_class_id').val($('#class_id').val());
-                $('#form_subject_id').val($('#subject_id').val());
                 $('#form_max_marks').val($('#max_marks').val());
 
                 if (!response.students.length) {
@@ -212,18 +190,17 @@ $(function () {
             },
             error: function (xhr) {
                 resetTable('Unable to load students.');
-                alertError('Unable to load students', xhr, 'Please select only your assigned class and subject.');
+                alertError('Unable to load students', xhr, 'Please select only your assigned class.');
             }
         });
     }
 
     $('#class_id').on('change', function () {
-        populateSubjects();
         resetTable('Load students after changing class.');
         $('#marksStatus').text('Selection changed. Load students again.');
     });
 
-    $('#exam_id, #subject_id, #max_marks').on('change input', function () {
+    $('#exam_id, #max_marks').on('change input', function () {
         resetTable('Load students after changing selection.');
         $('#marksStatus').text('Selection changed. Load students again.');
     });
@@ -263,7 +240,6 @@ $(function () {
         });
     });
 
-    populateSubjects();
 });
 </script>
 @endpush

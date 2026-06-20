@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Principal;
 
 use App\Http\Controllers\Controller;
 use App\Models\SchoolClass;
-use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\TeacherSubject;
 use Illuminate\Http\Request;
@@ -51,14 +50,13 @@ class TeacherSubjectController extends Controller
     {
         $schoolId = auth()->user()->school_id;
         $validated = $this->validatedData($request, $schoolId);
-        unset($validated['allow_specialization_override']);
         $validated['school_id'] = $schoolId;
 
         TeacherSubject::create($validated);
 
         return response()->json([
             'success' => true,
-            'message' => 'Teacher assigned to subject successfully.',
+            'message' => 'Teacher assigned to class successfully.',
         ]);
     }
 
@@ -77,19 +75,18 @@ class TeacherSubjectController extends Controller
         $assignment = $this->schoolAssignment($id);
         $schoolId = auth()->user()->school_id;
         $validated = $this->validatedData($request, $schoolId, $assignment->id);
-        unset($validated['allow_specialization_override']);
 
         $assignment->update($validated);
 
         return response()->json([
             'success' => true,
-            'message' => 'Teacher subject assignment updated successfully.',
+            'message' => 'Teacher class assignment updated successfully.',
         ]);
     }
 
     public function show($id)
     {
-        $assignment = TeacherSubject::with(['school', 'teacher', 'schoolClass', 'subject'])
+        $assignment = TeacherSubject::with(['school', 'teacher.primarySubject', 'schoolClass', 'subject'])
             ->where('school_id', auth()->user()->school_id)
             ->findOrFail($id);
 
@@ -124,57 +121,53 @@ class TeacherSubjectController extends Controller
                 'required',
                 Rule::exists('school_classes', 'id')->where('school_id', $schoolId),
             ],
-            'subject_id' => [
-                'required',
-                Rule::exists('subjects', 'id')->where('school_id', $schoolId),
-                Rule::unique('teacher_subjects', 'subject_id')
-                    ->where('school_id', $schoolId)
-                    ->where('school_class_id', $request->school_class_id)
-                    ->ignore($assignmentId),
-            ],
-            'allow_specialization_override' => ['nullable', 'boolean'],
-        ], [
-            'subject_id.unique' => 'This class subject is already assigned to a teacher.',
         ]);
 
-        $validator->after(function ($validator) use ($request, $schoolId) {
-            if (!$request->subject_id || !$request->school_class_id) {
+        $validator->after(function ($validator) use ($request, $schoolId, $assignmentId) {
+            if (!$request->teacher_id || !$request->school_class_id) {
                 return;
             }
 
-            $subjectBelongsToClass = Subject::where('school_id', $schoolId)
-                ->where('class_id', $request->school_class_id)
-                ->where('id', $request->subject_id)
+            $teacher = Teacher::where('school_id', $schoolId)
+                ->where('status', 1)
+                ->find($request->teacher_id);
+
+            if (!$teacher) {
+                return;
+            }
+
+            if (!$teacher->primary_subject_id) {
+                $validator->errors()->add('teacher_id', 'This teacher does not have a Primary Subject assigned.');
+                return;
+            }
+
+            $duplicate = TeacherSubject::where('school_id', $schoolId)
+                ->where('teacher_id', $teacher->id)
+                ->where('school_class_id', $request->school_class_id)
+                ->where('subject_id', $teacher->primary_subject_id)
+                ->when($assignmentId, fn ($query) => $query->where('id', '!=', $assignmentId))
                 ->exists();
 
-            if (!$subjectBelongsToClass) {
-                $validator->errors()->add('subject_id', 'Selected subject does not belong to the selected class.');
+            if ($duplicate) {
+                $validator->errors()->add('school_class_id', 'This teacher is already assigned to this class for their Primary Subject.');
             }
 
-            if (!$request->teacher_id) {
-                return;
-            }
+            $classSubjectAlreadyAssigned = TeacherSubject::where('school_id', $schoolId)
+                ->where('school_class_id', $request->school_class_id)
+                ->where('subject_id', $teacher->primary_subject_id)
+                ->when($assignmentId, fn ($query) => $query->where('id', '!=', $assignmentId))
+                ->exists();
 
-            $teacher = Teacher::with('primarySubject')
-                ->where('school_id', $schoolId)
-                ->find($request->teacher_id);
-            $subject = Subject::where('school_id', $schoolId)->find($request->subject_id);
-
-            if (!$teacher || !$subject || !$teacher->primarySubject) {
-                return;
-            }
-
-            $sameSpecialization = strcasecmp($teacher->primarySubject->name, $subject->name) === 0;
-
-            if (!$sameSpecialization && !$request->boolean('allow_specialization_override')) {
-                $validator->errors()->add(
-                    'subject_id',
-                    "{$teacher->name} is a {$teacher->primarySubject->name} specialist. Select {$teacher->primarySubject->name} or enable specialization override."
-                );
+            if ($classSubjectAlreadyAssigned) {
+                $validator->errors()->add('school_class_id', 'This class already has a teacher assigned for this Primary Subject.');
             }
         });
 
-        return $validator->validate();
+        $validated = $validator->validate();
+        $teacher = Teacher::where('school_id', $schoolId)->findOrFail($validated['teacher_id']);
+        $validated['subject_id'] = $teacher->primary_subject_id;
+
+        return $validated;
     }
 
     private function formData(): array
@@ -191,10 +184,6 @@ class TeacherSubjectController extends Controller
                 ->where('status', 1)
                 ->orderBy('name')
                 ->orderBy('section')
-                ->get(),
-            'subjects' => Subject::where('school_id', $schoolId)
-                ->where('status', 1)
-                ->orderBy('name')
                 ->get(),
         ];
     }

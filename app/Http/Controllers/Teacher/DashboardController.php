@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $classIds = $assignments->pluck('school_class_id')->unique()->values();
 
         $totalClasses = $classIds->count();
-        $totalSubjects = $assignments->pluck('subject_id')->unique()->count();
+        $totalSubjects = $teacher->primary_subject_id ? 1 : 0;
         $totalStudents = $classIds->isEmpty()
             ? 0
             : Student::where('school_id', Auth::user()->school_id)
@@ -44,11 +44,7 @@ class DashboardController extends Controller
             ->unique('id')
             ->values();
 
-        $assignedSubjects = $assignments
-            ->pluck('subject')
-            ->filter()
-            ->unique('id')
-            ->values();
+        $assignedSubjects = $teacher->primarySubject ? collect([$teacher->primarySubject]) : collect();
 
         return view('teacher.dashboard', compact(
             'teacher',
@@ -71,14 +67,13 @@ class DashboardController extends Controller
 
         $assignments = $teacher->teacherSubjects;
         $classIds = $assignments->pluck('school_class_id')->unique()->values();
-        $subjectIds = $assignments->pluck('subject_id')->unique()->values();
 
         $assignedClasses = $assignments->pluck('schoolClass')->filter()->unique('id')->values();
-        $assignedSubjects = $assignments->pluck('subject')->filter()->unique('id')->values();
+        $assignedSubjects = $teacher->primarySubject ? collect([$teacher->primarySubject]) : collect();
 
         $workload = [
             'assigned_classes' => $classIds->count(),
-            'assigned_subjects' => $subjectIds->count(),
+            'assigned_subjects' => $teacher->primary_subject_id ? 1 : 0,
             'total_students' => $classIds->isEmpty()
                 ? 0
                 : Student::where('school_id', Auth::user()->school_id)->whereIn('class_id', $classIds)->count(),

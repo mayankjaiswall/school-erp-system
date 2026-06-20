@@ -24,7 +24,7 @@
 <div class="assignment-profile-card">
     <div>
         <h2 class="assignment-name">{{ $assignment->teacher?->name ?? 'Teacher Assignment' }}</h2>
-        <p class="assignment-subtitle">{{ $assignment->subject?->name ?? 'N/A' }} | {{ $assignment->schoolClass?->name }}{{ $assignment->schoolClass?->section ? ' - '.$assignment->schoolClass->section : '' }}</p>
+        <p class="assignment-subtitle">{{ $assignment->teacher?->primarySubject?->name ?? $assignment->subject?->name ?? 'N/A' }} | {{ $assignment->schoolClass?->name }}{{ $assignment->schoolClass?->section ? ' - '.$assignment->schoolClass->section : '' }}</p>
     </div>
 </div>
 
@@ -32,7 +32,7 @@
     <div class="flow-line">
         <div class="flow-node"><i class="bi bi-person-badge"></i><strong>{{ $assignment->teacher?->name ?? 'N/A' }}</strong><small>Teacher</small></div>
         <div class="flow-arrow"><i class="bi bi-arrow-right"></i></div>
-        <div class="flow-node"><i class="bi bi-book"></i><strong>{{ $assignment->subject?->name ?? 'N/A' }}</strong><small>{{ $assignment->subject?->code ?? 'Subject' }}</small></div>
+        <div class="flow-node"><i class="bi bi-book"></i><strong>{{ $assignment->teacher?->primarySubject?->name ?? $assignment->subject?->name ?? 'N/A' }}</strong><small>Primary Subject</small></div>
         <div class="flow-arrow"><i class="bi bi-arrow-right"></i></div>
         <div class="flow-node"><i class="bi bi-journal-bookmark"></i><strong>{{ $assignment->schoolClass?->name }}{{ $assignment->schoolClass?->section ? ' - '.$assignment->schoolClass->section : '' }}</strong><small>Class</small></div>
     </div>
@@ -40,7 +40,7 @@
 
 <div class="row g-4">
     <div class="col-md-4"><div class="info-card"><small>Teacher Email</small><h5>{{ $assignment->teacher?->email ?? 'N/A' }}</h5></div></div>
-    <div class="col-md-4"><div class="info-card"><small>Subject Code</small><h5>{{ $assignment->subject?->code ?? 'N/A' }}</h5></div></div>
+    <div class="col-md-4"><div class="info-card"><small>Primary Subject</small><h5>{{ $assignment->teacher?->primarySubject?->name ?? $assignment->subject?->name ?? 'N/A' }}</h5></div></div>
     <div class="col-md-4"><div class="info-card"><small>School</small><h5>{{ $assignment->school?->name ?? 'N/A' }}</h5></div></div>
     <div class="col-md-6"><div class="info-card"><small>Created At</small><h5>{{ $assignment->created_at->format('d M Y, h:i A') }}</h5></div></div>
     <div class="col-md-6"><div class="info-card"><small>Updated At</small><h5>{{ $assignment->updated_at->format('d M Y, h:i A') }}</h5></div></div>
