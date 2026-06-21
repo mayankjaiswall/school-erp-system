@@ -21,6 +21,13 @@
     .btn-edit{background:#fef3c7;color:#d97706}.btn-edit:hover{background:#d97706;color:#fff}
     .btn-delete{background:#fee2e2;color:#dc2626}.btn-delete:hover{background:#dc2626;color:#fff}
     .empty-state{padding:50px;text-align:center;color:#64748b}.empty-state i{font-size:50px;margin-bottom:15px;display:block;color:#cbd5e1}
+    .student-header-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .student-table-tools{display:flex;gap:12px;align-items:center;flex-wrap:nowrap}
+    .student-table-tools form[role="search"]{max-width:none;width:auto;margin:0}
+    .student-import-btn{border:2px solid #16a34a;color:#fff;background:#16a34a;font-weight:600;min-width:130px}
+    .student-import-btn:hover{background:#15803d;border-color:#15803d;color:#fff}
+    .import-help{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;color:#475569;font-size:14px}
+    @media(max-width:576px){.student-table-tools{width:100%;flex-wrap:wrap}.student-table-tools form[role="search"],.student-table-tools input[type="search"]{width:100%;min-width:0!important}.student-import-btn{width:100%}}
 </style>
 
 <div class="student-list-header">
@@ -28,10 +35,33 @@
         <h2>Student Management</h2>
         <p class="mb-0 opacity-75">Manage all enrolled students from one dashboard.</p>
     </div>
-    <a href="{{ route('students.create') }}" class="btn btn-light">
-        <i class="bi bi-plus-circle"></i> Add Student
-    </a>
+    <div class="student-header-actions">
+        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#studentImportModal">
+            <i class="bi bi-upload"></i> Import
+        </button>
+        <a href="{{ route('students.create') }}" class="btn btn-light">
+            <i class="bi bi-plus-circle"></i> Add Student
+        </a>
+    </div>
 </div>
+
+@if(session('success') || session('error'))
+    <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
+        {{ session('success') ?? session('error') }}
+        @if(session('import_skipped_count'))
+            <div class="mt-2 small">
+                {{ session('import_skipped_count') }} row{{ session('import_skipped_count') === 1 ? '' : 's' }} skipped.
+                @foreach(session('import_skipped', []) as $skipped)
+                    <div>{{ $skipped }}</div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger">{{ $errors->first() }}</div>
+@endif
 
 <div class="row mb-4">
     <div class="col-md-3">
@@ -44,15 +74,20 @@
 
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Students  {{ $students->count() }}</h5>
-        <form action="{{ route('students.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search students..."
-                   style="min-width:260px">
-        </form>
+        <h5 class="mb-0">Students <span id="recordsFoundCount">{{ $students->count() }}</span></h5>
+        <div class="student-table-tools">
+            <button type="button" class="btn student-import-btn" data-bs-toggle="modal" data-bs-target="#studentImportModal">
+                <i class="bi bi-upload"></i> Import
+            </button>
+            <form action="{{ route('students.index') }}" method="GET" class="d-flex gap-2" role="search">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search students..."
+                       style="min-width:260px">
+            </form>
+        </div>
     </div>
 
     <div class="table-responsive">
@@ -113,6 +148,29 @@
     </div>
 </div>
 
+<div class="modal fade" id="studentImportModal" tabindex="-1" aria-labelledby="studentImportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="studentImportModalLabel">Import Students</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="students_file" class="form-label fw-semibold">Excel or CSV file</label>
+                <input type="file" name="students_file" id="students_file" class="form-control" accept=".xlsx,.csv,.txt" required>
+                <div class="import-help mt-3">
+                    Required columns: name, admission_no, class or class_id. Optional columns: section, roll_no, email, phone, gender, dob, address, status.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-upload"></i> Import Students</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 function confirmDelete(id, studentName)
 {
@@ -169,7 +227,8 @@ function updateStudentCounts()
     });
 
     document.getElementById('totalStudentsCount').textContent = total;
-    document.getElementById('recordsFoundCount').textContent = total + ' Records Found';
+    document.getElementById('recordsFoundCount').textContent = total;
 }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
