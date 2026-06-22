@@ -157,6 +157,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <a href="{{ route('students.import-template') }}" class="btn btn-outline-success w-100 mb-3">
+                    <i class="bi bi-download"></i> Download Import Template
+                </a>
                 <label for="students_file" class="form-label fw-semibold">Excel or CSV file</label>
                 <input type="file" name="students_file" id="students_file" class="form-control" accept=".xlsx,.csv,.txt" required>
                 <div class="import-help mt-3">

@@ -5,6 +5,7 @@ use App\Http\Controllers\Teacher\DashboardController;
 use App\Http\Controllers\Teacher\TeacherAttendanceController;
 use App\Http\Controllers\Teacher\TeacherMarksController;
 use App\Http\Controllers\Teacher\TeacherRemarksController;
+use App\Http\Controllers\Teacher\TeacherStudentController;
 use App\Http\Controllers\ReportCardController;
 
 /*
@@ -20,6 +21,9 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::get('/my-classes', [DashboardController::class, 'index'])->name('classes.index');
+    Route::get('/students', [TeacherStudentController::class, 'index'])->name('students.index');
+    Route::post('/students/import', [TeacherStudentController::class, 'import'])->name('students.import');
+    Route::get('/students/import-template', [TeacherStudentController::class, 'importTemplate'])->name('students.import-template');
     Route::get('/attendance', [TeacherAttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance/students/{class}', [TeacherAttendanceController::class, 'getStudents'])->name('attendance.students');
     Route::post('/attendance/save', [TeacherAttendanceController::class, 'saveAttendance'])->name('attendance.save');

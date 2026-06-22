@@ -282,7 +282,7 @@
                     <i class="bi bi-book"></i>
                     <span>My Subjects</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <a href="{{ route('teacher.students.index') }}" class="{{ request()->routeIs('teacher.students.*') ? 'active-menu' : '' }}">
                     <i class="bi bi-mortarboard"></i>
                     <span>My Students</span>
                 </a>
