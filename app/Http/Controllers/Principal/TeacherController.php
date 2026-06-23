@@ -11,6 +11,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\AttendanceSession;
 use App\Models\Mark;
+use App\Services\TeacherImportService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -275,6 +276,41 @@ class TeacherController extends Controller
         });
 
         return redirect()->route('teachers.index')->with('success', 'Teacher deleted successfully.');
+    }
+
+    public function import(Request $request, TeacherImportService $importer)
+    {
+        $request->validate([
+            'teachers_file' => 'required|file|mimes:csv,txt,xlsx|max:5120',
+        ]);
+
+        $result = $importer->import(
+            $request->file('teachers_file')->getRealPath(),
+            strtolower($request->file('teachers_file')->getClientOriginalExtension()),
+            auth()->user()->school_id,
+            $this->primarySubjectOptions()
+        );
+
+        if ($result['error']) {
+            return back()->with('error', $result['error']);
+        }
+
+        $message = "{$result['created']} teacher".($result['created'] === 1 ? '' : 's').' imported successfully.';
+
+        return back()
+            ->with($result['created'] ? 'success' : 'error', $message)
+            ->with('import_skipped', array_slice($result['skipped'], 0, 10))
+            ->with('import_skipped_count', count($result['skipped']));
+    }
+
+    public function importTemplate()
+    {
+        return response()->streamDownload(function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, TeacherImportService::HEADERS);
+            fputcsv($handle, ['Anita Sharma', 'anita@example.com', '9876543210', 'TCH001', 'Mathematics', 'M.Sc B.Ed', '5', '2024-06-01', 'Senior Teacher', 'female', 'active', 'Password@123']);
+            fclose($handle);
+        }, 'teacher-import-template.csv', ['Content-Type' => 'text/csv']);
     }
 
     private function teacherRoleId(): int
