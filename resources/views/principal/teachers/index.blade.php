@@ -52,7 +52,7 @@
         border: 1px solid #e2e8f0;
     }
 
-    .school-avatar{
+    .teacher-avatar{
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -147,6 +147,49 @@
         display: block;
         color: #cbd5e1;
     }
+
+    .teacher-table-tools{
+        display:flex;
+        gap:12px;
+        align-items:center;
+        flex-wrap:nowrap;
+    }
+
+    .teacher-table-tools form[role="search"]{
+        max-width:none;
+        width:auto;
+        margin:0;
+    }
+
+    .teacher-import-btn{
+        border:2px solid #16a34a;
+        color:#fff;
+        background:#16a34a;
+        font-weight:600;
+        min-width:130px;
+    }
+
+    .teacher-import-btn:hover{
+        background:#15803d;
+        border-color:#15803d;
+        color:#fff;
+    }
+
+    .import-help{
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:14px;
+        color:#475569;
+        font-size:14px;
+    }
+
+    @media(max-width:576px){
+        .teacher-table-tools{width:100%;flex-wrap:wrap}
+        .teacher-table-tools form[role="search"],
+        .teacher-table-tools input[type="search"]{width:100%;min-width:0!important}
+        .teacher-import-btn{width:100%}
+    }
 </style>
 
 <!-- Header -->
@@ -169,6 +212,24 @@
     </a>
 
 </div>
+
+@if(session('success') || session('error'))
+    <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
+        {{ session('success') ?? session('error') }}
+        @if(session('import_skipped_count'))
+            <div class="mt-2 small">
+                {{ session('import_skipped_count') }} row{{ session('import_skipped_count') === 1 ? '' : 's' }} skipped.
+                @foreach(session('import_skipped', []) as $skipped)
+                    <div>{{ $skipped }}</div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger">{{ $errors->first() }}</div>
+@endif
 
 <!-- Stats -->
 
@@ -198,14 +259,19 @@
             Teachers  {{ $teachers->count() }}
         </h5>
 
-        <form action="{{ route('teachers.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search teachers..."
-                   style="min-width:260px">
-        </form>
+        <div class="teacher-table-tools">
+            <button type="button" class="btn teacher-import-btn" data-bs-toggle="modal" data-bs-target="#teacherImportModal">
+                <i class="bi bi-upload"></i> Import
+            </button>
+            <form action="{{ route('teachers.index') }}" method="GET" class="d-flex gap-2" role="search">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search teachers..."
+                       style="min-width:260px">
+            </form>
+        </div>
 
     </div>
 
@@ -454,6 +520,32 @@
 
 </div>
 
+<div class="modal fade" id="teacherImportModal" tabindex="-1" aria-labelledby="teacherImportModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="{{ route('teachers.import') }}" method="POST" enctype="multipart/form-data" class="modal-content">
+            @csrf
+            <div class="modal-header">
+                <h5 class="modal-title" id="teacherImportModalLabel">Import Teachers</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <a href="{{ route('teachers.import-template') }}" class="btn btn-outline-success w-100 mb-3">
+                    <i class="bi bi-download"></i> Download Import Template
+                </a>
+                <label for="teachers_file" class="form-label fw-semibold">Excel or CSV file</label>
+                <input type="file" name="teachers_file" id="teachers_file" class="form-control" accept=".xlsx,.csv,.txt" required>
+                <div class="import-help mt-3">
+                    Required columns: name, email, employee_code, primary_subject, qualification, experience_years, joining_date, designation, password. Optional columns: phone, gender, status.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light border" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success"><i class="bi bi-upload"></i> Import Teachers</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 
 function confirmDelete(id, schoolName)
@@ -534,4 +626,5 @@ function confirmDelete(id, schoolName)
 }
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
