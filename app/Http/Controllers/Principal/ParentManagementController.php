@@ -159,6 +159,65 @@ class ParentManagementController extends Controller
         return redirect()->route('principal.parents.index')->with('success', 'Parent deleted successfully.');
     }
 
+    public function linkChild(Request $request, $id)
+    {
+        $parent = $this->schoolParent($id);
+        $validated = $request->validate($this->linkRules());
+        $student = $this->schoolStudents()->findOrFail($validated['student_id']);
+
+        if ($parent->students()->where('students.id', $student->id)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This child is already linked to the parent.',
+            ], 422);
+        }
+
+        $parent->students()->attach($student->id, [
+            'relationship' => $validated['relationship'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Child linked successfully.',
+            'children_count' => $parent->students()->count(),
+        ]);
+    }
+
+    public function removeChild(Request $request, $id)
+    {
+        $parent = $this->schoolParent($id);
+        $validated = $request->validate([
+            'student_id' => ['required', 'integer'],
+        ]);
+
+        $this->schoolStudents()->findOrFail($validated['student_id']);
+        $parent->students()->detach((int) $validated['student_id']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Child link removed successfully.',
+            'children_count' => $parent->students()->count(),
+        ]);
+    }
+
+    public function updateRelationship(Request $request, $id)
+    {
+        $parent = $this->schoolParent($id);
+        $validated = $request->validate($this->linkRules());
+        $student = $this->schoolStudents()->findOrFail($validated['student_id']);
+
+        abort_unless($parent->students()->where('students.id', $student->id)->exists(), 404);
+
+        $parent->students()->updateExistingPivot($student->id, [
+            'relationship' => $validated['relationship'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Relationship updated successfully.',
+        ]);
+    }
+
     private function rules(int $schoolId, ?ParentModel $parent = null): array
     {
         $userId = $parent?->user_id;
@@ -182,13 +241,14 @@ class ParentManagementController extends Controller
             'address' => ['nullable', 'string'],
             'status' => ['required', Rule::in(['1', '0', 1, 0])],
             'password' => [$parent ? 'nullable' : 'required', 'string', 'min:6', 'confirmed'],
-            'student_ids' => ['required', 'array', 'min:1'],
+            'student_ids' => ['nullable', 'array'],
             'student_ids.*' => [
                 'integer',
+                'distinct',
                 Rule::exists('students', 'id')->where('school_id', $schoolId)->where('status', 1),
             ],
-            'relationships' => ['required', 'array'],
-            'relationships.*' => ['required', Rule::in(['Father', 'Mother', 'Guardian'])],
+            'relationships' => ['nullable', 'array'],
+            'relationships.*' => ['nullable', Rule::in(['Father', 'Mother', 'Guardian'])],
         ];
     }
 
@@ -209,7 +269,8 @@ class ParentManagementController extends Controller
 
     private function studentSyncPayload(array $validated): array
     {
-        return collect($validated['student_ids'])
+        return collect($validated['student_ids'] ?? [])
+            ->unique()
             ->mapWithKeys(fn ($studentId) => [
                 (int) $studentId => [
                     'relationship' => $validated['relationships'][$studentId] ?? 'Guardian',
@@ -226,5 +287,13 @@ class ParentManagementController extends Controller
     private function generatedEmail(string $phone): string
     {
         return 'parent_' . $phone . '@parents.local';
+    }
+
+    private function linkRules(): array
+    {
+        return [
+            'student_id' => ['required', 'integer'],
+            'relationship' => ['required', Rule::in(['Father', 'Mother', 'Guardian'])],
+        ];
     }
 }
