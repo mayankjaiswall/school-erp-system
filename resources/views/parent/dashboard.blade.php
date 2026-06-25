@@ -37,12 +37,12 @@
 <div class="row mt-4">
     <div class="col-lg-6">
         <div class="content-card">
-            <h5 class="mb-3">Children List</h5>
+            <h5 class="mb-3">My Children</h5>
             @forelse($children as $child)
                 <div class="list-item">
                     <div class="d-flex align-items-center gap-3">
                         <div class="avatar">{{ strtoupper(substr($child->name, 0, 1)) }}</div>
-                        <div><strong>{{ $child->name }}</strong><br><small class="text-muted">{{ $child->class?->name }}{{ $child->class?->section ? ' - '.$child->class->section : '' }} | {{ $child->admission_no }}</small></div>
+                        <div><strong>{{ $child->name }}</strong><br><small class="text-muted">{{ $child->class?->name }}{{ $child->class?->section ? ' - '.$child->class->section : '' }} | Roll: {{ $child->roll_no ?? '-' }}</small></div>
                     </div>
                     <span class="badge bg-success">{{ $child->pivot->relationship }}</span>
                 </div>

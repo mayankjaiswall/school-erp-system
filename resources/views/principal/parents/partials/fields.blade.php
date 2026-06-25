@@ -11,18 +11,25 @@
     <div class="col-md-12"><label class="form-label">Address</label><textarea name="address" class="form-control" rows="3">{{ old('address', $parent?->address) }}</textarea></div>
 </div>
 
-<div class="mt-4">
+<div class="mt-4" id="childrenLinkSection"
+    @if($parent?->exists)
+        data-link-url="{{ route('principal.parents.children.link', $parent->id) }}"
+        data-remove-url="{{ route('principal.parents.children.remove', $parent->id) }}"
+        data-relationship-url="{{ route('principal.parents.children.relationship', $parent->id) }}"
+    @endif
+>
     <h5 class="mb-3">Link Children</h5>
     <div class="table-responsive">
         <table class="table align-middle">
-            <thead><tr><th style="width:70px">Link</th><th>Student</th><th>Class</th><th style="width:180px">Relationship</th></tr></thead>
+            <thead><tr><th style="width:70px">Link</th><th>Student Name</th><th>Class</th><th>Roll Number</th><th style="width:180px">Relationship</th></tr></thead>
             <tbody>
                 @foreach($students as $student)
                     @php($linked = $linkedStudents->has($student->id))
-                    <tr>
+                    <tr data-student-id="{{ $student->id }}">
                         <td><input type="checkbox" class="form-check-input child-check" name="student_ids[]" value="{{ $student->id }}" {{ $linked ? 'checked' : '' }}></td>
                         <td><strong>{{ $student->name }}</strong><br><small class="text-muted">{{ $student->admission_no }}</small></td>
                         <td>{{ $student->class?->name }}{{ $student->class?->section ? ' - '.$student->class->section : '' }}</td>
+                        <td>{{ $student->roll_no ?? '-' }}</td>
                         <td>
                             <select name="relationships[{{ $student->id }}]" class="form-select relationship-select">
                                 @foreach(['Father', 'Mother', 'Guardian'] as $relationship)
@@ -32,7 +39,13 @@
                         </td>
                     </tr>
                 @endforeach
+                @if($students->isEmpty())
+                    <tr><td colspan="5" class="text-center text-muted py-4">No active students found.</td></tr>
+                @endif
             </tbody>
         </table>
     </div>
+    @if($parent?->exists)
+        <small class="text-muted">Child links and relationship changes are saved immediately.</small>
+    @endif
 </div>

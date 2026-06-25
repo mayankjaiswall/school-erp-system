@@ -22,14 +22,15 @@
     </div>
     <div class="table-responsive">
         <table class="table align-middle">
-            <thead><tr><th>#</th><th>Parent</th><th>Contact</th><th>Children</th><th>Status</th><th width="170">Actions</th></tr></thead>
+            <thead><tr><th>#</th><th>Parent Name</th><th>Phone</th><th>Email</th><th>Number of Children</th><th>Status</th><th width="170">Actions</th></tr></thead>
             <tbody id="parentsTableBody">
                 @forelse($parents as $parent)
                     <tr id="parent-row-{{ $parent->id }}">
                         <td class="row-number">{{ $loop->iteration }}</td>
                         <td><div class="d-flex align-items-center gap-3"><div class="avatar">{{ strtoupper(substr($parent->user?->name ?? 'P', 0, 1)) }}</div><div><strong>{{ $parent->user?->name }}</strong><div class="small text-muted">{{ $parent->father_name ? 'Father: '.$parent->father_name : '' }} {{ $parent->mother_name ? 'Mother: '.$parent->mother_name : '' }}</div></div></div></td>
-                        <td>{{ $parent->phone }}<br><small class="text-muted">{{ $parent->email ?? 'No email' }}</small></td>
-                        <td>{{ $parent->students->pluck('name')->join(', ') ?: '-' }}</td>
+                        <td>{{ $parent->phone }}</td>
+                        <td>{{ $parent->email ?? 'No email' }}</td>
+                        <td><span class="badge bg-primary">{{ $parent->students->count() }}</span></td>
                         <td><span class="badge {{ $parent->status ? 'bg-success' : 'bg-danger' }}">{{ $parent->status ? 'Active' : 'Inactive' }}</span></td>
                         <td>
                             <a href="{{ route('principal.parents.show', $parent->id) }}" class="btn-action btn-view" title="View"><i class="bi bi-eye"></i></a>
@@ -38,7 +39,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="6" class="text-center text-muted py-5">No parents found.</td></tr>
+                    <tr><td colspan="7" class="text-center text-muted py-5">No parents found.</td></tr>
                 @endforelse
             </tbody>
         </table>
