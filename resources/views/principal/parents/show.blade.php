@@ -23,10 +23,10 @@
     <h5 class="mb-3">Linked Children</h5>
     <div class="table-responsive">
         <table class="table align-middle">
-            <thead><tr><th>Student</th><th>Admission No</th><th>Class</th><th>Relationship</th></tr></thead>
+            <thead><tr><th>Student Name</th><th>Class</th><th>Roll Number</th><th>Relationship</th></tr></thead>
             <tbody>
                 @forelse($parent->students as $student)
-                    <tr><td>{{ $student->name }}</td><td>{{ $student->admission_no }}</td><td>{{ $student->class?->name }}{{ $student->class?->section ? ' - '.$student->class->section : '' }}</td><td><span class="badge bg-success">{{ $student->pivot->relationship }}</span></td></tr>
+                    <tr><td>{{ $student->name }}</td><td>{{ $student->class?->name }}{{ $student->class?->section ? ' - '.$student->class->section : '' }}</td><td>{{ $student->roll_no ?? '-' }}</td><td><span class="badge bg-success">{{ $student->pivot->relationship }}</span></td></tr>
                 @empty
                     <tr><td colspan="4" class="text-center text-muted">No linked children.</td></tr>
                 @endforelse

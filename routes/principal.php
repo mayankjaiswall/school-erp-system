@@ -55,6 +55,9 @@ Route::middleware(['auth', 'role:principal'])->prefix('principal')->group(functi
         Route::get('/parents/{id}', [ParentManagementController::class, 'show'])->name('principal.parents.show');
         Route::get('/parents/{id}/edit', [ParentManagementController::class, 'edit'])->name('principal.parents.edit');
         Route::put('/parents/{id}', [ParentManagementController::class, 'update'])->name('principal.parents.update');
+        Route::post('/parents/{id}/children', [ParentManagementController::class, 'linkChild'])->name('principal.parents.children.link');
+        Route::delete('/parents/{id}/children', [ParentManagementController::class, 'removeChild'])->name('principal.parents.children.remove');
+        Route::patch('/parents/{id}/children/relationship', [ParentManagementController::class, 'updateRelationship'])->name('principal.parents.children.relationship');
         Route::delete('/parents/{id}', [ParentManagementController::class, 'destroy'])->name('principal.parents.destroy');
 
         // Subject management routes
