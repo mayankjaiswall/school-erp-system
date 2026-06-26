@@ -29,9 +29,9 @@
 
 <div class="row g-4">
     <div class="col-md-3"><div class="stats-card card-blue"><h6>Total Children</h6><h2>{{ $children->count() }}</h2><small>Linked to your profile</small></div></div>
-    <div class="col-md-3"><div class="stats-card card-green"><h6>Attendance %</h6><h2 id="attendancePercent">{{ $attendanceSummary['percentage'] }}%</h2><small>Selected child</small></div></div>
-    <div class="col-md-3"><div class="stats-card card-orange"><h6>Latest Exam %</h6><h2 id="latestPercent">{{ $latestResult['percentage'] ?? 0 }}%</h2><small id="latestExam">{{ $latestResult['exam'] ?? 'No result' }}</small></div></div>
-    <div class="col-md-3"><div class="stats-card card-purple"><h6>Pending Fee</h6><h2>₹0</h2><small>Future ready</small></div></div>
+    <div class="col-md-3"><div class="stats-card card-green"><h6>Today's Attendance</h6><h2 id="todayAttendance">{{ $todayAttendance ? ucfirst($todayAttendance->status) : '-' }}</h2><small id="attendancePercent">{{ $attendanceSummary['percentage'] }}% overall</small></div></div>
+    <div class="col-md-3"><div class="stats-card card-orange"><h6>Upcoming Exams</h6><h2>{{ $upcomingExams->count() }}</h2><small>Scheduled exams</small></div></div>
+    <div class="col-md-3"><div class="stats-card card-purple"><h6>Latest Result</h6><h2 id="latestPercent">{{ $latestResult['percentage'] ?? 0 }}%</h2><small id="latestExam">{{ $latestResult['exam'] ?? 'No result' }}</small></div></div>
 </div>
 
 <div class="row mt-4">
@@ -90,7 +90,9 @@ $(function () {
         const studentId = $(this).val();
 
         $.getJSON(attendanceUrl, {student_id: studentId}).done(function (response) {
-            $('#attendancePercent').text(response.summary.percentage + '%');
+            const today = response.records.find((record) => record.date === new Date().toISOString().slice(0, 10));
+            $('#todayAttendance').text(today ? today.status : '-');
+            $('#attendancePercent').text(response.summary.percentage + '% overall');
             $('#recentAttendanceBody').html(response.records.slice(0, 6).map((record) => `<tr><td>${escapeHtml(record.date)}</td><td><span class="badge bg-info">${escapeHtml(record.status)}</span></td><td>${escapeHtml(record.remarks)}</td></tr>`).join('') || '<tr><td colspan="3" class="text-center text-muted">No attendance found.</td></tr>');
         });
 
