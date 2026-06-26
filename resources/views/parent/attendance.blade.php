@@ -4,6 +4,7 @@
 @section('page-title', 'Attendance')
 
 @section('content')
+<style>.attendance-calendar{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}.calendar-day{border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#fff;min-height:78px}.calendar-day strong{display:block;font-size:18px;color:#0f172a}.calendar-day span{font-size:12px;font-weight:700;text-transform:uppercase}.calendar-day.present{border-color:#86efac;background:#f0fdf4}.calendar-day.absent{border-color:#fecaca;background:#fef2f2}.calendar-day.late{border-color:#fed7aa;background:#fff7ed}</style>
 <div class="content-card mt-0">
     <div class="row g-3 align-items-end">
         <div class="col-md-4">
@@ -46,6 +47,13 @@
 </div>
 
 <div class="content-card">
+    <h5 class="mb-3">Calendar View</h5>
+    <div id="attendanceCalendar" class="attendance-calendar">
+        <div class="text-muted">Load attendance to view calendar.</div>
+    </div>
+</div>
+
+<div class="content-card">
     <h5 class="mb-3">Daily Attendance</h5>
     <div class="table-responsive">
         <table class="table align-middle">
@@ -68,11 +76,13 @@ $(function () {
                 $('#presentDays').text(response.summary.present_days);
                 $('#absentDays').text(response.summary.absent_days);
                 $('#lateDays').text(response.summary.late_days);
+                $('#attendanceCalendar').html(response.calendar.map((record) => `<div class="calendar-day ${escapeHtml(record.status)}"><strong>${escapeHtml(record.day)}</strong><small>${escapeHtml(record.date)}</small><br><span>${escapeHtml(record.status)}</span></div>`).join('') || '<div class="text-muted">No calendar records found.</div>');
                 $('#attendanceBody').html(response.records.map((record) => `<tr><td>${escapeHtml(record.date)}</td><td><span class="badge bg-info">${escapeHtml(record.status)}</span></td><td>${escapeHtml(record.remarks)}</td></tr>`).join('') || '<tr><td colspan="3" class="text-center text-muted">No records found.</td></tr>');
             })
             .fail(function () { Swal.fire({icon:'error', title:'Unable to load attendance', text:'Please try again.'}); });
     }
-    $('#loadAttendance, #student_id').on('click change', loadAttendance);
+    $('#loadAttendance').on('click', loadAttendance);
+    $('#student_id, #month, #academic_year').on('change', loadAttendance);
     loadAttendance();
 });
 </script>

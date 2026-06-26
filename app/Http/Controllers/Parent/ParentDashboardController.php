@@ -10,8 +10,11 @@ use App\Models\Mark;
 use App\Models\ParentModel;
 use App\Models\SchoolClass;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\TeacherRemark;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -27,6 +30,7 @@ class ParentDashboardController extends Controller
         $selectedChild = $children->first();
         $attendanceSummary = $this->attendanceSummary($selectedChild);
         $latestResult = $selectedChild ? $this->latestResult($selectedChild) : null;
+        $todayAttendance = $selectedChild ? $this->todayAttendance($selectedChild) : null;
         $recentAttendance = $selectedChild ? $this->attendanceRecords($selectedChild)->take(6)->get() : collect();
         $latestResults = $selectedChild ? $this->resultSummaries($selectedChild)->take(5)->get() : collect();
         $upcomingExams = $selectedChild ? $this->upcomingExams($selectedChild) : collect();
@@ -38,6 +42,7 @@ class ParentDashboardController extends Controller
             'selectedChild',
             'attendanceSummary',
             'latestResult',
+            'todayAttendance',
             'recentAttendance',
             'latestResults',
             'upcomingExams',
@@ -61,6 +66,17 @@ class ParentDashboardController extends Controller
         }
 
         return view('parent.children', compact('children'));
+    }
+
+    public function childProfile(int $student)
+    {
+        $child = $this->ownedStudent($student)->load(['class', 'marks.exam', 'marks.subject', 'attendances.attendanceSession', 'teacherRemarks.teacher.user']);
+        $attendanceSummary = $this->attendanceSummary($child);
+        $latestResult = $this->latestResult($child);
+        $recentAttendance = $this->attendanceRecords($child)->take(10)->get();
+        $recentRemarks = $this->remarksQuery($child)->take(10)->get();
+
+        return view('parent.child-profile', compact('child', 'attendanceSummary', 'latestResult', 'recentAttendance', 'recentRemarks'));
     }
 
     public function attendance(Request $request)
@@ -95,6 +111,7 @@ class ParentDashboardController extends Controller
                 'status' => ucfirst($attendance->status),
                 'remarks' => $attendance->remarks ?? '-',
             ])->values(),
+            'calendar' => $this->attendanceCalendarPayload($records),
         ]);
     }
 
@@ -102,21 +119,27 @@ class ParentDashboardController extends Controller
     {
         $children = $this->childrenQuery()->get();
         $exams = $this->schoolExams()->get();
+        $subjects = Subject::where('school_id', $this->schoolId())
+            ->where('status', 1)
+            ->orderBy('name')
+            ->get();
 
         if (!$request->expectsJson() && !$request->ajax()) {
-            return view('parent.results', compact('children', 'exams'));
+            return view('parent.results', compact('children', 'exams', 'subjects'));
         }
 
         $validated = $request->validate([
             'student_id' => ['required', 'integer'],
             'exam_id' => ['nullable', Rule::exists('exams', 'id')->where('school_id', $this->schoolId())],
+            'subject_id' => ['nullable', Rule::exists('subjects', 'id')->where('school_id', $this->schoolId())],
         ]);
 
         $student = $this->ownedStudent((int) $validated['student_id']);
         $summaries = $this->resultSummaries($student)
             ->when(!empty($validated['exam_id']), fn ($query) => $query->where('exam_id', $validated['exam_id']))
             ->get()
-            ->map(fn (Exam $exam) => $this->examResultPayload($student, $exam))
+            ->map(fn (Exam $exam) => $this->examResultPayload($student, $exam, $validated['subject_id'] ?? null))
+            ->filter(fn (array $result) => $result['subjects']->isNotEmpty())
             ->values();
 
         return response()->json([
@@ -203,18 +226,36 @@ class ParentDashboardController extends Controller
 
         $validated = $request->validate([
             'student_id' => ['required', 'integer'],
+            'search' => ['nullable', 'string', 'max:100'],
+            'page' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $student = $this->ownedStudent((int) $validated['student_id']);
-        $remarks = $this->remarksQuery($student)->get();
+        $remarks = $this->remarksQuery($student)
+            ->when(!empty($validated['search']), function ($query) use ($validated) {
+                $search = $validated['search'];
+
+                $query->where(function ($nested) use ($search) {
+                    $nested->where('remark', 'like', "%{$search}%")
+                        ->orWhereHas('teacher.user', fn ($teacherQuery) => $teacherQuery->where('name', 'like', "%{$search}%"));
+                });
+            })
+            ->paginate(10);
 
         return response()->json([
             'success' => true,
-            'remarks' => $remarks->map(fn (TeacherRemark $remark) => [
+            'remarks' => $remarks->getCollection()->map(fn (TeacherRemark $remark) => [
                 'date' => $remark->remark_date?->format('Y-m-d'),
                 'teacher' => $remark->teacher?->name ?? $remark->teacher?->user?->name ?? 'Teacher',
+                'subject' => 'General',
                 'remark' => $remark->remark,
+                'status' => 'Viewed',
             ])->values(),
+            'pagination' => [
+                'current_page' => $remarks->currentPage(),
+                'last_page' => $remarks->lastPage(),
+                'total' => $remarks->total(),
+            ],
         ]);
     }
 
@@ -223,6 +264,56 @@ class ParentDashboardController extends Controller
         $parent = $this->parentProfile()->load(['user', 'students.class']);
 
         return view('parent.profile', compact('parent'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $parent = $this->parentProfile()->load('user');
+
+        $validated = $request->validate([
+            'phone' => ['required', 'string', 'max:30'],
+            'address' => ['nullable', 'string', 'max:1000'],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($parent->user_id)],
+            'photo' => ['nullable', 'image', 'max:2048'],
+        ]);
+
+        DB::transaction(function () use ($request, $parent, $validated) {
+            $photoPath = $parent->user?->photo;
+
+            if ($request->hasFile('photo')) {
+                $photoPath = $request->file('photo')->store('parent-photos', 'public');
+            }
+
+            $parent->update([
+                'phone' => $validated['phone'],
+                'email' => $validated['email'],
+                'address' => $validated['address'] ?? null,
+            ]);
+
+            $parent->user?->update([
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'photo' => $photoPath,
+            ]);
+        });
+
+        return back()->with('success', 'Profile updated successfully.');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $parent = $this->parentProfile()->load('user');
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $parent->user?->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('success', 'Password changed successfully.');
     }
 
     private function parentProfile(): ParentModel
@@ -294,6 +385,13 @@ class ParentDashboardController extends Controller
         ];
     }
 
+    private function todayAttendance(Student $student): ?Attendance
+    {
+        return $this->attendanceRecords($student)
+            ->whereDate('attendance_sessions.attendance_date', now()->toDateString())
+            ->first();
+    }
+
     private function emptyAttendanceSummary(): array
     {
         return [
@@ -321,9 +419,11 @@ class ParentDashboardController extends Controller
             ->orderByDesc('id');
     }
 
-    private function examResultPayload(Student $student, Exam $exam): array
+    private function examResultPayload(Student $student, Exam $exam, ?int $subjectId = null): array
     {
-        $marks = $exam->marks;
+        $marks = $exam->marks
+            ->when($subjectId, fn (Collection $marks) => $marks->where('subject_id', $subjectId))
+            ->values();
         $total = $marks->sum(fn (Mark $mark) => (float) $mark->max_marks);
         $obtained = $marks->sum(fn (Mark $mark) => (float) $mark->marks_obtained);
         $percentage = $total > 0 ? round(($obtained / $total) * 100, 2) : 0;
@@ -426,6 +526,20 @@ class ParentDashboardController extends Controller
             'status' => $student->status ? 'Active' : 'Inactive',
             'photo' => $student->photo ? asset($student->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($student->name) . '&background=2563eb&color=fff',
         ];
+    }
+
+    private function attendanceCalendarPayload(Collection $records): array
+    {
+        return $records
+            ->sortBy(fn (Attendance $attendance) => $attendance->attendanceSession?->attendance_date?->format('Y-m-d') ?? '')
+            ->map(fn (Attendance $attendance) => [
+                'day' => $attendance->attendanceSession?->attendance_date?->format('d'),
+                'date' => $attendance->attendanceSession?->attendance_date?->format('Y-m-d'),
+                'status' => $attendance->status,
+            ])
+            ->filter(fn (array $record) => !empty($record['date']))
+            ->values()
+            ->all();
     }
 
     private function validatedReportRequest(Request $request): array

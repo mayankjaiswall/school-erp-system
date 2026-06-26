@@ -38,7 +38,7 @@
                 <div class="sidebar-section-title">My Child</div>
                 <a href="{{ route('parent.children') }}" class="{{ request()->routeIs('parent.children') ? 'active-menu' : '' }}"><i class="bi bi-people"></i><span>My Children</span></a>
                 <a href="{{ route('parent.attendance') }}" class="{{ request()->routeIs('parent.attendance') ? 'active-menu' : '' }}"><i class="bi bi-calendar2-check"></i><span>Attendance</span></a>
-                <a href="{{ route('parent.results') }}" class="{{ request()->routeIs('parent.results') ? 'active-menu' : '' }}"><i class="bi bi-bar-chart-line"></i><span>Results</span></a>
+                <a href="{{ route('parent.results') }}" class="{{ request()->routeIs('parent.results') ? 'active-menu' : '' }}"><i class="bi bi-bar-chart-line"></i><span>Marks</span></a>
                 <a href="{{ route('parent.report-cards') }}" class="{{ request()->routeIs('parent.report-cards*') ? 'active-menu' : '' }}"><i class="bi bi-award"></i><span>Report Cards</span></a>
                 <a href="{{ route('parent.remarks') }}" class="{{ request()->routeIs('parent.remarks') ? 'active-menu' : '' }}"><i class="bi bi-chat-left-text"></i><span>Teacher Remarks</span></a>
             </div>
@@ -55,7 +55,7 @@
             <h4>@yield('page-title')</h4>
             <div class="topbar-right">
                 <i class="bi bi-bell fs-5"></i>
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Parent') }}&background=2563eb&color=fff">
+                <img src="{{ auth()->user()?->photo ? asset('storage/'.auth()->user()->photo) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name ?? 'Parent').'&background=2563eb&color=fff' }}">
                 <strong>{{ auth()->user()->name ?? 'Parent' }}</strong>
             </div>
         </div>
