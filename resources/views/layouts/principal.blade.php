@@ -17,6 +17,25 @@
             background: #f8fafc;
             font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input,
+        textarea,
+        select,
+        [contenteditable="true"] {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        label,
+        button,
+        .btn,
+        .sidebar,
+        .topbar {
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         /* =========================SIDEBAR========================= */
@@ -462,6 +481,29 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const interactiveSelector = 'a, button, input, textarea, select, option, label[for], [role="button"], [contenteditable="true"]';
+
+            const clearStaticSelection = () => {
+                const selection = window.getSelection();
+
+                if (selection) {
+                    selection.removeAllRanges();
+                }
+            };
+
+            document.addEventListener('pointerdown', (event) => {
+                if (!event.target.closest(interactiveSelector)) {
+                    event.preventDefault();
+                    clearStaticSelection();
+                }
+            });
+
+            document.addEventListener('selectionchange', () => {
+                if (!document.activeElement || document.activeElement === document.body) {
+                    clearStaticSelection();
+                }
+            });
+
             document.querySelectorAll('form[role="search"]').forEach((form) => {
                 const input = form.querySelector('input[type="search"][name="search"]');
 

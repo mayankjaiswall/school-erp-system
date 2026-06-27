@@ -10,30 +10,32 @@
     .form-page-header{
         background: linear-gradient(135deg,#2563eb,#1d4ed8);
         color:#fff;
-        padding:30px;
+        padding:34px 36px;
         border-radius:20px;
-        margin-bottom:25px;
+        margin-bottom:28px;
         box-shadow:0 15px 35px rgba(37,99,235,.25);
     }
 
     .form-card{
         background:#fff;
         border-radius:20px;
-        padding:30px;
+        padding:34px 36px;
         border:1px solid #e2e8f0;
         box-shadow:0 8px 20px rgba(15,23,42,.05);
     }
 
     .form-label{
+        display:block;
         font-weight:600;
         color:#334155;
-        margin-bottom:8px;
+        margin-bottom:10px;
     }
 
     .form-control,
     .form-select{
         border-radius:12px;
-        min-height:48px;
+        min-height:54px;
+        padding:14px 16px;
         border:1px solid #dbe2ea;
     }
 
@@ -45,8 +47,15 @@
 
     .action-footer{
         border-top:1px solid #e2e8f0;
-        padding-top:20px;
-        margin-top:30px;
+        padding-top:24px;
+        margin-top:36px;
+    }
+
+    @media (max-width: 768px) {
+        .form-page-header,
+        .form-card {
+            padding:26px 22px;
+        }
     }
 </style>
 
@@ -62,7 +71,7 @@
 <div class="form-card">
     <form id="teacherForm" action="{{ route('teachers.store') }}" method="POST">
         @csrf
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-md-6">
                 <label class="form-label">
                     Teacher Name
