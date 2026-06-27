@@ -5,10 +5,10 @@ $(function () {
         headers: {'X-CSRF-TOKEN': $('input[name="_token"]').val()}
     });
 
-    function rowPayload(row) {
+    function childPayload(option) {
         return {
-            student_id: row.data('student-id'),
-            relationship: row.find('.relationship-select').val()
+            student_id: option.data('student-id'),
+            relationship: option.find('.relationship-select').val()
         };
     }
 
@@ -18,24 +18,68 @@ $(function () {
 
     const childrenSection = $('#childrenLinkSection');
     const hasLiveLinking = Boolean(childrenSection.data('link-url'));
+    const childPicker = $('[data-child-picker]');
+    const childPickerText = $('[data-child-picker-text]');
+    const selectedList = $('[data-child-selected-list]');
+
+    function updateChildPickerSummary() {
+        const checkedOptions = $('.child-check:checked').closest('[data-child-option]');
+        const count = checkedOptions.length;
+
+        childPickerText.text(count ? `${count} child${count > 1 ? 'ren' : ''} selected` : 'Select children');
+        selectedList.empty();
+
+        checkedOptions.each(function () {
+            const option = $(this);
+            selectedList.append(
+                $('<span/>', {
+                    class: 'child-chip',
+                    text: `${option.data('student-name')} - ${option.find('.relationship-select').val()}`
+                })
+            );
+        });
+    }
+
+    childPicker.find('.child-picker-toggle').on('click', function () {
+        const isOpen = childPicker.toggleClass('open').hasClass('open');
+        $(this).attr('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    $(document).on('click', function (event) {
+        if (!$(event.target).closest('[data-child-picker]').length) {
+            childPicker.removeClass('open');
+            childPicker.find('.child-picker-toggle').attr('aria-expanded', 'false');
+        }
+    });
+
+    $('.child-option').on('click', function (event) {
+        if ($(event.target).is('input, select, option')) {
+            return;
+        }
+
+        const checkbox = $(this).find('.child-check');
+        checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+    });
 
     if (hasLiveLinking) {
         $('.child-check').on('change', function () {
             const checkbox = $(this);
-            const row = checkbox.closest('tr');
+            const option = checkbox.closest('[data-child-option]');
             const checked = checkbox.prop('checked');
             checkbox.prop('disabled', true);
+            updateChildPickerSummary();
 
             $.ajax({
                 url: checked ? childrenSection.data('link-url') : childrenSection.data('remove-url'),
                 method: checked ? 'POST' : 'DELETE',
-                data: rowPayload(row),
+                data: childPayload(option),
                 dataType: 'json',
                 success: function (response) {
                     showToast('success', response.message);
                 },
                 error: function (xhr) {
                     checkbox.prop('checked', !checked);
+                    updateChildPickerSummary();
                     showToast('error', xhr.responseJSON?.message || 'Unable to update child link.');
                 },
                 complete: function () {
@@ -46,9 +90,10 @@ $(function () {
 
         $('.relationship-select').on('change', function () {
             const select = $(this);
-            const row = select.closest('tr');
+            const option = select.closest('[data-child-option]');
+            updateChildPickerSummary();
 
-            if (!row.find('.child-check').prop('checked')) {
+            if (!option.find('.child-check').prop('checked')) {
                 return;
             }
 
@@ -56,7 +101,7 @@ $(function () {
             $.ajax({
                 url: childrenSection.data('relationship-url'),
                 method: 'PATCH',
-                data: rowPayload(row),
+                data: childPayload(option),
                 dataType: 'json',
                 success: function (response) {
                     showToast('success', response.message);
@@ -69,7 +114,11 @@ $(function () {
                 }
             });
         });
+    } else {
+        $('.child-check, .relationship-select').on('change', updateChildPickerSummary);
     }
+
+    updateChildPickerSummary();
 
     $('#parentForm').on('submit', function (event) {
         event.preventDefault();
