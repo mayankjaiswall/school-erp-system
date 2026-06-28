@@ -711,6 +711,168 @@
         .mc-title { font-family: 'Poppins',sans-serif; font-weight: 700; font-size: .95rem; margin-bottom: 8px; color: var(--dark); transition: color .3s; position: relative; z-index: 1; }
         .mc-desc { font-size: .8rem; color: var(--grey); line-height: 1.55; transition: color .3s; position: relative; z-index: 1; }
 
+        /* Pricing */
+        .pricing {
+            padding: 100px 0;
+            background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing::before {
+            content: '';
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79,70,229,.12), transparent 65%);
+            top: -160px;
+            right: -120px;
+        }
+        .pricing::after {
+            content: '';
+            position: absolute;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245,158,11,.12), transparent 65%);
+            bottom: -160px;
+            left: -120px;
+        }
+        .pricing .container {
+            position: relative;
+            z-index: 1;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: stretch;
+        }
+        .pricing-card {
+            background: rgba(255,255,255,.92);
+            border: 1px solid #e2e8f0;
+            border-radius: 22px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            overflow: hidden;
+            padding: 30px;
+            position: relative;
+            transition: all .3s ease;
+        }
+        .pricing-card:hover {
+            border-color: rgba(79,70,229,.25);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-8px);
+        }
+        .pricing-card.featured {
+            border-color: rgba(79,70,229,.45);
+            box-shadow: 0 24px 70px -18px rgba(79,70,229,.35);
+        }
+        .pricing-card.featured::before {
+            content: 'Popular';
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: var(--grad1);
+            border-radius: 50px;
+            color: #fff;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            padding: 6px 12px;
+            text-transform: uppercase;
+        }
+        .pricing-icon {
+            width: 54px;
+            height: 54px;
+            align-items: center;
+            background: rgba(79,70,229,.1);
+            border: 1px solid rgba(79,70,229,.15);
+            border-radius: 16px;
+            color: var(--primary);
+            display: flex;
+            font-size: 1.25rem;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+        .pricing-name {
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .pricing-desc {
+            color: var(--grey);
+            font-size: .9rem;
+            line-height: 1.7;
+            min-height: 54px;
+        }
+        .pricing-price {
+            align-items: flex-end;
+            display: flex;
+            gap: 6px;
+            margin: 26px 0 8px;
+        }
+        .pricing-currency {
+            color: var(--primary);
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .pricing-amount {
+            color: var(--dark);
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            font-weight: 900;
+            line-height: 1;
+        }
+        .pricing-duration {
+            color: var(--grey);
+            font-size: .88rem;
+            margin-bottom: 26px;
+        }
+        .pricing-features {
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+            list-style: none;
+            margin: 0 0 28px;
+            padding-top: 22px;
+        }
+        .pricing-features li {
+            align-items: center;
+            color: #334155;
+            display: flex;
+            font-size: .88rem;
+            gap: 10px;
+        }
+        .pricing-features i {
+            color: var(--success);
+            font-size: .9rem;
+        }
+        .pricing-card .btn {
+            justify-content: center;
+            margin-top: auto;
+            width: 100%;
+        }
+        .pricing-empty {
+            background: #fff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 22px;
+            color: var(--grey);
+            padding: 46px 28px;
+            text-align: center;
+        }
+        .pricing-empty i {
+            color: #cbd5e1;
+            display: block;
+            font-size: 2.8rem;
+            margin-bottom: 14px;
+        }
+
         /* ─── CTA Banner ────────────────────────── */
         .cta-banner {
             padding: 100px 0;
@@ -845,6 +1007,7 @@
             .features-grid { grid-template-columns: repeat(2, 1fr); }
             .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
             .modules-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .why-grid { gap: 40px; }
             .steps-grid::before { display: none; }
@@ -863,6 +1026,7 @@
             .why-visual { display: none; }
             .testimonials-grid { grid-template-columns: 1fr; }
             .modules-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
             .nav-links { display: none; }
@@ -890,6 +1054,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#modules">Modules</a></li>
+            <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -1285,8 +1450,58 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     TESTIMONIALS
+     PRICING
 ════════════════════════════════════════════════ -->
+<section class="pricing" id="pricing">
+    <div class="container">
+        <div class="text-center reveal">
+            <span class="section-tag">Subscription Plans</span>
+            <h2 class="section-title">Simple Plans for<br><span class="gradient-text">Growing Schools</span></h2>
+            <p class="section-subtitle">Choose a plan that matches your school size and operating rhythm. Every active plan is managed directly from the Super Admin panel.</p>
+        </div>
+
+        @if($subscriptionPlans->isNotEmpty())
+            <div class="pricing-grid">
+                @foreach($subscriptionPlans as $plan)
+                    <div class="pricing-card reveal reveal-delay-{{ min(($loop->iteration % 5) + 1, 5) }} {{ $loop->iteration === 2 ? 'featured' : '' }}">
+                        <div class="pricing-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div class="pricing-name">{{ $plan->plan_name }}</div>
+                        <p class="pricing-desc">
+                            {{ $plan->description ?: 'A flexible EduERP subscription plan designed for day-to-day school operations.' }}
+                        </p>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">Rs.</span>
+                            <span class="pricing-amount">{{ number_format((float) $plan->price, 0) }}</span>
+                        </div>
+                        <div class="pricing-duration">
+                            For {{ $plan->duration }} {{ \Illuminate\Support\Str::lower($plan->duration_type) }}
+                        </div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check-circle"></i> Complete school ERP access</li>
+                            <li><i class="fas fa-check-circle"></i> Student, teacher and parent portals</li>
+                            <li><i class="fas fa-check-circle"></i> Attendance, reports and communication tools</li>
+                            <li><i class="fas fa-check-circle"></i> Guided onboarding and support</li>
+                        </ul>
+                        <a href="#contact" class="btn {{ $loop->iteration === 2 ? 'btn-primary' : 'btn-outline' }}">
+                            <i class="fas fa-arrow-right"></i>
+                            Get Started
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div class="pricing-empty reveal">
+                <i class="fas fa-tags"></i>
+                <h3>No subscription plans available yet</h3>
+                <p>Active plans created in the Super Admin panel will appear here automatically.</p>
+            </div>
+        @endif
+    </div>
+</section>
+
+<!-- Testimonials -->
 <section class="testimonials" id="testimonials">
     <div class="container">
         <div class="text-center reveal">
@@ -1381,7 +1596,7 @@
                 <ul class="footer-links">
                     <li><a href="#">Features</a></li>
                     <li><a href="#">Modules</a></li>
-                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
                     <li><a href="#">Changelog</a></li>
                     <li><a href="#">Roadmap</a></li>
                 </ul>
