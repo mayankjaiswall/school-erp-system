@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SubscriptionPlanController;
 use App\Http\Controllers\Principal\DashboardController as PrincipalDashboardController;
 
 // Load additional route files
@@ -53,6 +54,15 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->group(function
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // Subscription plans routes
+    Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index'])->name('subscription-plans.index');
+    Route::get('/subscription-plans/create', [SubscriptionPlanController::class, 'create'])->name('subscription-plans.create');
+    Route::post('/subscription-plans/store', [SubscriptionPlanController::class, 'store'])->name('subscription-plans.store');
+    Route::get('/subscription-plans/edit/{id}', [SubscriptionPlanController::class, 'edit'])->name('subscription-plans.edit');
+    Route::post('/subscription-plans/update/{id}', [SubscriptionPlanController::class, 'update'])->name('subscription-plans.update');
+    Route::post('/subscription-plans/delete/{id}', [SubscriptionPlanController::class, 'delete'])->name('subscription-plans.delete');
+    Route::get('/subscription-plans/view/{id}', [SubscriptionPlanController::class, 'view'])->name('subscription-plans.view');
 
     //
 });

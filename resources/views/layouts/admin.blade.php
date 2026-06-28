@@ -87,6 +87,73 @@
             color: #fff;
         }
 
+        .sidebar-dropdown {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-dropdown-toggle {
+            align-items: center;
+            background: transparent;
+            border: none;
+            border-radius: 14px;
+            color: #94a3b8;
+            display: flex;
+            font-weight: 500;
+            gap: 14px;
+            padding: 14px 18px;
+            text-align: left;
+            transition: .25s ease;
+            width: 100%;
+        }
+
+        .sidebar-dropdown-toggle i {
+            font-size: 18px;
+        }
+
+        .sidebar-dropdown-toggle:hover,
+        .sidebar-dropdown.open .sidebar-dropdown-toggle,
+        .sidebar-dropdown.active .sidebar-dropdown-toggle {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        .sidebar-dropdown-toggle .dropdown-arrow {
+            font-size: 14px;
+            margin-left: auto;
+            transition: transform .25s ease;
+        }
+
+        .sidebar-dropdown.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .sidebar-submenu {
+            display: grid;
+            grid-template-rows: 0fr;
+            overflow: hidden;
+            transition: grid-template-rows .25s ease;
+        }
+
+        .sidebar-dropdown.open .sidebar-submenu {
+            grid-template-rows: 1fr;
+        }
+
+        .sidebar-submenu-inner {
+            min-height: 0;
+            padding: 6px 0 0 18px;
+        }
+
+        .sidebar-menu .sidebar-submenu a {
+            border-radius: 12px;
+            font-size: 14px;
+            margin-bottom: 6px;
+            padding: 11px 14px;
+        }
+
+        .sidebar-menu .sidebar-submenu a.active-menu {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+        }
+
         .logout-wrapper {
             padding: 20px;
             border-top: 1px solid rgba(255, 255, 255, .08);
@@ -280,6 +347,29 @@
                 <i class="bi bi-people"></i>
                 <span>Users</span>
             </a>
+            @php($subscriptionsOpen = request()->routeIs('subscription-plans.*'))
+            <div class="sidebar-dropdown {{ $subscriptionsOpen ? 'open active' : '' }}" data-sidebar-dropdown>
+                <button type="button"
+                        class="sidebar-dropdown-toggle"
+                        aria-expanded="{{ $subscriptionsOpen ? 'true' : 'false' }}">
+                    <i class="bi bi-credit-card-2-front"></i>
+                    <span>Subscriptions</span>
+                    <i class="bi bi-chevron-down dropdown-arrow"></i>
+                </button>
+                <div class="sidebar-submenu">
+                    <div class="sidebar-submenu-inner">
+                        <a href="{{ route('subscription-plans.index') }}"
+                            class="{{ request()->routeIs('subscription-plans.*') ? 'active-menu' : '' }}">
+                            <i class="bi bi-card-checklist"></i>
+                            <span>Plans</span>
+                        </a>
+                        <a href="#">
+                            <i class="bi bi-receipt"></i>
+                            <span>Payments</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
             @endif
             <a href="#">
                 <i class="bi bi-file-earmark-bar-graph"></i>
@@ -321,6 +411,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-sidebar-dropdown]').forEach((dropdown) => {
+                const toggle = dropdown.querySelector('.sidebar-dropdown-toggle');
+
+                toggle.addEventListener('click', () => {
+                    const isOpen = dropdown.classList.toggle('open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            });
+
             document.querySelectorAll('form[role="search"]').forEach((form) => {
                 const input = form.querySelector('input[type="search"][name="search"]');
 
