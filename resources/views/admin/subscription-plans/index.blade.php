@@ -213,6 +213,47 @@
     .invalid-feedback{
         display: block;
     }
+
+    .popular-toggle {
+        display: inline-flex;
+        cursor: pointer;
+        margin: 0;
+    }
+
+    .popular-toggle input {
+        display: none;
+    }
+
+    .popular-toggle span {
+        width: 48px;
+        height: 26px;
+        background: #cbd5e1;
+        border-radius: 999px;
+        display: inline-block;
+        position: relative;
+        transition: .2s ease;
+    }
+
+    .popular-toggle span::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(15,23,42,.2);
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        transition: .2s ease;
+    }
+
+    .popular-toggle input:checked + span {
+        background: #2563eb;
+    }
+
+    .popular-toggle input:checked + span::before {
+        transform: translateX(22px);
+    }
 </style>
 
 <div class="plans-list-header">
@@ -268,6 +309,7 @@
                     <th>Duration</th>
                     <th>Price</th>
                     <th>Status</th>
+                    <th>Popular</th>
                     <th>Created Date</th>
                     <th width="170">Actions</th>
                 </tr>
@@ -444,6 +486,7 @@ $(function () {
                 <div class="col-6"><small class="text-muted">Duration</small><div class="fw-semibold">${plan.duration}</div></div>
                 <div class="col-6"><small class="text-muted">Price</small><div class="fw-semibold">₹${plan.price}</div></div>
                 <div class="col-6"><small class="text-muted">Status</small><div class="fw-semibold">${plan.status}</div></div>
+                <div class="col-6"><small class="text-muted">Popular</small><div class="fw-semibold">${plan.popular}</div></div>
                 <div class="col-6"><small class="text-muted">Created Date</small><div class="fw-semibold">${plan.created_date}</div></div>
                 <div class="col-12"><small class="text-muted">Updated Date</small><div class="fw-semibold">${plan.updated_date}</div></div>
             `);
@@ -518,6 +561,30 @@ $(function () {
                     toast.fire({icon:'error', title: xhr.responseJSON?.message || 'Unable to delete plan.'});
                 }
             });
+        });
+    });
+
+    $(document).on('change', '.toggle-popular-plan', function () {
+        const id = $(this).data('id');
+        const toggle = $(this);
+
+        toggle.prop('disabled', true);
+
+        $.ajax({
+            url: "{{ url('/admin/subscription-plans/toggle-popular') }}/" + id,
+            method: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                toast.fire({icon:'success', title: response.message});
+                loadPlans();
+            },
+            error: function (xhr) {
+                toggle.prop('checked', !toggle.prop('checked'));
+                toast.fire({icon:'error', title: xhr.responseJSON?.message || 'Unable to update popular plan.'});
+            },
+            complete: function () {
+                toggle.prop('disabled', false);
+            }
         });
     });
 

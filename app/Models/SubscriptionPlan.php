@@ -13,10 +13,12 @@ class SubscriptionPlan extends Model
         'duration_type',
         'price',
         'status',
+        'is_popular',
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
         'status' => 'boolean',
+        'is_popular' => 'boolean',
     ];
 }
