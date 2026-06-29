@@ -1463,7 +1463,7 @@
         @if($subscriptionPlans->isNotEmpty())
             <div class="pricing-grid">
                 @foreach($subscriptionPlans as $plan)
-                    <div class="pricing-card reveal reveal-delay-{{ min(($loop->iteration % 5) + 1, 5) }} {{ $loop->iteration === 2 ? 'featured' : '' }}">
+                    <div class="pricing-card reveal reveal-delay-{{ min(($loop->iteration % 5) + 1, 5) }} {{ $plan->is_popular ? 'featured' : '' }}">
                         <div class="pricing-icon">
                             <i class="fas fa-layer-group"></i>
                         </div>
@@ -1484,7 +1484,7 @@
                             <li><i class="fas fa-check-circle"></i> Attendance, reports and communication tools</li>
                             <li><i class="fas fa-check-circle"></i> Guided onboarding and support</li>
                         </ul>
-                        <a href="#contact" class="btn {{ $loop->iteration === 2 ? 'btn-primary' : 'btn-outline' }}">
+                        <a href="#contact" class="btn {{ $plan->is_popular ? 'btn-primary' : 'btn-outline' }}">
                             <i class="fas fa-arrow-right"></i>
                             Get Started
                         </a>

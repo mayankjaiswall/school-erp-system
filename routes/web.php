@@ -61,6 +61,7 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->group(function
     Route::post('/subscription-plans/store', [SubscriptionPlanController::class, 'store'])->name('subscription-plans.store');
     Route::get('/subscription-plans/edit/{id}', [SubscriptionPlanController::class, 'edit'])->name('subscription-plans.edit');
     Route::post('/subscription-plans/update/{id}', [SubscriptionPlanController::class, 'update'])->name('subscription-plans.update');
+    Route::post('/subscription-plans/toggle-popular/{id}', [SubscriptionPlanController::class, 'togglePopular'])->name('subscription-plans.toggle-popular');
     Route::post('/subscription-plans/delete/{id}', [SubscriptionPlanController::class, 'delete'])->name('subscription-plans.delete');
     Route::get('/subscription-plans/view/{id}', [SubscriptionPlanController::class, 'view'])->name('subscription-plans.view');
 
