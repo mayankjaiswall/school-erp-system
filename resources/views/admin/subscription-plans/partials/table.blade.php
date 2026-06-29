@@ -16,6 +16,12 @@
                 <span class="status-pill inactive">Inactive</span>
             @endif
         </td>
+        <td>
+            <label class="popular-toggle" title="{{ $plan->is_popular ? 'Remove popular' : 'Mark popular' }}">
+                <input type="checkbox" class="toggle-popular-plan" data-id="{{ $plan->id }}" {{ $plan->is_popular ? 'checked' : '' }}>
+                <span></span>
+            </label>
+        </td>
         <td>{{ $plan->created_at->format('d M Y') }}</td>
         <td>
             <button type="button" class="btn-action btn-view view-plan" data-id="{{ $plan->id }}" title="View">
@@ -31,7 +37,7 @@
     </tr>
 @empty
     <tr>
-        <td colspan="7">
+        <td colspan="8">
             <div class="empty-state">
                 <i class="bi bi-credit-card"></i>
                 <h5>No Subscription Plans Found</h5>
