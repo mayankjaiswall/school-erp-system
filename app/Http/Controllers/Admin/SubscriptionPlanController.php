@@ -93,6 +93,7 @@ class SubscriptionPlanController extends Controller
                 'duration' => $plan->duration.' '.$plan->duration_type,
                 'price' => number_format((float) $plan->price, 2),
                 'status' => $plan->status ? 'Active' : 'Inactive',
+                'popular' => $plan->is_popular ? 'Yes' : 'No',
                 'created_date' => $plan->created_at->format('d M Y'),
                 'updated_date' => $plan->updated_at->format('d M Y'),
             ],
@@ -106,6 +107,25 @@ class SubscriptionPlanController extends Controller
 
         return response()->json([
             'message' => 'Subscription plan deleted successfully.',
+        ]);
+    }
+
+    public function togglePopular($id)
+    {
+        $plan = SubscriptionPlan::findOrFail($id);
+        $makePopular = ! $plan->is_popular;
+
+        if ($makePopular) {
+            SubscriptionPlan::where('id', '!=', $plan->id)->update(['is_popular' => false]);
+        }
+
+        $plan->update(['is_popular' => $makePopular]);
+
+        return response()->json([
+            'message' => $makePopular
+                ? "{$plan->plan_name} marked as popular."
+                : "{$plan->plan_name} removed from popular.",
+            'is_popular' => $plan->is_popular,
         ]);
     }
 
