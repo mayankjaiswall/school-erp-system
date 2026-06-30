@@ -742,11 +742,53 @@
             position: relative;
             z-index: 1;
         }
+        .pricing-carousel {
+            position: relative;
+        }
         .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
             gap: 24px;
             align-items: stretch;
+            overflow-x: auto;
+            padding: 6px 2px 22px;
+            scroll-behavior: smooth;
+            scroll-padding: 2px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+        .pricing-grid::-webkit-scrollbar {
+            display: none;
+        }
+        .pricing-carousel-nav {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin: -18px 0 18px;
+        }
+        .pricing-carousel-btn {
+            align-items: center;
+            background: #fff;
+            border: 1px solid #dbe3ef;
+            border-radius: 50%;
+            box-shadow: var(--shadow-sm);
+            color: var(--primary);
+            cursor: pointer;
+            display: inline-flex;
+            height: 42px;
+            justify-content: center;
+            transition: all .25s ease;
+            width: 42px;
+        }
+        .pricing-carousel-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .pricing-carousel-btn:disabled {
+            cursor: not-allowed;
+            opacity: .45;
+            transform: none;
         }
         .pricing-card {
             background: rgba(255,255,255,.92);
@@ -755,10 +797,12 @@
             box-shadow: var(--shadow-sm);
             display: flex;
             flex-direction: column;
+            flex: 0 0 calc((100% - 48px) / 3);
             min-height: 100%;
             overflow: hidden;
             padding: 30px;
             position: relative;
+            scroll-snap-align: start;
             transition: all .3s ease;
         }
         .pricing-card:hover {
@@ -1007,7 +1051,7 @@
             .features-grid { grid-template-columns: repeat(2, 1fr); }
             .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
             .modules-grid { grid-template-columns: repeat(2, 1fr); }
-            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-card { flex-basis: calc((100% - 24px) / 2); }
             .footer-grid { grid-template-columns: 1fr 1fr; }
             .why-grid { gap: 40px; }
             .steps-grid::before { display: none; }
@@ -1026,7 +1070,8 @@
             .why-visual { display: none; }
             .testimonials-grid { grid-template-columns: 1fr; }
             .modules-grid { grid-template-columns: repeat(2, 1fr); }
-            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-card { flex-basis: 100%; }
+            .pricing-carousel-nav { justify-content: center; margin-top: -28px; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
             .nav-links { display: none; }
@@ -1461,35 +1506,48 @@
         </div>
 
         @if($subscriptionPlans->isNotEmpty())
-            <div class="pricing-grid">
-                @foreach($subscriptionPlans as $plan)
-                    <div class="pricing-card reveal reveal-delay-{{ min(($loop->iteration % 5) + 1, 5) }} {{ $plan->is_popular ? 'featured' : '' }}">
-                        <div class="pricing-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </div>
-                        <div class="pricing-name">{{ $plan->plan_name }}</div>
-                        <p class="pricing-desc">
-                            {{ $plan->description ?: 'A flexible EduERP subscription plan designed for day-to-day school operations.' }}
-                        </p>
-                        <div class="pricing-price">
-                            <span class="pricing-currency">Rs.</span>
-                            <span class="pricing-amount">{{ number_format((float) $plan->price, 0) }}</span>
-                        </div>
-                        <div class="pricing-duration">
-                            For {{ $plan->duration }} {{ \Illuminate\Support\Str::lower($plan->duration_type) }}
-                        </div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check-circle"></i> Complete school ERP access</li>
-                            <li><i class="fas fa-check-circle"></i> Student, teacher and parent portals</li>
-                            <li><i class="fas fa-check-circle"></i> Attendance, reports and communication tools</li>
-                            <li><i class="fas fa-check-circle"></i> Guided onboarding and support</li>
-                        </ul>
-                        <a href="#contact" class="btn {{ $plan->is_popular ? 'btn-primary' : 'btn-outline' }}">
-                            <i class="fas fa-arrow-right"></i>
-                            Get Started
-                        </a>
+            <div class="pricing-carousel">
+                @if($subscriptionPlans->count() > 3)
+                    <div class="pricing-carousel-nav" aria-label="Subscription plan carousel controls">
+                        <button class="pricing-carousel-btn" type="button" data-pricing-prev aria-label="Previous plans">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pricing-carousel-btn" type="button" data-pricing-next aria-label="Next plans">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
-                @endforeach
+                @endif
+
+                <div class="pricing-grid" data-pricing-carousel>
+                    @foreach($subscriptionPlans as $plan)
+                        <div class="pricing-card reveal reveal-delay-{{ min(($loop->iteration % 5) + 1, 5) }} {{ $plan->is_popular ? 'featured' : '' }}">
+                            <div class="pricing-icon">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div class="pricing-name">{{ $plan->plan_name }}</div>
+                            <p class="pricing-desc">
+                                {{ $plan->description ?: 'A flexible EduERP subscription plan designed for day-to-day school operations.' }}
+                            </p>
+                            <div class="pricing-price">
+                                <span class="pricing-currency">Rs.</span>
+                                <span class="pricing-amount">{{ number_format((float) $plan->price, 0) }}</span>
+                            </div>
+                            <div class="pricing-duration">
+                                For {{ $plan->duration }} {{ \Illuminate\Support\Str::lower($plan->duration_type) }}
+                            </div>
+                            <ul class="pricing-features">
+                                <li><i class="fas fa-check-circle"></i> Complete school ERP access</li>
+                                <li><i class="fas fa-check-circle"></i> Student, teacher and parent portals</li>
+                                <li><i class="fas fa-check-circle"></i> Attendance, reports and communication tools</li>
+                                <li><i class="fas fa-check-circle"></i> Guided onboarding and support</li>
+                            </ul>
+                            <a href="#contact" class="btn {{ $plan->is_popular ? 'btn-primary' : 'btn-outline' }}">
+                                <i class="fas fa-arrow-right"></i>
+                                Get Started
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         @else
             <div class="pricing-empty reveal">
@@ -1693,6 +1751,65 @@
     }, { threshold: 0.5 });
 
     document.querySelectorAll('.stat-number[data-target]').forEach(el => counterObserver.observe(el));
+
+    // Pricing carousel
+    const pricingCarousel = document.querySelector('[data-pricing-carousel]');
+    const pricingPrev = document.querySelector('[data-pricing-prev]');
+    const pricingNext = document.querySelector('[data-pricing-next]');
+
+    if (pricingCarousel && pricingPrev && pricingNext) {
+        const getPricingStep = () => {
+            const card = pricingCarousel.querySelector('.pricing-card');
+            if (!card) return pricingCarousel.clientWidth;
+            const carouselStyles = getComputedStyle(pricingCarousel);
+            const gap = parseFloat(carouselStyles.gap || carouselStyles.columnGap || 0) || 0;
+            return card.getBoundingClientRect().width + gap;
+        };
+
+        const getPricingMaxScroll = () => pricingCarousel.scrollWidth - pricingCarousel.clientWidth;
+
+        const movePricingCarousel = (direction = 1) => {
+            const maxScroll = getPricingMaxScroll();
+            const nextLeft = pricingCarousel.scrollLeft + (getPricingStep() * direction);
+
+            if (direction > 0 && nextLeft >= maxScroll - 2) {
+                pricingCarousel.scrollTo({ left: 0, behavior: 'smooth' });
+                return;
+            }
+
+            if (direction < 0 && nextLeft <= 2) {
+                pricingCarousel.scrollTo({ left: maxScroll, behavior: 'smooth' });
+                return;
+            }
+
+            pricingCarousel.scrollBy({ left: getPricingStep() * direction, behavior: 'smooth' });
+        };
+
+        let pricingAutoSlide = window.setInterval(() => movePricingCarousel(1), 3000);
+
+        const restartPricingAutoSlide = () => {
+            window.clearInterval(pricingAutoSlide);
+            pricingAutoSlide = window.setInterval(() => movePricingCarousel(1), 3000);
+        };
+
+        const stopPricingAutoSlide = () => window.clearInterval(pricingAutoSlide);
+
+        pricingPrev.addEventListener('click', () => {
+            movePricingCarousel(-1);
+            restartPricingAutoSlide();
+        });
+
+        pricingNext.addEventListener('click', () => {
+            movePricingCarousel(1);
+            restartPricingAutoSlide();
+        });
+
+        pricingCarousel.addEventListener('mouseenter', stopPricingAutoSlide);
+        pricingCarousel.addEventListener('mouseleave', restartPricingAutoSlide);
+        pricingCarousel.addEventListener('focusin', stopPricingAutoSlide);
+        pricingCarousel.addEventListener('focusout', restartPricingAutoSlide);
+        window.addEventListener('resize', restartPricingAutoSlide);
+    }
 
     // ── Smooth scroll for anchor links ─────────
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

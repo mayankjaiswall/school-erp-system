@@ -10,7 +10,6 @@ class HomeController extends Controller
     public function index()
     {
         $subscriptionPlans = SubscriptionPlan::where('status', true)
-            ->orderByDesc('is_popular')
             ->orderBy('price')
             ->orderBy('duration')
             ->get();
