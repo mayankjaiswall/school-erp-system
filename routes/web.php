@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Principal\DashboardController as PrincipalDashboardController;
 
 // Load additional route files
@@ -25,6 +26,13 @@ foreach ($extraRoutes as $file) {
         require $path;
     }
 }
+
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
+    Route::patch('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/password', [AccountController::class, 'password'])->name('password');
+    Route::put('/password', [AccountController::class, 'updatePassword'])->name('password.update');
+});
 
 Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');

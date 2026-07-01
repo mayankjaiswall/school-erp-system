@@ -335,8 +335,7 @@
             <h4>@yield('page-title')</h4>
             <div class="topbar-right">
                 <i class="bi bi-bell fs-5"></i>
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'Teacher') }}&background=16a34a&color=fff">
-                <strong>{{ auth()->user()->name ?? 'Teacher' }}</strong>
+                @include('layouts.partials.account-menu')
             </div>
         </div>
         <div class="page-content">
