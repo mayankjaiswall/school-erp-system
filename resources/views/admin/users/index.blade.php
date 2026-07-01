@@ -31,6 +31,7 @@
         border: 1px solid #e2e8f0;
         box-shadow: 0 8px 20px rgba(15,23,42,.05);
         text-align: center;
+        height: 100%;
     }
 
     .stats-card h3{
@@ -42,6 +43,59 @@
     .stats-card span{
         color: #64748b;
         font-size: 14px;
+    }
+
+    .role-stat-card{
+        background: #fff;
+        padding: 18px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        height: 100%;
+    }
+
+    .role-stat-card .role-icon{
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .role-stat-card h4{
+        margin: 0;
+        color: #0f172a;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .role-stat-card span{
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 500;
+        display: block;
+    }
+
+    .role-pill{
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 30px;
+        background: #eef2ff;
+        color: #3730a3;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .role-pill.unassigned{
+        background: #f1f5f9;
+        color: #64748b;
     }
 
     .table-card{
@@ -163,13 +217,28 @@
     </a>
 </div>
 <!-- Stats -->
-<div class="row mb-4">
-    <div class="col-md-3">
+<div class="row g-3 mb-4">
+    <div class="col-md-3 col-sm-6">
         <div class="stats-card">
-            <h3>{{ $users->count() }}</h3>
+            <h3>{{ $totalUsers }}</h3>
             <span>Total Users</span>
         </div>
     </div>
+    @foreach($roleStats as $role)
+        <div class="col-md-3 col-sm-6">
+            <div class="role-stat-card">
+                <div class="d-flex align-items-center justify-content-between gap-3">
+                    <div>
+                        <span>{{ $role->name }}</span>
+                        <h4>{{ $role->users_count }}</h4>
+                    </div>
+                    <div class="role-icon">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 </div>
 <!-- Table -->
 <div class="table-card">
@@ -196,6 +265,7 @@
                     <th>#</th>
                     <th>User Name</th>
                     <th>Email</th>
+                    <th>Role</th>
                     <th>Phone</th>
                     <th>Status</th>
                     <th>Created</th>
@@ -217,6 +287,19 @@
                         </div>
                     </td>
                     <td>{{ $user->email }}</td>
+                    <td>
+                        @if($user->role)
+                            <span class="role-pill">
+                                <i class="bi bi-person-badge"></i>
+                                {{ $user->role->name }}
+                            </span>
+                        @else
+                            <span class="role-pill unassigned">
+                                <i class="bi bi-dash-circle"></i>
+                                Not Assigned
+                            </span>
+                        @endif
+                    </td>
                     <td>{{ $user->phone }}</td>
                     <td>
                         @if($user->status)
@@ -316,7 +399,7 @@
                 </div>
             @empty
                 <tr>
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="empty-state">
                             <i class="bi bi-person"></i>
                             <h5>No Users Found</h5>

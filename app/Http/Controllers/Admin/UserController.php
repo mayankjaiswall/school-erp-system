@@ -13,6 +13,10 @@ class UserController extends Controller
     public function index()
     {
         $search = trim((string) request('search'));
+        $totalUsers = User::count();
+        $roleStats = Role::withCount('users')
+            ->orderBy('name')
+            ->get();
 
         $users = User::with(['role', 'school'])
             ->when($search, function ($query) use ($search) {
@@ -33,7 +37,7 @@ class UserController extends Controller
             ->latest()
             ->get();
 
-        return view('admin.users.index', compact('users', 'search'));
+        return view('admin.users.index', compact('users', 'search', 'totalUsers', 'roleStats'));
     }
 
     public function create()
