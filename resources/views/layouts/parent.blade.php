@@ -55,8 +55,7 @@
             <h4>@yield('page-title')</h4>
             <div class="topbar-right">
                 <i class="bi bi-bell fs-5"></i>
-                <img src="{{ auth()->user()?->photo ? asset('storage/'.auth()->user()->photo) : 'https://ui-avatars.com/api/?name='.urlencode(auth()->user()->name ?? 'Parent').'&background=2563eb&color=fff' }}">
-                <strong>{{ auth()->user()->name ?? 'Parent' }}</strong>
+                @include('layouts.partials.account-menu')
             </div>
         </div>
         <div class="page-content">@yield('content')</div>
