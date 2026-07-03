@@ -1,9 +1,10 @@
 @php
     $accountUser = auth()->user();
     $avatarName = urlencode($accountUser->name ?? 'User');
+    $avatarFallback = "https://ui-avatars.com/api/?name={$avatarName}&background=2563eb&color=fff";
     $avatarUrl = $accountUser?->photo
         ? asset('storage/' . $accountUser->photo)
-        : "https://ui-avatars.com/api/?name={$avatarName}&background=2563eb&color=fff";
+        : $avatarFallback;
 @endphp
 
 @once
@@ -11,7 +12,7 @@
         .account-menu{position:relative}
         .account-menu-toggle{align-items:center;background:#fff;border:1px solid transparent;border-radius:14px;display:flex;gap:12px;padding:8px 10px;transition:.2s ease}
         .account-menu-toggle:hover,.account-menu.open .account-menu-toggle{background:#f8fafc;border-color:#dbeafe;box-shadow:0 8px 20px rgba(15,23,42,.08)}
-        .account-menu-toggle img{width:44px;height:44px;border-radius:50%;border:3px solid #dbeafe;object-fit:cover}
+        .account-menu-toggle img{width:44px;height:44px;min-width:44px;border-radius:50%;border:3px solid #dbeafe;object-fit:cover;background:#eff6ff;display:block;font-size:0}
         .account-menu-toggle strong{color:#0f172a;font-size:15px;white-space:nowrap}
         .account-menu-toggle small{color:#64748b;display:block;font-size:12px;font-weight:600;line-height:1.2;text-align:left}
         .account-menu-toggle .account-chevron{color:#64748b;font-size:14px;transition:transform .2s ease}
@@ -48,7 +49,7 @@
 
 <div class="account-menu" data-account-menu>
     <button type="button" class="account-menu-toggle" data-account-menu-toggle aria-label="Open account menu">
-        <img src="{{ $avatarUrl }}" alt="{{ $accountUser->name ?? 'User' }}">
+        <img src="{{ $avatarUrl }}" alt="{{ $accountUser->name ?? 'User' }}" onerror="this.onerror=null;this.src='{{ $avatarFallback }}';">
         <span>
             <strong>{{ $accountUser->name ?? 'User' }}</strong>
             <small>{{ $accountUser?->role?->name ?? 'Account' }}</small>
