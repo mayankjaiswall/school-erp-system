@@ -4,10 +4,15 @@
 @section('page-title', 'View Profile')
 
 @section('content')
+@php
+    $avatarFallback = 'https://ui-avatars.com/api/?name=' . urlencode($user->name ?? 'User') . '&background=2563eb&color=fff';
+    $avatarUrl = $user->photo ? asset('storage/' . $user->photo) : $avatarFallback;
+@endphp
+
 <style>
     .account-header{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:30px;border-radius:20px;margin-bottom:25px;box-shadow:0 15px 35px rgba(37,99,235,.25)}
     .account-card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;box-shadow:0 8px 20px rgba(15,23,42,.05);padding:28px}
-    .profile-avatar{width:96px;height:96px;border-radius:50%;object-fit:cover;border:4px solid #dbeafe}
+    .profile-avatar{width:96px;height:96px;min-width:96px;border-radius:50%;object-fit:cover;border:4px solid #dbeafe;background:#eff6ff;display:block;font-size:0}
     .form-label{color:#334155;font-weight:700;margin-bottom:8px}
     .form-control{border:1px solid #dbe2ea;border-radius:12px;min-height:48px}
     .form-control:focus{border-color:#2563eb;box-shadow:0 0 0 .2rem rgba(37,99,235,.12)}
@@ -32,7 +37,7 @@
         @method('PATCH')
 
         <div class="d-flex flex-wrap align-items-center gap-4 mb-4">
-            <img class="profile-avatar" src="{{ $user->photo ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=2563eb&color=fff' }}" alt="{{ $user->name }}">
+            <img class="profile-avatar" src="{{ $avatarUrl }}" alt="{{ $user->name }}" onerror="this.onerror=null;this.src='{{ $avatarFallback }}';">
             <div>
                 <h4 class="mb-1">{{ $user->name }}</h4>
                 <p class="text-muted mb-0">{{ $user->role?->name ?? 'No Role Assigned' }}</p>
