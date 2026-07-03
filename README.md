@@ -1,66 +1,271 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EduERP - School ERP System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+EduERP is a Laravel 11 based school management system. It provides separate portals for super admins, principals, teachers, and parents so each role can manage the school data relevant to them.
 
-## About Laravel
+The application currently includes school administration, user and role management, teacher/student/parent management, class and subject setup, attendance, exams, marks, remarks, report cards, profile management, and PDF report card export.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technology Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.2+
+- Laravel 11
+- MySQL or MariaDB
+- Blade views
+- Bootstrap Icons and custom Blade/CSS layouts
+- Vite for frontend assets
+- `barryvdh/laravel-dompdf` for PDF generation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Main Features
 
-## Learning Laravel
+- Public landing page and login flow
+- Role based dashboard access using `auth` and `role` middleware
+- Super admin panel for schools, roles, users, and subscription plans
+- Principal panel for teachers, classes, students, parents, subjects, teacher-subject assignment, attendance review, exams, results, report cards, and school users
+- Teacher panel for assigned class view, students, attendance entry/reporting, marks entry, remarks, and report cards
+- Parent panel for children, attendance, results, report cards, remarks, and profile/password management
+- Shared account profile and password screens
+- Student and teacher import template/download flows
+- Uploaded profile photos served from Laravel public storage
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Roles
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The seeded roles are:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- `super_admin`
+- `principal`
+- `admin`
+- `hod`
+- `teacher`
+- `parent`
+- `student`
 
-## Laravel Sponsors
+Route access is controlled by [EnsureRole.php](app/Http/Middleware/EnsureRole.php).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Project Structure
 
-### Premium Partners
+```text
+app/
+  Http/Controllers/
+    Admin/        Super admin controllers
+    Principal/    Principal panel controllers
+    Teacher/      Teacher panel controllers
+    Parent/       Parent panel controller
+    Auth/         Login/logout controller
+  Models/         Eloquent models
+  Services/       Import services for students and teachers
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+database/
+  migrations/     Database schema
+  seeders/        Roles, super admin, and sample parent/student links
 
-## Contributing
+resources/views/
+  admin/          Super admin screens
+  principal/      Principal panel screens
+  teacher/        Teacher panel screens
+  parent/         Parent panel screens
+  account/        Shared profile/password screens
+  layouts/        Role-specific layouts and shared account menu
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+routes/
+  web.php         Main route loader and shared account routes
+  frontend.php    Public home/login/logout routes
+  principal.php   Principal portal routes
+  teacher.php     Teacher portal routes
+  parent.php      Parent portal routes
+  admin.php       Admin dashboard route
+```
 
-## Code of Conduct
+## Installation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Clone the repository and enter the project directory.
 
-## Security Vulnerabilities
+```bash
+git clone <repository-url>
+cd school-erp-system
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. Install PHP dependencies.
 
-## License
+```bash
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+3. Install frontend dependencies.
+
+```bash
+npm install
+```
+
+4. Create the environment file.
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+5. Generate the Laravel application key.
+
+```bash
+php artisan key:generate
+```
+
+6. Configure database settings in `.env`.
+
+```env
+APP_NAME=EduERP
+APP_URL=http://127.0.0.1:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=school_erp_system
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+7. Run migrations and seeders.
+
+```bash
+php artisan migrate --seed
+```
+
+8. Create the public storage link for uploaded files.
+
+```bash
+php artisan storage:link
+```
+
+9. Build frontend assets.
+
+```bash
+npm run build
+```
+
+For active frontend development, use:
+
+```bash
+npm run dev
+```
+
+10. Start the Laravel development server.
+
+```bash
+php artisan serve
+```
+
+Open the application at:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Seeded Login
+
+The default super admin account is created by [SuperAdminSeeder.php](database/seeders/SuperAdminSeeder.php).
+
+```text
+Email: admin@eduerp.com
+Password: password
+```
+
+After login, the super admin can create schools, roles, and school users such as principals.
+
+## Route Map
+
+Public routes:
+
+- `/` - landing page
+- `/login` - login form
+- `/logout` - logout POST route
+
+Shared authenticated account routes:
+
+- `/account/profile`
+- `/account/password`
+
+Super admin routes:
+
+- `/admin/dashboard`
+- `/admin/schools`
+- `/admin/roles`
+- `/admin/users`
+- `/admin/subscription-plans`
+
+Principal routes:
+
+- `/principal/dashboard`
+- `/principal/teachers`
+- `/principal/classes`
+- `/principal/students`
+- `/principal/parents`
+- `/principal/subjects`
+- `/principal/teacher-subjects`
+- `/principal/attendance`
+- `/principal/exams`
+- `/principal/reports/results`
+- `/principal/report-cards`
+- `/principal/users`
+
+Teacher routes:
+
+- `/teacher/dashboard`
+- `/teacher/profile`
+- `/teacher/students`
+- `/teacher/attendance`
+- `/teacher/marks`
+- `/teacher/report-cards`
+- `/teacher/remarks`
+
+Parent routes:
+
+- `/parent/dashboard`
+- `/parent/children`
+- `/parent/attendance`
+- `/parent/results`
+- `/parent/report-cards`
+- `/parent/remarks`
+- `/parent/profile`
+
+## Important Development Notes
+
+- User role access depends on the `roles.slug` value. If you add a new role, update routing, middleware usage, and layouts as needed.
+- Profile photos and other uploaded public files are stored under `storage/app/public` and served through `public/storage`. Run `php artisan storage:link` after setup.
+- Report card PDF generation uses DomPDF. Related logic is in [ReportCardController.php](app/Http/Controllers/ReportCardController.php) and [pdf.blade.php](resources/views/report-cards/pdf.blade.php).
+- Student import logic is in [StudentImportService.php](app/Services/StudentImportService.php).
+- Teacher import logic is in [TeacherImportService.php](app/Services/TeacherImportService.php).
+- Role specific layouts are in `resources/views/layouts`.
+
+## Common Commands
+
+```bash
+php artisan migrate
+php artisan migrate:fresh --seed
+php artisan storage:link
+php artisan route:list
+php artisan optimize:clear
+npm run dev
+npm run build
+```
+
+## Testing
+
+Run the PHPUnit test suite with:
+
+```bash
+php artisan test
+```
+
+The current tests are starter examples. Add feature tests around role access, attendance, marks, imports, and report card generation when changing those areas.
+
+## Contribution Guidelines
+
+- Keep controller changes scoped to the role area they belong to.
+- Prefer existing Blade/layout patterns before creating new UI patterns.
+- Use migrations for database changes.
+- Validate all form requests in controllers before saving.
+- Do not commit `.env`, uploaded files, or generated cache files.
+- Run `php artisan test` and `npm run build` before opening a pull request when possible.
