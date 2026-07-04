@@ -7,22 +7,7 @@
 @section('content')
 
 <style>
-    .plans-list-header{
-        background: linear-gradient(135deg,#2563eb,#1d4ed8);
-        color: #fff;
-        padding: 30px;
-        border-radius: 20px;
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 15px 35px rgba(37,99,235,.25);
-    }
-
-    .plans-list-header h2{
-        margin: 0;
-        font-weight: 700;
-    }
+    /* Banner header removed — Create button will be placed beside search for consistent layout */
 
     .stats-card{
         background: #fff;
@@ -256,16 +241,7 @@
     }
 </style>
 
-<div class="plans-list-header">
-    <div>
-        <h2>Subscription Plans</h2>
-        <p class="mb-0 opacity-75">Manage all subscription plans from one dashboard.</p>
-    </div>
-    <button type="button" class="btn btn-light" id="createPlanBtn">
-        <i class="bi bi-plus-circle"></i>
-        Create Plan
-    </button>
-</div>
+<!-- Header removed; Create Plan button moved beside search below -->
 
 <div class="row mb-4 g-4">
     <div class="col-md-4">
@@ -291,14 +267,23 @@
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <h5 class="mb-0">Plans Directory {{ $plans->count() }}</h5>
-        <form action="{{ route('subscription-plans.index') }}" method="GET" class="d-flex gap-2" role="search" id="plansSearchForm">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search plans..."
-                   style="min-width:260px">
-        </form>
+        <div class="d-flex align-items-center gap-2">
+
+            <form action="{{ route('subscription-plans.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search" id="plansSearchForm">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search plans..."
+                       style="min-width:260px">
+            </form>
+
+            <button type="button" class="btn btn-light d-flex align-items-center gap-1" id="createPlanBtn">
+                <i class="bi bi-plus-circle"></i>
+                Create Plan
+            </button>
+
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table align-middle plans-table">
