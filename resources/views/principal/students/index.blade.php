@@ -5,8 +5,7 @@
 
 @section('content')
 <style>
-    .student-list-header{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:30px;border-radius:20px;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 35px rgba(37,99,235,.25)}
-    .student-list-header h2{margin:0;font-weight:700}
+    /* Banner header removed — Import/Add buttons will be placed beside search for consistent layout */
     .stats-card,.table-card{background:#fff;border:1px solid #e2e8f0;box-shadow:0 8px 20px rgba(15,23,42,.05)}
     .stats-card{padding:20px;border-radius:16px;text-align:center}
     .stats-card h3{margin:0;color:#2563eb;font-weight:700}
@@ -30,20 +29,7 @@
     @media(max-width:576px){.student-table-tools{width:100%;flex-wrap:wrap}.student-table-tools form[role="search"],.student-table-tools input[type="search"]{width:100%;min-width:0!important}.student-import-btn{width:100%}}
 </style>
 
-<div class="student-list-header">
-    <div>
-        <h2>Student Management</h2>
-        <p class="mb-0 opacity-75">Manage all enrolled students from one dashboard.</p>
-    </div>
-    <div class="student-header-actions">
-        <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#studentImportModal">
-            <i class="bi bi-upload"></i> Import
-        </button>
-        <a href="{{ route('students.create') }}" class="btn btn-light">
-            <i class="bi bi-plus-circle"></i> Add Student
-        </a>
-    </div>
-</div>
+<!-- Header removed; Import/Add buttons moved beside search below -->
 
 @if(session('success') || session('error'))
     <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
@@ -79,6 +65,12 @@
             <button type="button" class="btn student-import-btn" data-bs-toggle="modal" data-bs-target="#studentImportModal">
                 <i class="bi bi-upload"></i> Import
             </button>
+
+            <a href="{{ route('students.create') }}" class="btn btn-light d-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i>
+                Add Student
+            </a>
+
             <form action="{{ route('students.index') }}" method="GET" class="d-flex gap-2" role="search">
                 <input type="search"
                        name="search"
