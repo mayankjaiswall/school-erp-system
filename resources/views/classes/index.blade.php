@@ -7,22 +7,7 @@
 @section('content')
 
 <style>
-    .class-list-header{
-        background: linear-gradient(135deg,#2563eb,#1d4ed8);
-        color: #fff;
-        padding: 30px;
-        border-radius: 20px;
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 15px 35px rgba(37,99,235,.25);
-    }
-
-    .class-list-header h2{
-        margin: 0;
-        font-weight: 700;
-    }
+    /* Banner header removed — Add button will be placed beside search for consistent layout */
 
     .stats-card{
         background: #fff;
@@ -149,26 +134,7 @@
     }
 </style>
 
-<!-- Header -->
-
-<div class="class-list-header">
-
-    <div>
-        <h2>Class Management</h2>
-        <p class="mb-0 opacity-75">
-            Manage all registered classes from one dashboard.
-        </p>
-    </div>
-
-    <a href="{{ route('classes.create') }}"
-       class="btn btn-light">
-
-        <i class="bi bi-plus-circle"></i>
-        Add Class
-
-    </a>
-
-</div>
+<!-- Header removed; Add button moved beside search below -->
 
 <!-- Stats -->
 
@@ -198,14 +164,23 @@
             Classes Directory {{ $classes->count() }}
         </h5>
 
-        <form action="{{ route('classes.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search classes..."
-                   style="min-width:260px">
-        </form>
+        <div class="d-flex align-items-center gap-2">
+
+            <form action="{{ route('classes.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search classes..."
+                       style="min-width:260px">
+            </form>
+
+            <a href="{{ route('classes.create') }}" class="btn btn-light d-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i>
+                Add Class
+            </a>
+
+        </div>
 
     </div>
 
