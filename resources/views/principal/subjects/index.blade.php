@@ -5,8 +5,7 @@
 
 @section('content')
 <style>
-    .subject-list-header{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:30px;border-radius:20px;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 35px rgba(37,99,235,.25)}
-    .subject-list-header h2{margin:0;font-weight:700}
+    /* Banner header removed — Add button will be placed beside search for consistent layout */
     .stats-card,.table-card{background:#fff;border:1px solid #e2e8f0;box-shadow:0 8px 20px rgba(15,23,42,.05)}
     .stats-card{padding:20px;border-radius:16px;text-align:center}
     .stats-card h3{margin:0;color:#2563eb;font-weight:700}
@@ -23,15 +22,7 @@
     .empty-state{padding:50px;text-align:center;color:#64748b}.empty-state i{font-size:50px;margin-bottom:15px;display:block;color:#cbd5e1}
 </style>
 
-<div class="subject-list-header">
-    <div>
-        <h2>Subject Management</h2>
-        <p class="mb-0 opacity-75">Manage subjects class-wise from one dashboard.</p>
-    </div>
-    <a href="{{ route('subjects.create') }}" class="btn btn-light">
-        <i class="bi bi-plus-circle"></i> Add Subject
-    </a>
-</div>
+<!-- Header removed; Add Subject button moved beside search below -->
 
 <div class="row mb-4">
     <div class="col-md-3">
@@ -45,14 +36,23 @@
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <h5 class="mb-0">Subjects Directory {{ $subjects->count() }}</h5>
-        <form action="{{ route('subjects.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search subjects..."
-                   style="min-width:260px">
-        </form>
+        <div class="d-flex align-items-center gap-2">
+
+            <form action="{{ route('subjects.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search subjects..."
+                       style="min-width:260px">
+            </form>
+
+            <a href="{{ route('subjects.create') }}" class="btn btn-light d-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i>
+                Add Subject
+            </a>
+
+        </div>
     </div>
 
     <div class="table-responsive">
