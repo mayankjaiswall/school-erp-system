@@ -5,8 +5,7 @@
 
 @section('content')
 <style>
-    .assignment-list-header{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:30px;border-radius:20px;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 35px rgba(37,99,235,.25)}
-    .assignment-list-header h2{margin:0;font-weight:700}
+    /* Banner header removed — Assign button will be placed beside search for consistent layout */
     .stats-card,.table-card{background:#fff;border:1px solid #e2e8f0;box-shadow:0 8px 20px rgba(15,23,42,.05)}
     .stats-card{padding:20px;border-radius:16px;text-align:center}
     .stats-card h3{margin:0;color:#2563eb;font-weight:700}
@@ -23,15 +22,7 @@
     .empty-state{padding:50px;text-align:center;color:#64748b}.empty-state i{font-size:50px;margin-bottom:15px;display:block;color:#cbd5e1}
 </style>
 
-<div class="assignment-list-header">
-    <div>
-        <h2>Teacher Class Assignment</h2>
-        <p class="mb-0 opacity-75">Assign subject-specialist teachers to classes.</p>
-    </div>
-    <a href="{{ route('teacher-subjects.create') }}" class="btn btn-light">
-        <i class="bi bi-plus-circle"></i> Assign Teacher
-    </a>
-</div>
+<!-- Header removed; Assign Teacher button moved beside search below -->
 
 <div class="row mb-4">
     <div class="col-md-3">
@@ -45,14 +36,23 @@
 <div class="table-card">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <h5 class="mb-0">Assignments Directory {{ $assignments->count() }}</h5>
-        <form action="{{ route('teacher-subjects.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search"
-                   name="search"
-                   value="{{ $search ?? '' }}"
-                   class="form-control"
-                   placeholder="Search assignments..."
-                   style="min-width:260px">
-        </form>
+        <div class="d-flex align-items-center gap-2">
+
+            <form action="{{ route('teacher-subjects.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
+                <input type="search"
+                       name="search"
+                       value="{{ $search ?? '' }}"
+                       class="form-control"
+                       placeholder="Search assignments..."
+                       style="min-width:260px">
+            </form>
+
+            <a href="{{ route('teacher-subjects.create') }}" class="btn btn-light d-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i>
+                Assign Teacher
+            </a>
+
+        </div>
     </div>
 
     <div class="table-responsive">
