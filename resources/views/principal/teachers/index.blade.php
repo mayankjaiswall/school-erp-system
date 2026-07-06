@@ -7,22 +7,7 @@
 @section('content')
 
 <style>
-    .teacher-list-header{
-        background: linear-gradient(135deg,#2563eb,#1d4ed8);
-        color: #fff;
-        padding: 30px;
-        border-radius: 20px;
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 15px 35px rgba(37,99,235,.25);
-    }
-
-    .teacher-list-header h2{
-        margin: 0;
-        font-weight: 700;
-    }
+    /* Banner header removed — Import/Add buttons will be placed beside search for consistent layout */
 
     .stats-card{
         background: #fff;
@@ -192,26 +177,7 @@
     }
 </style>
 
-<!-- Header -->
-
-<div class="teacher-list-header">
-
-    <div>
-        <h2>Teacher Management</h2>
-        <p class="mb-0 opacity-75">
-            Manage all registered teachers from one dashboard.
-        </p>
-    </div>
-
-    <a href="{{ route('teachers.create') }}"
-       class="btn btn-light">
-
-        <i class="bi bi-plus-circle"></i>
-        Add Teacher
-
-    </a>
-
-</div>
+<!-- Header removed; Import/Add buttons moved beside search below -->
 
 @if(session('success') || session('error'))
     <div class="alert alert-{{ session('success') ? 'success' : 'danger' }}">
@@ -263,6 +229,12 @@
             <button type="button" class="btn teacher-import-btn" data-bs-toggle="modal" data-bs-target="#teacherImportModal">
                 <i class="bi bi-upload"></i> Import
             </button>
+
+            <a href="{{ route('teachers.create') }}" class="btn btn-light d-flex align-items-center gap-1">
+                <i class="bi bi-plus-circle"></i>
+                Add Teacher
+            </a>
+
             <form action="{{ route('teachers.index') }}" method="GET" class="d-flex gap-2" role="search">
                 <input type="search"
                        name="search"
