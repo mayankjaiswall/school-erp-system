@@ -9,37 +9,37 @@
 <style>
     /* Banner header removed — Add button moved inline with search for consistent layout */
 
-    .stats-card{
+    .stats-card {
         background: #fff;
         padding: 20px;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
         text-align: center;
         height: 100%;
     }
 
-    .stats-card h3{
+    .stats-card h3 {
         margin: 0;
         color: #2563eb;
         font-weight: 700;
     }
 
-    .stats-card span{
+    .stats-card span {
         color: #64748b;
         font-size: 14px;
     }
 
-    .role-stat-card{
+    .role-stat-card {
         background: #fff;
         padding: 18px;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
         height: 100%;
     }
 
-    .role-stat-card .role-icon{
+    .role-stat-card .role-icon {
         width: 42px;
         height: 42px;
         border-radius: 12px;
@@ -51,21 +51,21 @@
         font-size: 18px;
     }
 
-    .role-stat-card h4{
+    .role-stat-card h4 {
         margin: 0;
         color: #0f172a;
         font-size: 22px;
         font-weight: 700;
     }
 
-    .role-stat-card span{
+    .role-stat-card span {
         color: #64748b;
         font-size: 13px;
         font-weight: 500;
         display: block;
     }
 
-    .role-pill{
+    .role-pill {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -78,20 +78,20 @@
         white-space: nowrap;
     }
 
-    .role-pill.unassigned{
+    .role-pill.unassigned {
         background: #f1f5f9;
         color: #64748b;
     }
 
-    .table-card{
+    .table-card {
         background: #fff;
         border-radius: 20px;
         padding: 25px;
-        box-shadow: 0 8px 20px rgba(15,23,42,.05);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
         border: 1px solid #e2e8f0;
     }
 
-    .school-avatar{
+    .school-avatar {
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -103,24 +103,24 @@
         font-weight: 700;
     }
 
-    .status-pill{
+    .status-pill {
         padding: 6px 14px;
         border-radius: 30px;
         font-size: 13px;
         font-weight: 600;
     }
 
-    .status-pill.active{
+    .status-pill.active {
         background: #dcfce7;
         color: #166534;
     }
 
-    .status-pill.inactive{
+    .status-pill.inactive {
         background: #fee2e2;
         color: #991b1b;
     }
 
-    .btn-action{
+    .btn-action {
         width: 38px;
         height: 38px;
         border: none;
@@ -133,58 +133,95 @@
         transition: .3s;
     }
 
-    .btn-view{
+    .btn-view {
         background: #dbeafe;
         color: #2563eb;
     }
 
-    .btn-view:hover{
+    .btn-view:hover {
         background: #2563eb;
         color: #fff;
     }
 
-    .btn-edit{
+    .btn-edit {
         background: #fef3c7;
         color: #d97706;
     }
 
-    .btn-edit:hover{
+    .btn-edit:hover {
         background: #d97706;
         color: #fff;
     }
 
-    .btn-delete{
+    .btn-delete {
         background: #fee2e2;
         color: #dc2626;
     }
 
-    .btn-delete:hover{
+    .btn-delete:hover {
         background: #dc2626;
         color: #fff;
     }
 
-    .table thead th{
+    .table thead th {
         border: none;
         background: #f8fafc;
         color: #475569;
         font-weight: 600;
     }
 
-    .table tbody tr:hover{
+    .table tbody tr:hover {
         background: #f8fafc;
     }
 
-    .empty-state{
+    .empty-state {
         padding: 50px;
         text-align: center;
         color: #64748b;
     }
 
-    .empty-state i{
+    .empty-state i {
         font-size: 50px;
         margin-bottom: 15px;
         display: block;
         color: #cbd5e1;
+    }
+
+    .btn-add-user {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        height: 44px;
+        padding: 0 18px;
+
+        background: #2563eb;
+        color: #fff;
+
+        border: none;
+        border-radius: 10px;
+
+        font-size: 15px;
+        font-weight: 600;
+
+        text-decoration: none;
+        white-space: nowrap;
+
+        transition: all .25s ease;
+        box-shadow: 0 6px 15px rgba(37, 99, 235, .25);
+    }
+
+    .btn-add-user:hover {
+        background: #1d4ed8;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(37, 99, 235, .35);
+    }
+
+    .btn-add-user i {
+        font-size: 16px;
+        margin: 0;
     }
 </style>
 <!-- Header removed; Add button moved beside search below -->
@@ -197,19 +234,19 @@
         </div>
     </div>
     @foreach($roleStats as $role)
-        <div class="col-md-3 col-sm-6">
-            <div class="role-stat-card">
-                <div class="d-flex align-items-center justify-content-between gap-3">
-                    <div>
-                        <span>{{ $role->name }}</span>
-                        <h4>{{ $role->users_count }}</h4>
-                    </div>
-                    <div class="role-icon">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="role-stat-card">
+            <div class="d-flex align-items-center justify-content-between gap-3">
+                <div>
+                    <span>{{ $role->name }}</span>
+                    <h4>{{ $role->users_count }}</h4>
+                </div>
+                <div class="role-icon">
+                    <i class="bi bi-person-badge"></i>
                 </div>
             </div>
         </div>
+    </div>
     @endforeach
 </div>
 <!-- Table -->
@@ -223,25 +260,17 @@
 
             <form action="{{ route('users.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
                 <input type="search"
-                       name="search"
-                       value="{{ $search ?? '' }}"
-                       class="form-control"
-                       placeholder="Search users..."
-                       style="min-width:260px">
+                    name="search"
+                    value="{{ $search ?? '' }}"
+                    class="form-control"
+                    placeholder="Search users..."
+                    style="min-width:260px">
             </form>
 
-            <a href="{{ route('users.create') }}"
-               class="btn btn-light d-flex align-items-center gap-1">
-
-                <i class="bi bi-plus-circle"></i>
-                Add User
-
+            <a href="{{ route('users.create') }}" class="btn-add-user">
+                <i class="bi bi-plus-lg"></i>
+                <span>Add User</span>
             </a>
-
-        </div>
-
-        <div class="text-muted">
-            {{ $users->count() }} Records Found
         </div>
 
     </div>
@@ -260,7 +289,7 @@
                 </tr>
             </thead>
             <tbody>
-            @forelse($users as $user)
+                @forelse($users as $user)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>
@@ -276,27 +305,27 @@
                     <td>{{ $user->email }}</td>
                     <td>
                         @if($user->role)
-                            <span class="role-pill">
-                                <i class="bi bi-person-badge"></i>
-                                {{ $user->role->name }}
-                            </span>
+                        <span class="role-pill">
+                            <i class="bi bi-person-badge"></i>
+                            {{ $user->role->name }}
+                        </span>
                         @else
-                            <span class="role-pill unassigned">
-                                <i class="bi bi-dash-circle"></i>
-                                Not Assigned
-                            </span>
+                        <span class="role-pill unassigned">
+                            <i class="bi bi-dash-circle"></i>
+                            Not Assigned
+                        </span>
                         @endif
                     </td>
                     <td>{{ $user->phone }}</td>
                     <td>
                         @if($user->status)
-                            <span class="status-pill active">
-                                Active
-                            </span>
+                        <span class="status-pill active">
+                            Active
+                        </span>
                         @else
-                            <span class="status-pill inactive">
-                                Inactive
-                            </span>
+                        <span class="status-pill inactive">
+                            Inactive
+                        </span>
                         @endif
                     </td>
                     <td>
@@ -304,13 +333,13 @@
                     </td>
                     <td>
                         <a href="{{ route('users.show', $user->id) }}"
-                        class="btn-action btn-view"
-                        title="View">
+                            class="btn-action btn-view"
+                            title="View">
                             <i class="bi bi-eye"></i>
                         </a>
                         <a href="{{ route('users.edit', $user->id) }}"
-                        class="btn-action btn-edit"
-                        title="Edit">
+                            class="btn-action btn-edit"
+                            title="Edit">
                             <i class="bi bi-pencil-square"></i>
                         </a>
                         <form id="delete-form-{{ $user->id }}"
@@ -320,9 +349,9 @@
                             @csrf
                             @method('DELETE')
                             <button type="button"
-                                    class="btn-action btn-delete"
-                                    title="Delete"
-                                    onclick="confirmDelete(
+                                class="btn-action btn-delete"
+                                title="Delete"
+                                onclick="confirmDelete(
                                         '{{ $user->id }}',
                                         '{{ addslashes($user->name) }}'
                                     )">
@@ -333,9 +362,9 @@
                 </tr>
                 <!-- Delete Modal -->
                 <div class="modal fade"
-                     id="deleteUserModal{{ $user->id }}"
-                     tabindex="-1"
-                     aria-hidden="true">
+                    id="deleteUserModal{{ $user->id }}"
+                    tabindex="-1"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg">
                             <div class="modal-header bg-danger text-white">
@@ -343,13 +372,13 @@
                                     Confirm Deletion
                                 </h5>
                                 <button type="button"
-                                        class="btn-close btn-close-white"
-                                        data-bs-dismiss="modal">
+                                    class="btn-close btn-close-white"
+                                    data-bs-dismiss="modal">
                                 </button>
                             </div>
                             <div class="modal-body text-center py-4">
                                 <i class="bi bi-exclamation-triangle-fill text-danger"
-                                   style="font-size:60px;">
+                                    style="font-size:60px;">
                                 </i>
                                 <h4 class="mt-3">
                                     Delete User?
@@ -366,16 +395,16 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button"
-                                        class="btn btn-light border"
-                                        data-bs-dismiss="modal">
+                                    class="btn btn-light border"
+                                    data-bs-dismiss="modal">
                                     Cancel
                                 </button>
                                 <form action="{{ route('users.destroy', $user->id) }}"
-                                      method="POST">
+                                    method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                            class="btn btn-danger">
+                                        class="btn btn-danger">
                                         <i class="bi bi-trash"></i>
                                         Delete User
                                     </button>
@@ -384,7 +413,7 @@
                         </div>
                     </div>
                 </div>
-            @empty
+                @empty
                 <tr>
                     <td colspan="8">
                         <div class="empty-state">
@@ -396,20 +425,18 @@
                         </div>
                     </td>
                 </tr>
-            @endforelse
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
 <script>
+    function confirmDelete(id, userName) {
+        Swal.fire({
 
-function confirmDelete(id, userName)
-{
-    Swal.fire({
+            title: 'Delete User?',
 
-        title: 'Delete User?',
-
-        html: `
+            html: `
             <div style="padding:10px">
 
                 <div style="
@@ -452,33 +479,31 @@ function confirmDelete(id, userName)
             </div>
         `,
 
-        showCancelButton: true,
+            showCancelButton: true,
 
-        confirmButtonColor: '#dc2626',
+            confirmButtonColor: '#dc2626',
 
-        cancelButtonColor: '#64748b',
+            cancelButtonColor: '#64748b',
 
-        confirmButtonText: 'Delete User',
+            confirmButtonText: 'Delete User',
 
-        cancelButtonText: 'Cancel',
+            cancelButtonText: 'Cancel',
 
-        reverseButtons: true,
+            reverseButtons: true,
 
-        customClass: {
-            popup: 'rounded-4'
-        }
+            customClass: {
+                popup: 'rounded-4'
+            }
 
-    }).then((result) => {
+        }).then((result) => {
 
-        if(result.isConfirmed)
-        {
-            document
-                .getElementById('delete-form-' + id)
-                .submit();
-        }
+            if (result.isConfirmed) {
+                document
+                    .getElementById('delete-form-' + id)
+                    .submit();
+            }
 
-    });
-}
-
+        });
+    }
 </script>
 @endsection
