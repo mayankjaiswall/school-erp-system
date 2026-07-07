@@ -372,10 +372,10 @@
                     <i class="bi bi-person-hearts"></i>
                     <span>Parents</span>
                 </a>
-                <a href="#" class="disabled-link" aria-disabled="true">
+                <!-- <a href="#" class="disabled-link" aria-disabled="true">
                     <i class="bi bi-person-workspace"></i>
                     <span>HODs</span>
-                </a>
+                </a> -->
             </div>
 
             <div class="sidebar-section">
