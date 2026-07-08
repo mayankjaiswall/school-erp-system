@@ -158,13 +158,13 @@
 
 <div class="table-card">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div class="index-toolbar-row mb-4">
 
         <h5 class="mb-0">
             Roles Directory
         </h5>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="index-toolbar-actions">
 
             <form action="{{ route('roles.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
                 <input type="search"
@@ -176,17 +176,13 @@
             </form>
 
             <a href="{{ route('roles.create') }}"
-               class="btn btn-light d-flex align-items-center gap-1">
+               class="btn-add-record">
 
-                <i class="bi bi-plus-circle"></i>
+                <i class="bi bi-plus-lg"></i>
                 Add Role
 
             </a>
 
-        </div>
-
-        <div class="text-muted">
-            {{ $roles->count() }} Records Found
         </div>
 
     </div>
