@@ -187,42 +187,6 @@
         color: #cbd5e1;
     }
 
-    .btn-add-user {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-
-        height: 44px;
-        padding: 0 18px;
-
-        background: #2563eb;
-        color: #fff;
-
-        border: none;
-        border-radius: 10px;
-
-        font-size: 15px;
-        font-weight: 600;
-
-        text-decoration: none;
-        white-space: nowrap;
-
-        transition: all .25s ease;
-        box-shadow: 0 6px 15px rgba(37, 99, 235, .25);
-    }
-
-    .btn-add-user:hover {
-        background: #1d4ed8;
-        color: #fff;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(37, 99, 235, .35);
-    }
-
-    .btn-add-user i {
-        font-size: 16px;
-        margin: 0;
-    }
 </style>
 <!-- Header removed; Add button moved beside search below -->
 <!-- Stats -->
@@ -251,12 +215,12 @@
 </div>
 <!-- Table -->
 <div class="table-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div class="index-toolbar-row mb-4">
         <h5 class="mb-0">
             Users Directory
         </h5>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="index-toolbar-actions">
 
             <form action="{{ route('users.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
                 <input type="search"
@@ -267,7 +231,7 @@
                     style="min-width:260px">
             </form>
 
-            <a href="{{ route('users.create') }}" class="btn-add-user">
+            <a href="{{ route('users.create') }}" class="btn-add-record">
                 <i class="bi bi-plus-lg"></i>
                 <span>Add User</span>
             </a>
