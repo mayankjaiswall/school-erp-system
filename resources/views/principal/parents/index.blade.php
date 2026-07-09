@@ -5,20 +5,25 @@
 
 @section('content')
 <style>
-    .parent-header{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:30px;border-radius:20px;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 15px 35px rgba(37,99,235,.25)}
     .table-card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:25px;box-shadow:0 8px 20px rgba(15,23,42,.05)}
     .avatar{width:45px;height:45px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}.btn-action{width:38px;height:38px;border:0;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-right:5px}.btn-view{background:#dbeafe;color:#2563eb}.btn-edit{background:#fef3c7;color:#d97706}.btn-delete{background:#fee2e2;color:#dc2626}
+    .table-subtitle{color:#64748b;font-size:14px;margin:6px 0 0}
 </style>
-<div class="parent-header">
-    <div><h2 class="mb-1">Parent Management</h2><p class="mb-0 opacity-75">Create parent logins and link children.</p></div>
-    <a href="{{ route('principal.parents.create') }}" class="btn btn-light"><i class="bi bi-plus-circle"></i> Add Parent</a>
-</div>
 <div class="table-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Parents {{ $parents->count() }}</h5>
-        <form action="{{ route('principal.parents.index') }}" method="GET" class="d-flex gap-2" role="search">
-            <input type="search" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search parents..." style="min-width:260px">
-        </form>
+    <div class="index-toolbar-row mb-4">
+        <div>
+            <h5 class="mb-0">Parents Directory</h5>
+            <p class="table-subtitle">Create parent logins and link children.</p>
+        </div>
+        <div class="index-toolbar-actions">
+            <form action="{{ route('principal.parents.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
+                <input type="search" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search parents..." style="min-width:260px">
+            </form>
+            <a href="{{ route('principal.parents.create') }}" class="btn-add-record">
+                <i class="bi bi-plus-lg"></i>
+                Add Parent
+            </a>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table align-middle">
