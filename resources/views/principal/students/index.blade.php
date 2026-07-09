@@ -26,7 +26,6 @@
     .student-import-btn{border:2px solid #16a34a;color:#fff;background:#16a34a;font-weight:600;min-width:130px}
     .student-import-btn:hover{background:#15803d;border-color:#15803d;color:#fff}
     .import-help{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;color:#475569;font-size:14px}
-    @media(max-width:576px){.student-table-tools{width:100%;flex-wrap:wrap}.student-table-tools form[role="search"],.student-table-tools input[type="search"]{width:100%;min-width:0!important}.student-import-btn{width:100%}}
 </style>
 
 <!-- Header removed; Import/Add buttons moved beside search below -->
@@ -59,17 +58,12 @@
 </div>
 
 <div class="table-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Students <span id="recordsFoundCount">{{ $students->count() }}</span></h5>
-        <div class="student-table-tools">
+    <div class="index-toolbar-row mb-4">
+        <h5 class="mb-0">Students Directory</h5>
+        <div class="student-table-tools index-toolbar-actions">
             <button type="button" class="btn student-import-btn" data-bs-toggle="modal" data-bs-target="#studentImportModal">
                 <i class="bi bi-upload"></i> Import
             </button>
-
-            <a href="{{ route('students.create') }}" class="btn btn-light d-flex align-items-center gap-1">
-                <i class="bi bi-plus-circle"></i>
-                Add Student
-            </a>
 
             <form action="{{ route('students.index') }}" method="GET" class="d-flex gap-2" role="search">
                 <input type="search"
@@ -79,6 +73,11 @@
                        placeholder="Search students..."
                        style="min-width:260px">
             </form>
+
+            <a href="{{ route('students.create') }}" class="btn-add-record">
+                <i class="bi bi-plus-lg"></i>
+                Add Student
+            </a>
         </div>
     </div>
 
@@ -222,7 +221,6 @@ function updateStudentCounts()
     });
 
     document.getElementById('totalStudentsCount').textContent = total;
-    document.getElementById('recordsFoundCount').textContent = total;
 }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
