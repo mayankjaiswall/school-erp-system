@@ -287,8 +287,9 @@
         }
 
         form[role="search"] {
-            max-width: 360px;
-            width: 100%;
+            flex: 0 0 320px;
+            max-width: 320px;
+            width: 320px;
         }
 
         form[role="search"] input[type="search"] {
@@ -306,6 +307,54 @@
         form[role="search"] button[type="submit"],
         form[role="search"] .btn {
             display: none;
+        }
+
+        .index-toolbar-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: nowrap;
+        }
+
+        .index-toolbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            flex: 0 0 auto;
+        }
+
+        .btn-add-record {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 0 18px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: 0 10px 24px rgba(37, 99, 235, .22);
+            transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+        }
+
+        .btn-add-record:hover {
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(37, 99, 235, .28);
+        }
+
+        .btn-add-record i {
+            font-size: 16px;
         }
 
         /* =========================RESPONSIVE========================= */
@@ -332,6 +381,7 @@
                 margin-left: 0;
             }
         }
+
     </style>
 </head>
 <body>

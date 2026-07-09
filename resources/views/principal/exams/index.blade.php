@@ -36,9 +36,9 @@
 </div>
 
 <div class="table-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Exams {{ $exams->count() }}</h5>
-        <div class="d-flex align-items-center gap-2">
+    <div class="index-toolbar-row mb-4">
+        <h5 class="mb-0">Exams Directory</h5>
+        <div class="index-toolbar-actions">
 
             <form action="{{ route('principal.exams.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
                 <input type="search"
@@ -49,8 +49,8 @@
                        style="min-width:260px">
             </form>
 
-            <a href="{{ route('principal.exams.create') }}" class="btn btn-light d-flex align-items-center gap-1">
-                <i class="bi bi-plus-circle"></i>
+            <a href="{{ route('principal.exams.create') }}" class="btn-add-record">
+                <i class="bi bi-plus-lg"></i>
                 Add Exam
             </a>
 
