@@ -169,12 +169,6 @@
         font-size:14px;
     }
 
-    @media(max-width:576px){
-        .teacher-table-tools{width:100%;flex-wrap:wrap}
-        .teacher-table-tools form[role="search"],
-        .teacher-table-tools input[type="search"]{width:100%;min-width:0!important}
-        .teacher-import-btn{width:100%}
-    }
 </style>
 
 <!-- Header removed; Import/Add buttons moved beside search below -->
@@ -219,21 +213,14 @@
 
 <div class="table-card">
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div class="index-toolbar-row mb-4">
 
-        <h5 class="mb-0">
-            Teachers  {{ $teachers->count() }}
-        </h5>
+        <h5 class="mb-0">Teachers Directory</h5>
 
-        <div class="teacher-table-tools">
+        <div class="teacher-table-tools index-toolbar-actions">
             <button type="button" class="btn teacher-import-btn" data-bs-toggle="modal" data-bs-target="#teacherImportModal">
                 <i class="bi bi-upload"></i> Import
             </button>
-
-            <a href="{{ route('teachers.create') }}" class="btn btn-light d-flex align-items-center gap-1">
-                <i class="bi bi-plus-circle"></i>
-                Add Teacher
-            </a>
 
             <form action="{{ route('teachers.index') }}" method="GET" class="d-flex gap-2" role="search">
                 <input type="search"
@@ -243,6 +230,11 @@
                        placeholder="Search teachers..."
                        style="min-width:260px">
             </form>
+
+            <a href="{{ route('teachers.create') }}" class="btn-add-record">
+                <i class="bi bi-plus-lg"></i>
+                Add Teacher
+            </a>
         </div>
 
     </div>
