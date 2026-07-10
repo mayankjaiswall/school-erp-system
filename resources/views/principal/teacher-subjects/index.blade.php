@@ -34,9 +34,9 @@
 </div>
 
 <div class="table-card">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-        <h5 class="mb-0">Assignments Directory {{ $assignments->count() }}</h5>
-        <div class="d-flex align-items-center gap-2">
+    <div class="index-toolbar-row mb-4">
+        <h5 class="mb-0">Assignments Directory</h5>
+        <div class="index-toolbar-actions">
 
             <form action="{{ route('teacher-subjects.index') }}" method="GET" class="d-flex gap-2 mb-0" role="search">
                 <input type="search"
@@ -47,8 +47,8 @@
                        style="min-width:260px">
             </form>
 
-            <a href="{{ route('teacher-subjects.create') }}" class="btn btn-light d-flex align-items-center gap-1">
-                <i class="bi bi-plus-circle"></i>
+            <a href="{{ route('teacher-subjects.create') }}" class="btn-add-record">
+                <i class="bi bi-plus-lg"></i>
                 Assign Teacher
             </a>
 
@@ -174,10 +174,6 @@ function updateAssignmentCounts()
     });
 
     document.getElementById('totalAssignmentsCount').textContent = total;
-    const recordsFoundCount = document.getElementById('recordsFoundCount');
-    if (recordsFoundCount) {
-        recordsFoundCount.textContent = total + ' Records Found';
-    }
 }
 </script>
 @endsection
