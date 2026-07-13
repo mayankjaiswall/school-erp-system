@@ -10,30 +10,34 @@
     .welcome-banner {
         background: linear-gradient(135deg, #2563eb, #1d4ed8);
         color: #fff;
-        padding: 35px;
-        border-radius: 20px;
-        margin-bottom: 25px;
-        box-shadow: 0 15px 35px rgba(37, 99, 235, .25);
+        padding: 26px 30px;
+        border-radius: 16px;
+        margin-bottom: 22px;
+        box-shadow: 0 10px 28px rgba(37, 99, 235, .22);
     }
 
     .welcome-banner h2 {
         margin: 0;
         font-weight: 700;
+        font-size: 28px;
+        line-height: 1.25;
     }
 
     .welcome-banner p {
-        margin-top: 10px;
+        margin-top: 8px;
         opacity: .9;
+        font-size: 15px;
     }
 
     .dashboard-card {
         color: #fff;
-        padding: 25px;
-        border-radius: 20px;
+        padding: 20px 22px;
+        border-radius: 16px;
         position: relative;
         overflow: hidden;
         transition: .3s;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, .08);
+        min-height: 126px;
+        box-shadow: 0 8px 22px rgba(0, 0, 0, .07);
     }
 
     .dashboard-card:hover {
@@ -43,8 +47,8 @@
     .dashboard-card::after {
         content: '';
         position: absolute;
-        width: 120px;
-        height: 120px;
+        width: 92px;
+        height: 92px;
         border-radius: 50%;
         background: rgba(255, 255, 255, .15);
         top: -30px;
@@ -52,9 +56,20 @@
     }
 
     .dashboard-card h2 {
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 700;
-        margin: 10px 0;
+        margin: 9px 0;
+        line-height: 1;
+    }
+
+    .dashboard-card h6 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    .dashboard-card small {
+        font-size: 13px;
     }
 
     .card-blue {
@@ -75,18 +90,23 @@
 
     .content-card {
         background: #fff;
-        border-radius: 20px;
-        padding: 25px;
-        margin-top: 25px;
+        border-radius: 16px;
+        padding: 22px;
+        margin-top: 22px;
         box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
         border: 1px solid #e2e8f0;
+    }
+
+    .content-card h5 {
+        font-size: 18px;
+        font-weight: 650;
     }
 
     .school-item {
         display: flex;
         align-items: center;
-        gap: 15px;
-        padding: 15px 0;
+        gap: 12px;
+        padding: 12px 0;
         border-bottom: 1px solid #f1f5f9;
     }
 
@@ -95,8 +115,8 @@
     }
 
     .avatar {
-        width: 50px;
-        height: 50px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         background: #2563eb;
         color: #fff;
@@ -110,14 +130,14 @@
         width: 100%;
         margin-bottom: 10px;
         border-radius: 12px;
-        padding: 12px;
+        padding: 10px;
         font-weight: 600;
     }
 
     .overview-box {
         text-align: center;
-        padding: 20px;
-        border-radius: 15px;
+        padding: 16px;
+        border-radius: 14px;
         background: #f8fafc;
     }
 
@@ -125,6 +145,20 @@
         color: #2563eb;
         font-weight: 700;
         margin-bottom: 5px;
+    }
+
+    .chart-box {
+        height: 260px;
+    }
+
+    @media (max-width: 1199px) {
+        .welcome-banner h2 {
+            font-size: 24px;
+        }
+
+        .chart-box {
+            height: 240px;
+        }
     }
 </style>
 <!-- Welcome Banner -->
@@ -137,7 +171,7 @@
     </p>
 </div>
 <!-- Statistics -->
-<div class="row g-4">
+<div class="row g-3">
     <div class="col-md-3">
         <div class="dashboard-card card-blue">
             <h6>Total Schools</h6>
@@ -173,7 +207,7 @@
        <div class="content-card">
     <h5 class="mb-3">Schools Growth Analytics</h5>
 
-    <div style="height:300px;">
+    <div class="chart-box">
         <canvas id="schoolsChart"></canvas>
     </div>
 </div>
@@ -181,7 +215,7 @@
     <div class="col-lg-6">
     <div class="content-card">
     <h5 class="mb-3">Platform Distribution</h5>
-    <div style="height:300px;">
+    <div class="chart-box">
         <canvas id="rolesChart"></canvas>
     </div>
     </div>
