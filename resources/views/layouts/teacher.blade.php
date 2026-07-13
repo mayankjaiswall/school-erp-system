@@ -17,6 +17,7 @@
         body {
             background: #f8fafc;
             font-family: 'Segoe UI', sans-serif;
+            font-size: 15px;
             overflow-x: hidden
         }
 
@@ -24,7 +25,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 290px;
+            width: 250px;
             height: 100vh;
             background: linear-gradient(180deg, rgba(20, 83, 45, .96), rgba(15, 23, 42, 1)), #0f172a;
             color: #fff;
@@ -35,8 +36,8 @@
         }
 
         .logo {
-            padding: 24px 24px 20px;
-            font-size: 28px;
+            padding: 22px 22px 18px;
+            font-size: 24px;
             font-weight: 700;
             border-bottom: 1px solid rgba(255, 255, 255, .08);
             line-height: 1
@@ -140,25 +141,25 @@
         }
 
         .logout-wrapper {
-            padding: 20px;
+            padding: 18px;
             border-top: 1px solid rgba(255, 255, 255, .08)
         }
 
         .logout-btn {
             width: 100%;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px;
             font-weight: 600
         }
 
         .main-content {
-            margin-left: 290px;
+            margin-left: 250px;
             min-height: 100vh
         }
 
         .topbar {
             background: #fff;
-            padding: 20px 30px;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -168,7 +169,7 @@
 
         .topbar h4 {
             margin: 0;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
             color: #0f172a
         }
@@ -176,32 +177,32 @@
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 18px
+            gap: 14px
         }
 
         .topbar-right i {
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             color: #475569
         }
 
         .topbar-right img {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            border: 3px solid #dcfce7
+            border: 2px solid #dcfce7
         }
 
         .page-content {
-            padding: 30px
+            padding: 24px
         }
 
         .content-card {
             background: #fff;
-            border-radius: 18px;
-            padding: 30px;
-            margin-top: 25px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 22px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
             border: 1px solid #e5e7eb
         }
 
