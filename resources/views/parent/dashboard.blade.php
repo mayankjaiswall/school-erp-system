@@ -5,9 +5,13 @@
 
 @section('content')
 <style>
-    .welcome-banner{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:35px;border-radius:20px;margin-bottom:25px;box-shadow:0 15px 35px rgba(37,99,235,.25)}
+    .welcome-banner{background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;padding:26px 30px;border-radius:16px;margin-bottom:22px;box-shadow:0 10px 28px rgba(37,99,235,.22)}
+    .welcome-banner h2{font-size:28px;line-height:1.25}
+    .welcome-banner p{font-size:15px}
     .list-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f1f5f9}.list-item:last-child{border-bottom:none}
-    .avatar{width:45px;height:45px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .avatar{width:42px;height:42px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+    .content-card h5{font-size:18px;font-weight:650}
+    @media (max-width:1199px){.welcome-banner h2{font-size:24px}}
 </style>
 
 <div class="welcome-banner">
@@ -16,7 +20,7 @@
             <h2 class="mb-1">Welcome, {{ auth()->user()->name }}</h2>
             <p class="mb-0">Track attendance, results, report cards and teacher remarks for your children.</p>
         </div>
-        <div style="min-width:260px">
+        <div style="min-width:240px">
             <label class="form-label">Switch Child</label>
             <select id="dashboardStudent" class="form-select">
                 @foreach($children as $child)
@@ -27,7 +31,7 @@
     </div>
 </div>
 
-<div class="row g-4">
+<div class="row g-3">
     <div class="col-md-3"><div class="stats-card card-blue"><h6>Total Children</h6><h2>{{ $children->count() }}</h2><small>Linked to your profile</small></div></div>
     <div class="col-md-3"><div class="stats-card card-green"><h6>Today's Attendance</h6><h2 id="todayAttendance">{{ $todayAttendance ? ucfirst($todayAttendance->status) : '-' }}</h2><small id="attendancePercent">{{ $attendanceSummary['percentage'] }}% overall</small></div></div>
     <div class="col-md-3"><div class="stats-card card-orange"><h6>Upcoming Exams</h6><h2>{{ $upcomingExams->count() }}</h2><small>Scheduled exams</small></div></div>

@@ -10,37 +10,55 @@
     .welcome-banner{
         background: linear-gradient(135deg,#16a34a,#15803d);
         color:#fff;
-        padding:35px;
-        border-radius:20px;
-        margin-bottom:25px;
-        box-shadow:0 15px 35px rgba(22,163,74,.25);
+        padding:26px 30px;
+        border-radius:16px;
+        margin-bottom:22px;
+        box-shadow:0 10px 28px rgba(22,163,74,.22);
     }
 
     .welcome-banner h2{
         margin:0;
         font-weight:700;
+        font-size:28px;
+        line-height:1.25;
+    }
+
+    .welcome-banner p{
+        font-size:15px;
     }
 
     .stats-card{
         color:#fff;
-        padding:25px;
-        border-radius:18px;
+        padding:20px 22px;
+        border-radius:16px;
         position:relative;
         overflow:hidden;
-        box-shadow:0 8px 20px rgba(0,0,0,.08);
+        min-height:126px;
+        box-shadow:0 8px 22px rgba(0,0,0,.07);
     }
 
     .stats-card h2{
-        font-size:34px;
-        margin:10px 0;
+        font-size:28px;
+        margin:9px 0;
         font-weight:700;
+        line-height:1;
+    }
+
+    .stats-card h6{
+        font-size:15px;
+        font-weight:600;
+        margin-bottom:0;
+    }
+
+    .stats-card small{
+        font-size:13px;
     }
 
     .stats-card::after{
         content:'';
         position:absolute;
-        width:100px;
-        height:100px;
+        width:92px;
+        height:92px;
         background:rgba(255,255,255,.15);
         border-radius:50%;
         top:-20px;
@@ -65,9 +83,9 @@
 
     .content-card{
         background:#fff;
-        border-radius:20px;
-        padding:25px;
-        margin-top:25px;
+        border-radius:16px;
+        padding:22px;
+        margin-top:22px;
         border:1px solid #e2e8f0;
         box-shadow:0 8px 20px rgba(15,23,42,.05);
     }
@@ -75,8 +93,8 @@
     .quick-btn{
         width:100%;
         margin-bottom:12px;
-        padding:12px;
-        border-radius:12px;
+        padding:10px;
+        border-radius:10px;
         font-weight:600;
     }
 
@@ -93,8 +111,8 @@
     }
 
     .avatar{
-        width:45px;
-        height:45px;
+        width:42px;
+        height:42px;
         border-radius:50%;
         background:#2563eb;
         color:#fff;
@@ -102,6 +120,16 @@
         align-items:center;
         justify-content:center;
         font-weight:700;
+    }
+    .content-card h5{
+        font-size:18px;
+        font-weight:650;
+    }
+
+    @media (max-width:1199px){
+        .welcome-banner h2{
+            font-size:24px;
+        }
     }
 </style>
 
@@ -117,7 +145,7 @@
 
 </div>
 
-<div class="row g-4">
+<div class="row g-3">
 
     <div class="col-md-3">
         <div class="stats-card card-blue">
