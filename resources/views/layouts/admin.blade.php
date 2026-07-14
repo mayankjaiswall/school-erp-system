@@ -16,6 +16,7 @@
         body {
             background: #f8fafc;
             font-family: 'Segoe UI', sans-serif;
+            font-size: 15px;
             overflow-x: hidden;
         }
 
@@ -25,7 +26,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 270px;
+            width: 240px;
             height: 100vh;
             background: #0f172a;
             color: #fff;
@@ -36,8 +37,8 @@
         }
 
         .logo {
-            padding: 28px 24px;
-            font-size: 28px;
+            padding: 22px 22px;
+            font-size: 24px;
             font-weight: 700;
             border-bottom: 1px solid rgba(255, 255, 255, .08);
         }
@@ -48,24 +49,24 @@
 
         .sidebar-menu {
             flex: 1;
-            padding: 20px 15px;
+            padding: 18px 14px;
         }
 
         .sidebar-menu a {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             color: #94a3b8;
             text-decoration: none;
-            padding: 14px 18px;
-            border-radius: 14px;
-            margin-bottom: 8px;
+            padding: 11px 16px;
+            border-radius: 12px;
+            margin-bottom: 7px;
             transition: .25s ease;
             font-weight: 500;
         }
 
         .sidebar-menu a i {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .sidebar-menu a:hover {
@@ -95,19 +96,19 @@
             align-items: center;
             background: transparent;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             color: #94a3b8;
             display: flex;
             font-weight: 500;
-            gap: 14px;
-            padding: 14px 18px;
+            gap: 12px;
+            padding: 11px 16px;
             text-align: left;
             transition: .25s ease;
             width: 100%;
         }
 
         .sidebar-dropdown-toggle i {
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .sidebar-dropdown-toggle:hover,
@@ -155,21 +156,21 @@
         }
 
         .logout-wrapper {
-            padding: 20px;
+            padding: 18px;
             border-top: 1px solid rgba(255, 255, 255, .08);
         }
 
         .logout-btn {
             width: 100%;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px;
             font-weight: 600;
         }
 
         /* =========================MAIN CONTENT========================= */
 
         .main-content {
-            margin-left: 270px;
+            margin-left: 240px;
             min-height: 100vh;
         }
 
@@ -177,7 +178,7 @@
 
         .topbar {
             background: #fff;
-            padding: 20px 30px;
+            padding: 16px 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -187,7 +188,7 @@
 
         .topbar h4 {
             margin: 0;
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
             color: #0f172a;
         }
@@ -195,36 +196,36 @@
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 14px;
         }
 
         .topbar-right i {
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             color: #475569;
         }
 
         .topbar-right img {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            border: 3px solid #dbeafe;
+            border: 2px solid #dbeafe;
         }
 
         /* =========================PAGE CONTENT========================= */
 
         .page-content {
-            padding: 30px;
+            padding: 24px;
         }
 
         /* =========================CONTENT CARD========================= */
 
         .content-card {
             background: #fff;
-            border-radius: 18px;
-            padding: 30px;
-            margin-top: 25px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 22px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .07);
             border: 1px solid #e5e7eb;
         }
 
@@ -232,9 +233,9 @@
 
         .dashboard-card {
             color: #fff;
-            padding: 25px;
-            border-radius: 18px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .10);
         }
 
         .card-blue {
@@ -271,9 +272,8 @@
         }
 
         form[role="search"] {
-            flex: 0 0 320px;
-            max-width: 320px;
-            width: 320px;
+            max-width: 360px;
+            width: 100%;
         }
 
         form[role="search"] input[type="search"] {
@@ -293,21 +293,12 @@
             display: none;
         }
 
-        .index-toolbar-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: nowrap;
-        }
-
         .index-toolbar-actions {
             display: flex;
             align-items: center;
             gap: 12px;
             flex-wrap: nowrap;
             justify-content: flex-end;
-            flex: 0 0 auto;
         }
 
         .btn-add-record {
@@ -366,6 +357,23 @@
             }
         }
 
+        @media(max-width:576px) {
+
+            .index-toolbar-actions {
+                width: 100%;
+            }
+
+            form[role="search"],
+            form[role="search"] input[type="search"] {
+                max-width: none;
+                min-width: 0 !important;
+                width: 100%;
+            }
+
+            .btn-add-record {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
