@@ -3,19 +3,19 @@
     $avatarName = urlencode($accountUser->name ?? 'User');
     $avatarFallback = "https://ui-avatars.com/api/?name={$avatarName}&background=2563eb&color=fff";
     $avatarUrl = $accountUser?->photo
-        ? asset('storage/' . $accountUser->photo)
+        ? route('account.profile.photo', ['v' => optional($accountUser->updated_at)->timestamp])
         : $avatarFallback;
 @endphp
 
 @once
     <style>
         .account-menu{position:relative}
-        .account-menu-toggle{align-items:center;background:#fff;border:1px solid transparent;border-radius:14px;display:flex;gap:12px;padding:8px 10px;transition:.2s ease}
+        .account-menu-toggle{align-items:center;background:#fff;border:1px solid transparent;border-radius:12px;display:flex;gap:10px;padding:6px 8px;transition:.2s ease}
         .account-menu-toggle:hover,.account-menu.open .account-menu-toggle{background:#f8fafc;border-color:#dbeafe;box-shadow:0 8px 20px rgba(15,23,42,.08)}
-        .account-menu-toggle img{width:44px;height:44px;min-width:44px;border-radius:50%;border:3px solid #dbeafe;object-fit:cover;background:#eff6ff;display:block;font-size:0}
-        .account-menu-toggle strong{color:#0f172a;font-size:15px;white-space:nowrap}
-        .account-menu-toggle small{color:#64748b;display:block;font-size:12px;font-weight:600;line-height:1.2;text-align:left}
-        .account-menu-toggle .account-chevron{color:#64748b;font-size:14px;transition:transform .2s ease}
+        .account-menu-toggle img{width:38px;height:38px;min-width:38px;border-radius:50%;border:2px solid #dbeafe;object-fit:cover;background:#eff6ff;display:block;font-size:0}
+        .account-menu-toggle strong{color:#0f172a;font-size:14px;white-space:nowrap}
+        .account-menu-toggle small{color:#64748b;display:block;font-size:12px;font-weight:500;line-height:1.2;text-align:left}
+        .account-menu-toggle .account-chevron{color:#64748b;font-size:12px;transition:transform .2s ease}
         .account-menu.open .account-chevron{transform:rotate(180deg)}
         .account-menu-dropdown{background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 18px 45px rgba(15,23,42,.16);display:none;min-width:230px;padding:8px;position:absolute;right:0;top:calc(100% + 10px);z-index:1200}
         .account-menu.open .account-menu-dropdown{display:block}
