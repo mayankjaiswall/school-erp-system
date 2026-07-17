@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AccountController extends Controller
 {
@@ -12,6 +13,19 @@ class AccountController extends Controller
         return view('account.profile', [
             'user' => auth()->user()->load(['role', 'school']),
             'layout' => $this->layoutForUser(),
+        ]);
+    }
+
+    public function profilePhoto(Request $request)
+    {
+        $user = $request->user();
+
+        if (! $user->photo || ! Storage::disk('public')->exists($user->photo)) {
+            abort(404);
+        }
+
+        return response()->file(Storage::disk('public')->path($user->photo), [
+            'Cache-Control' => 'private, max-age=300',
         ]);
     }
 

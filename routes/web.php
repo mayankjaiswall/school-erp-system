@@ -30,6 +30,7 @@ foreach ($extraRoutes as $file) {
 Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
     Route::get('/profile', [AccountController::class, 'profile'])->name('profile');
     Route::patch('/profile', [AccountController::class, 'updateProfile'])->name('profile.update');
+    Route::get('/profile/photo', [AccountController::class, 'profilePhoto'])->name('profile.photo');
     Route::get('/password', [AccountController::class, 'password'])->name('password');
     Route::put('/password', [AccountController::class, 'updatePassword'])->name('password.update');
 });
