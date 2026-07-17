@@ -6,7 +6,7 @@
 @section('content')
 @php
     $avatarFallback = 'https://ui-avatars.com/api/?name=' . urlencode($user->name ?? 'User') . '&background=2563eb&color=fff';
-    $avatarUrl = $user->photo ? asset('storage/' . $user->photo) : $avatarFallback;
+    $avatarUrl = $user->photo ? route('account.profile.photo', ['v' => optional($user->updated_at)->timestamp]) : $avatarFallback;
 @endphp
 
 <style>
