@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\SchoolController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\SubscriptionPlanController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Principal\DashboardController as PrincipalDashboardController;
 
@@ -74,5 +75,9 @@ Route::middleware(['auth', 'role:super_admin'])->prefix('admin')->group(function
     Route::post('/subscription-plans/delete/{id}', [SubscriptionPlanController::class, 'delete'])->name('subscription-plans.delete');
     Route::get('/subscription-plans/view/{id}', [SubscriptionPlanController::class, 'view'])->name('subscription-plans.view');
 
-    //
+    // Settings routes
+    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/mail', [SettingController::class, 'mail'])->name('settings.mail');
+    Route::put('/settings/mail', [SettingController::class, 'updateMail'])->name('settings.mail.update');
+    Route::post('/settings/mail/test', [SettingController::class, 'sendTestMail'])->name('settings.mail.test');
 });
