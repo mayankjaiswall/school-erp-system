@@ -625,7 +625,8 @@
                 <i class="bi bi-file-earmark-bar-graph"></i>
                 <span>Reports</span>
             </a>
-            <a href="#">
+            <a href="{{ route('settings.index') }}"
+                class="{{ request()->routeIs('settings.*') ? 'active-menu' : '' }}">
                 <i class="bi bi-gear"></i>
                 <span>Settings</span>
             </a>
