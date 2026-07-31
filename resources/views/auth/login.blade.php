@@ -169,12 +169,22 @@
             opacity:.95;
         }
 
+        .login-btn:disabled{
+            cursor:not-allowed;
+            opacity:.75;
+        }
+
         .error-box{
             background:#fee2e2;
             color:#991b1b;
             padding:12px;
             border-radius:10px;
             margin-bottom:20px;
+            display:none;
+        }
+
+        .error-box.is-visible{
+            display:block;
         }
 
         .demo-box{
@@ -244,19 +254,15 @@
             Login to your EduERP account
         </div>
 
-        @if($errors->any())
-            <div class="error-box">
+        <div class="error-box{{ $errors->any() || session('error') ? ' is-visible' : '' }}" id="login-error" role="alert">
+            @if($errors->any())
                 {{ $errors->first() }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="error-box">
+            @elseif(session('error'))
                 {{ session('error') }}
-            </div>
-        @endif
+            @endif
+        </div>
 
-        <form method="POST" action="{{ route('login.post') }}">
+        <form method="POST" action="{{ route('login.post') }}" id="login-form" data-ajax-login>
             @csrf
 
             <div class="form-group">
@@ -297,8 +303,8 @@
                 </a>
             </div>
 
-            <button class="login-btn" type="submit">
-                Sign In
+            <button class="login-btn" type="submit" id="login-submit">
+                <span data-login-label>Sign In</span>
             </button>
         </form>
 
@@ -311,6 +317,73 @@
     </div>
 
 </div>
+
+<script>
+    (function () {
+        const form = document.querySelector('[data-ajax-login]');
+        const errorBox = document.getElementById('login-error');
+        const submitButton = document.getElementById('login-submit');
+        const submitLabel = submitButton ? submitButton.querySelector('[data-login-label]') : null;
+
+        if (!form || !errorBox || !submitButton || !window.fetch) {
+            return;
+        }
+
+        function showError(message) {
+            errorBox.textContent = message || 'Unable to login. Please try again.';
+            errorBox.classList.add('is-visible');
+        }
+
+        function clearError() {
+            errorBox.textContent = '';
+            errorBox.classList.remove('is-visible');
+        }
+
+        function setLoading(isLoading) {
+            submitButton.disabled = isLoading;
+            if (submitLabel) {
+                submitLabel.textContent = isLoading ? 'Signing In...' : 'Sign In';
+            }
+        }
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            clearError();
+            setLoading(true);
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    credentials: 'same-origin'
+                });
+
+                const data = await response.json().catch(function () {
+                    return {};
+                });
+
+                if (!response.ok) {
+                    const firstError = data.errors
+                        ? Object.values(data.errors).flat()[0]
+                        : data.message;
+
+                    showError(firstError);
+                    setLoading(false);
+                    return;
+                }
+
+                window.location.assign(data.redirect || '/dashboard');
+            } catch (error) {
+                showError('Network error. Please check your connection and try again.');
+                setLoading(false);
+            }
+        });
+    })();
+</script>
 
 </body>
 </html>
