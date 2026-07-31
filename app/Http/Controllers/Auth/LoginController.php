@@ -30,20 +30,25 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            $user = Auth::user();
-            if ($user->role && $user->role->slug === 'super_admin') {
-                return redirect('/admin/dashboard');
+            $redirectTo = $this->redirectPath();
+
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'message' => 'Login successful.',
+                    'redirect' => $redirectTo,
+                ]);
             }
-            if ($user->role && $user->role->slug === 'principal') {
-                return redirect('/principal/dashboard');
-            }
-            if ($user->role && $user->role->slug === 'teacher') {
-                return redirect('/teacher/dashboard');
-            }
-            if ($user->role && $user->role->slug === 'parent') {
-                return redirect('/parent/dashboard');
-            }
-            return redirect('/dashboard');
+
+            return redirect($redirectTo);
+        }
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'message' => 'The provided credentials do not match our records.',
+                'errors' => [
+                    'email' => ['The provided credentials do not match our records.'],
+                ],
+            ], 422);
         }
 
         return back()->withErrors([
@@ -57,5 +62,25 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login');
+    }
+
+    private function redirectPath(): string
+    {
+        $user = Auth::user();
+
+        if ($user->role && $user->role->slug === 'super_admin') {
+            return '/admin/dashboard';
+        }
+        if ($user->role && $user->role->slug === 'principal') {
+            return '/principal/dashboard';
+        }
+        if ($user->role && $user->role->slug === 'teacher') {
+            return '/teacher/dashboard';
+        }
+        if ($user->role && $user->role->slug === 'parent') {
+            return '/parent/dashboard';
+        }
+
+        return '/dashboard';
     }
 }
