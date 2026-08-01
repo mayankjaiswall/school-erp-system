@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Setting;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,11 +29,9 @@ class AppServiceProvider extends ServiceProvider
     protected function applyMailSettings(): void
     {
         try {
-            if (! Schema::hasTable('settings')) {
-                return;
-            }
-
-            $mail = Setting::group('mail');
+            // Cached (see Setting::all_cached()) so this doesn't hit the
+            // database on every single request — only on a cache miss.
+            $mail = Setting::all_cached();
         } catch (\Throwable $e) {
             // Database not ready (e.g. during install/migrations) — keep .env config.
             return;
