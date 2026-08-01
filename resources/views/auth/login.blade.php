@@ -4,303 +4,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduERP Login</title>
+    <title>Log In — EduERP</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@800&display=swap" rel="stylesheet"></noscript>
 
     <style>
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary:    #1d4ed8;
+            --primary-dk: #1e3a8a;
+            --accent:     #f59e0b;
+            --accent-lt:  #fbbf24;
+            --dark:       #0f172a;
+            --grey:       #64748b;
+            --grad1: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
         }
 
-        body{
-            font-family:'Inter',sans-serif;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:linear-gradient(
-                135deg,
-                #0f172a 0%,
-                #312e81 50%,
-                #4f46e5 100%
-            );
-            padding:20px;
+        html, body { height: 100%; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            min-height: 100dvh;
+            display: grid;
+            grid-template-columns: 1.05fr 1fr;
         }
 
-        .login-wrapper{
-            width:100%;
-            max-width:1100px;
-            background:#fff;
-            border-radius:24px;
-            overflow:hidden;
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            box-shadow:0 25px 50px rgba(0,0,0,.25);
+        /* ─── Brand panel ───────────────────────── */
+        .brand-panel {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a1628 0%, #0f2748 35%, #123b6b 70%, #1d4ed8 100%);
+            padding: 72px 64px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #fff;
+        }
+        .brand-glow {
+            position: absolute;
+            width: 480px; height: 480px;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .3;
+            background: radial-gradient(circle, #3b82f6, transparent);
+            top: -120px; right: -120px;
+        }
+        .brand-mark {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 56px;
+        }
+        .brand-mark-icon {
+            width: 38px; height: 38px;
+            background: var(--grad1);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+        .brand-mark-text { font-weight: 700; font-size: 1.15rem; }
+        .brand-mark-text span { color: var(--accent-lt); }
+
+        .brand-panel h1 {
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1.9rem, 3vw, 2.6rem);
+            line-height: 1.25;
+            max-width: 460px;
+            margin-bottom: 20px;
+        }
+        .brand-panel p {
+            position: relative;
+            color: rgba(255,255,255,.65);
+            line-height: 1.75;
+            max-width: 420px;
+            margin-bottom: 40px;
         }
 
-        .left-side{
-            padding:60px;
-            background:linear-gradient(
-                135deg,
-                #1e1b4b,
-                #4338ca
-            );
-            color:#fff;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
+        .brand-points {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .brand-point {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: .92rem;
+            color: rgba(255,255,255,.85);
+        }
+        .brand-point-mark {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--accent-lt);
+            flex-shrink: 0;
         }
 
-        .logo{
-            font-size:32px;
-            font-weight:700;
-            margin-bottom:20px;
+        /* ─── Form panel ────────────────────────── */
+        .form-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 64px;
+        }
+        .form-inner { width: 100%; max-width: 380px; margin: 0 auto; }
+
+        .mobile-mark {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        .mobile-mark .brand-mark-icon { font-size: .9rem; width: 34px; height: 34px; }
+        .mobile-mark span { font-weight: 700; font-size: 1.05rem; color: var(--dark); }
+        .mobile-mark strong { color: var(--primary); }
+
+        .form-tag {
+            display: inline-block;
+            background: rgba(29,78,216,.08);
+            color: var(--primary);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 50px;
+            margin-bottom: 18px;
+        }
+        .form-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .form-subtitle {
+            color: var(--grey);
+            font-size: .93rem;
+            margin-bottom: 32px;
         }
 
-        .logo span{
-            color:#fbbf24;
+        .error-box {
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+            border-left: 3px solid #dc2626;
+            background: #fef2f2;
+            color: #991b1b;
+            font-size: .87rem;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin-bottom: 24px;
         }
+        .error-box.is-visible { display: flex; }
 
-        .left-side h2{
-            font-size:42px;
-            line-height:1.2;
-            margin-bottom:20px;
+        .field { margin-bottom: 24px; }
+        .field label {
+            display: block;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
         }
-
-        .left-side p{
-            color:#dbeafe;
-            line-height:1.8;
+        .field input[type="text"],
+        .field input[type="password"] {
+            width: 100%;
+            border: none;
+            border-bottom: 1.5px solid #e2e8f0;
+            padding: 10px 2px;
+            font-size: .96rem;
+            font-family: inherit;
+            color: var(--dark);
+            background: transparent;
+            outline: none;
+            transition: border-color .2s ease;
         }
+        .field input:focus { border-bottom-color: var(--primary); }
+        .field input::placeholder { color: #94a3b8; }
 
-        .features{
-            margin-top:30px;
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            font-size: .85rem;
         }
+        .remember-me { display: flex; align-items: center; gap: 8px; color: #475569; cursor: pointer; }
+        .remember-me input { width: 15px; height: 15px; accent-color: var(--primary); cursor: pointer; }
+        .options a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .options a:hover { text-decoration: underline; }
 
-        .features div{
-            margin-bottom:12px;
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 50px;
+            background: var(--grad1);
+            color: #fff;
+            font-weight: 600;
+            font-size: .95rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(29,78,216,.3);
+            transition: transform .2s ease, box-shadow .2s ease;
         }
+        .login-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 30px rgba(29,78,216,.4); }
+        .login-btn:disabled { cursor: not-allowed; opacity: .7; transform: none; }
 
-        .right-side{
-            padding:60px;
+        .demo-note {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+            font-size: .8rem;
+            color: var(--grey);
+            line-height: 1.6;
         }
+        .demo-note strong { color: #334155; }
 
-        .login-title{
-            font-size:32px;
-            font-weight:700;
-            margin-bottom:10px;
-            color:#111827;
-        }
-
-        .login-subtitle{
-            color:#64748b;
-            margin-bottom:30px;
-        }
-
-        .form-group{
-            margin-bottom:18px;
-        }
-
-        label{
-            display:block;
-            margin-bottom:8px;
-            font-size:14px;
-            color:#334155;
-        }
-
-        .input-box{
-            position:relative;
-        }
-
-        .input-box i{
-            position:absolute;
-            left:15px;
-            top:15px;
-            color:#94a3b8;
-        }
-
-        .input-box input{
-            width:100%;
-            padding:14px 14px 14px 45px;
-            border:1px solid #e2e8f0;
-            border-radius:12px;
-            font-size:15px;
-            outline:none;
-        }
-
-        .input-box input:focus{
-            border-color:#4f46e5;
-        }
-
-        .options{
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:20px;
-        }
-
-        .options a{
-            text-decoration:none;
-            color:#4f46e5;
-            font-weight:600;
-        }
-
-        .login-btn{
-            width:100%;
-            padding:14px;
-            border:none;
-            border-radius:12px;
-            background:linear-gradient(
-                135deg,
-                #4f46e5,
-                #4338ca
-            );
-            color:#fff;
-            font-weight:600;
-            cursor:pointer;
-            font-size:15px;
-        }
-
-        .login-btn:hover{
-            opacity:.95;
-        }
-
-        .login-btn:disabled{
-            cursor:not-allowed;
-            opacity:.75;
-        }
-
-        .error-box{
-            background:#fee2e2;
-            color:#991b1b;
-            padding:12px;
-            border-radius:10px;
-            margin-bottom:20px;
-            display:none;
-        }
-
-        .error-box.is-visible{
-            display:block;
-        }
-
-        .demo-box{
-            margin-top:25px;
-            background:#f8fafc;
-            border:1px dashed #cbd5e1;
-            padding:15px;
-            border-radius:12px;
-            font-size:14px;
-        }
-
-        @media(max-width:900px){
-
-            .login-wrapper{
-                grid-template-columns:1fr;
-            }
-
-            .left-side{
-                display:none;
-            }
-
-            .right-side{
-                padding:35px;
-            }
+        @media (max-width: 900px) {
+            body { display: block; }
+            .brand-panel { display: none; }
+            .form-panel { min-height: 100dvh; padding: 40px 28px; }
+            .mobile-mark { display: inline-flex; }
         }
     </style>
 </head>
 
 <body>
 
-<div class="login-wrapper">
+<div class="brand-panel">
+    <div class="brand-glow"></div>
 
-    <div class="left-side">
-
-        <div class="logo">
-            Edu<span>ERP</span>
-        </div>
-
-        <h2>
-            Smart School
-            Management Platform
-        </h2>
-
-        <p>
-            Manage schools, students, teachers,
-            attendance, fees, examinations and
-            administration from a single SaaS platform.
-        </p>
-
-        <div class="features">
-            <div>✅ School Management</div>
-            <div>✅ Student Tracking</div>
-            <div>✅ Attendance System</div>
-            <div>✅ Fee Management</div>
-            <div>✅ Reports & Analytics</div>
-        </div>
-
+    <div class="brand-mark">
+        <div class="brand-mark-icon">E</div>
+        <div class="brand-mark-text">Edu<span>ERP</span></div>
     </div>
 
-    <div class="right-side">
+    <h1>Everything your school runs on, in one place.</h1>
+    <p>Sign in to manage admissions, attendance, fees, exams and communication from a single, unified dashboard.</p>
 
-        <div class="login-title">
-            Welcome Back 👋
-        </div>
+    <div class="brand-points">
+        <div class="brand-point"><span class="brand-point-mark"></span> Trusted by 500+ schools worldwide</div>
+        <div class="brand-point"><span class="brand-point-mark"></span> Bank-level security &amp; 99% uptime</div>
+        <div class="brand-point"><span class="brand-point-mark"></span> Dedicated onboarding support</div>
+    </div>
+</div>
 
-        <div class="login-subtitle">
-            Login to your EduERP account
-        </div>
+<div class="form-panel">
+    <div class="form-inner">
+        <a href="/" class="mobile-mark">
+            <div class="brand-mark-icon">E</div>
+            <span>Edu<strong>ERP</strong></span>
+        </a>
+
+        <span class="form-tag">Welcome Back</span>
+        <div class="form-title">Sign in to your account</div>
+        <div class="form-subtitle">Enter your details to access your dashboard.</div>
 
         <div class="error-box{{ $errors->any() || session('error') ? ' is-visible' : '' }}" id="login-error" role="alert">
-            @if($errors->any())
-                {{ $errors->first() }}
-            @elseif(session('error'))
-                {{ session('error') }}
-            @endif
+            <span>
+                @if($errors->any())
+                    {{ $errors->first() }}
+                @elseif(session('error'))
+                    {{ session('error') }}
+                @endif
+            </span>
         </div>
 
         <form method="POST" action="{{ route('login.post') }}" id="login-form" data-ajax-login>
             @csrf
 
-            <div class="form-group">
+            <div class="field">
                 <label>Email Address or Mobile Number</label>
-
-                <div class="input-box">
-                    <i class="bi bi-person"></i>
-                    <input
-                        type="text"
-                        name="email"
-                        value="{{ old('email') }}"
-                        placeholder="Enter email or mobile number"
-                        required>
-                </div>
+                <input
+                    type="text"
+                    name="email"
+                    value="{{ old('email') }}"
+                    placeholder="you@school.com"
+                    required>
             </div>
 
-            <div class="form-group">
+            <div class="field">
                 <label>Password</label>
-
-                <div class="input-box">
-                    <i class="bi bi-lock"></i>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required>
-                </div>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required>
             </div>
 
             <div class="options">
-                <label>
+                <label class="remember-me">
                     <input type="checkbox" name="remember">
-                    Remember Me
+                    Remember me
                 </label>
 
-                <a href="#">
-                    Forgot Password?
-                </a>
+                <a href="#">Forgot password?</a>
             </div>
 
             <button class="login-btn" type="submit" id="login-submit">
@@ -308,20 +315,18 @@
             </button>
         </form>
 
-        <div class="demo-box">
-            <strong>Super Admin Demo</strong><br>
-            Email: admin@eduerp.com<br>
-            Password: password
+        <div class="demo-note">
+            <strong>Super Admin demo access</strong><br>
+            admin@eduerp.com · password
         </div>
-
     </div>
-
 </div>
 
 <script>
     (function () {
         const form = document.querySelector('[data-ajax-login]');
         const errorBox = document.getElementById('login-error');
+        const errorText = errorBox ? errorBox.querySelector('span') : null;
         const submitButton = document.getElementById('login-submit');
         const submitLabel = submitButton ? submitButton.querySelector('[data-login-label]') : null;
 
@@ -330,12 +335,12 @@
         }
 
         function showError(message) {
-            errorBox.textContent = message || 'Unable to login. Please try again.';
+            if (errorText) errorText.textContent = message || 'Unable to login. Please try again.';
             errorBox.classList.add('is-visible');
         }
 
         function clearError() {
-            errorBox.textContent = '';
+            if (errorText) errorText.textContent = '';
             errorBox.classList.remove('is-visible');
         }
 
