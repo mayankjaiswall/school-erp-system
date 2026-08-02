@@ -9,62 +9,6 @@
 <style>
     /* Banner header removed — Add button moved inline with search for consistent layout */
 
-    .stats-card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
-        text-align: center;
-        height: 100%;
-    }
-
-    .stats-card h3 {
-        margin: 0;
-        color: #2563eb;
-        font-weight: 700;
-    }
-
-    .stats-card span {
-        color: #64748b;
-        font-size: 14px;
-    }
-
-    .role-stat-card {
-        background: #fff;
-        padding: 18px;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, .05);
-        height: 100%;
-    }
-
-    .role-stat-card .role-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        background: #eff6ff;
-        color: #2563eb;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-    }
-
-    .role-stat-card h4 {
-        margin: 0;
-        color: #0f172a;
-        font-size: 22px;
-        font-weight: 700;
-    }
-
-    .role-stat-card span {
-        color: #64748b;
-        font-size: 13px;
-        font-weight: 500;
-        display: block;
-    }
-
     .role-pill {
         display: inline-flex;
         align-items: center;
@@ -189,30 +133,6 @@
 
 </style>
 <!-- Header removed; Add button moved beside search below -->
-<!-- Stats -->
-<div class="row g-3 mb-4">
-    <div class="col-md-3 col-sm-6">
-        <div class="stats-card">
-            <h3>{{ $totalUsers }}</h3>
-            <span>Total Users</span>
-        </div>
-    </div>
-    @foreach($roleStats as $role)
-    <div class="col-md-3 col-sm-6">
-        <div class="role-stat-card">
-            <div class="d-flex align-items-center justify-content-between gap-3">
-                <div>
-                    <span>{{ $role->name }}</span>
-                    <h4>{{ $role->users_count }}</h4>
-                </div>
-                <div class="role-icon">
-                    <i class="bi bi-person-badge"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-</div>
 <!-- Table -->
 <div class="table-card">
     <div class="index-toolbar-row mb-4">

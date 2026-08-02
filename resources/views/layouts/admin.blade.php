@@ -468,6 +468,14 @@
             display: none;
         }
 
+        .index-toolbar-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
         .index-toolbar-actions {
             display: flex;
             align-items: center;
@@ -539,7 +547,13 @@
 
         @media(max-width:576px) {
 
+            .index-toolbar-row {
+                align-items: stretch;
+            }
+
             .index-toolbar-actions {
+                flex-direction: column;
+                align-items: stretch;
                 width: 100%;
             }
 
