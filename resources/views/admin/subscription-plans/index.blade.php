@@ -9,26 +9,6 @@
 <style>
     /* Banner header removed — Create button will be placed beside search for consistent layout */
 
-    .stats-card{
-        background: #fff;
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15,23,42,.05);
-        text-align: center;
-    }
-
-    .stats-card h3{
-        margin: 0;
-        color: #2563eb;
-        font-weight: 700;
-    }
-
-    .stats-card span{
-        color: #64748b;
-        font-size: 14px;
-    }
-
     .table-card{
         background: #fff;
         border-radius: 20px;
@@ -243,27 +223,6 @@
 
 <!-- Header removed; Create Plan button moved beside search below -->
 
-<div class="row mb-4 g-4">
-    <div class="col-md-4">
-        <div class="stats-card">
-            <h3 id="totalPlans">{{ $totalPlans }}</h3>
-            <span>Total Plans</span>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card">
-            <h3 id="activePlans">{{ $activePlans }}</h3>
-            <span>Active Plans</span>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="stats-card">
-            <h3 id="inactivePlans">{{ $inactivePlans }}</h3>
-            <span>Inactive Plans</span>
-        </div>
-    </div>
-</div>
-
 <div class="table-card">
     <div class="index-toolbar-row mb-4">
         <h5 class="mb-0">Plans Directory</h5>
@@ -438,9 +397,6 @@ $(function () {
             dataType: 'json',
             success: function (response) {
                 $('#plansTableBody').html(response.html);
-                $('#totalPlans').text(response.totalPlans);
-                $('#activePlans').text(response.activePlans);
-                $('#inactivePlans').text(response.inactivePlans);
             }
         });
     }
