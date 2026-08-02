@@ -9,26 +9,6 @@
 <style>
     /* Header removed — Add button moved beside search for a cleaner layout */
 
-    .stats-card{
-        background: #fff;
-        padding: 20px;
-        border-radius: 16px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 8px 20px rgba(15,23,42,.05);
-        text-align: center;
-    }
-
-    .stats-card h3{
-        margin: 0;
-        color: #2563eb;
-        font-weight: 700;
-    }
-
-    .stats-card span{
-        color: #64748b;
-        font-size: 14px;
-    }
-
     .table-card{
         background: #fff;
         border-radius: 20px;
@@ -135,24 +115,6 @@
 </style>
 
 <!-- Header removed; Add button moved beside search box below -->
-
-<!-- Stats -->
-
-<div class="row mb-4">
-
-    <div class="col-md-3">
-
-        <div class="stats-card">
-
-            <h3>{{ $schools->count() }}</h3>
-
-            <span>Total Schools</span>
-
-        </div>
-
-    </div>
-
-</div>
 
 <!-- Table -->
 
