@@ -231,6 +231,8 @@
 
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 24px; height: 2px; background: var(--dark); border-radius: 2px; }
+        .navbar-white .hamburger span { background: #fff; }
+        .navbar.scrolled .hamburger span { background: var(--dark); }
 
         /* ─── Hero ──────────────────────────────── */
         .hero {
@@ -722,17 +724,21 @@
         }
         .pricing-carousel {
             position: relative;
+            margin-inline: auto;
+            max-width: 100%;
         }
         .pricing-grid {
             display: flex;
             gap: 24px;
             align-items: stretch;
             overflow-x: auto;
+            overscroll-behavior-x: contain;
             padding: 6px 2px 22px;
             scroll-behavior: smooth;
             scroll-padding: 2px;
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .pricing-grid::-webkit-scrollbar {
             display: none;
@@ -1018,10 +1024,21 @@
             .steps-grid::before { display: none; }
         }
         @media (max-width: 768px) {
-            .hero .container { grid-template-columns: 1fr; text-align: center; padding-top: 120px; }
+            .container { padding-left: 18px; padding-right: 18px; }
+            .navbar { padding: 12px 0; }
+            .navbar .container { gap: 12px; }
+            .logo { min-width: 0; }
+            .logo-icon { width: 38px; height: 38px; border-radius: 11px; }
+            .logo-text { font-size: 1.1rem; line-height: 1.15; }
+            .logo-text small { font-size: .55rem; letter-spacing: .07em; }
+            .nav-cta { margin-left: auto; }
+            .btn-nav-get-started { padding: 8px 16px; font-size: .8rem; }
+            .hamburger { flex-shrink: 0; }
+            .hero { min-height: auto; }
+            .hero .container { grid-template-columns: 1fr; text-align: center; padding-top: 108px; padding-bottom: 58px; gap: 32px; }
             .hero-desc { margin-left: auto; margin-right: auto; }
-            .hero-cta { justify-content: center; }
-            .hero-stats { justify-content: center; }
+            .hero-cta { justify-content: center; margin-bottom: 34px; }
+            .hero-stats { justify-content: center; gap: 22px; }
             .hero-visual { display: none; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px 0; }
             .stat-item:nth-child(2)::after { display: none; }
@@ -1031,13 +1048,74 @@
             .why-visual { display: none; }
             .testimonials-grid { grid-template-columns: 1fr; }
             .modules-grid { grid-template-columns: repeat(2, 1fr); }
-            .pricing-card { flex-basis: 100%; }
-            .pricing-carousel-nav { justify-content: center; margin-top: -28px; }
+            .pricing { padding: 72px 0; overflow: hidden; }
+            .pricing-grid {
+                gap: 16px;
+                margin-inline: -18px;
+                padding: 6px 18px 20px;
+                scroll-padding-inline: 18px;
+            }
+            .pricing-card {
+                border-radius: 18px;
+                flex-basis: min(86vw, 360px);
+                padding: 24px;
+                scroll-snap-align: center;
+            }
+            .pricing-carousel-nav { justify-content: center; margin: -24px 0 18px; }
+            .pricing-icon { width: 48px; height: 48px; border-radius: 14px; margin-bottom: 18px; }
+            .pricing-name { font-size: 1.12rem; }
+            .pricing-desc { min-height: auto; }
+            .pricing-price { margin-top: 22px; }
+            .pricing-amount { font-size: clamp(2rem, 13vw, 2.65rem); }
+            .pricing-features { gap: 10px; margin-bottom: 24px; }
+            .pricing-features li { align-items: flex-start; line-height: 1.45; }
             .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
             .nav-links { display: none; }
             .hamburger { display: flex; }
             .nav-cta .btn-nav-login { display: none; }
+        }
+        @media (max-width: 420px) {
+            .container { padding-left: 14px; padding-right: 14px; }
+            .section-title { font-size: 1.55rem; }
+            .section-subtitle { font-size: .95rem; margin-bottom: 36px; }
+            .logo { gap: 8px; }
+            .logo-icon { width: 34px; height: 34px; border-radius: 10px; }
+            .logo-text { font-size: 1rem; }
+            .logo-text small { max-width: 106px; }
+            .btn-nav-get-started { display: none; }
+            .hero .container { padding-top: 92px; }
+            .hero-badge { font-size: .68rem; padding: 7px 12px; }
+            .hero-title { font-size: 2rem; }
+            .hero-desc { font-size: .95rem; }
+            .hero-cta .btn { width: 100%; justify-content: center; }
+            .hero-stat-num { font-size: 1.45rem; }
+            .hero-stat-label { font-size: .68rem; }
+            .pricing-grid {
+                margin-inline: -14px;
+                padding-inline: 14px;
+                scroll-padding-inline: 14px;
+            }
+            .pricing-card {
+                flex-basis: calc(100vw - 56px);
+                padding: 22px;
+            }
+            .pricing-card.featured::before {
+                top: 14px;
+                right: 14px;
+                font-size: .65rem;
+                padding: 5px 10px;
+            }
+            .pricing-card .btn {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+            .back-to-top {
+                bottom: 18px;
+                right: 18px;
+                width: 42px;
+                height: 42px;
+            }
         }
     </style>
 </head>
@@ -1467,7 +1545,7 @@
 
         @if($subscriptionPlans->isNotEmpty())
             <div class="pricing-carousel">
-                @if($subscriptionPlans->count() > 3)
+                @if($subscriptionPlans->count() > 1)
                     <div class="pricing-carousel-nav" aria-label="Subscription plan carousel controls">
                         <button class="pricing-carousel-btn" type="button" data-pricing-prev aria-label="Previous plans">
                             <i class="fas fa-chevron-left"></i>
