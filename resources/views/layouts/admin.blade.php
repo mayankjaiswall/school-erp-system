@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --radius: 6px;
+            --radius: 10px;
             --radius-sm: 4px;
-            --sidebar-bg: #0b1220;
+            --sidebar-bg: #08111f;
             --sidebar-w: 256px;
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
@@ -21,7 +21,7 @@
             --muted: #64748b;
             --line: #e2e8f0;
             --surface: #ffffff;
-            --page-bg: #f4f6fa;
+            --page-bg: #f4f7fb;
         }
 
         * {
@@ -31,7 +31,10 @@
         }
 
         body {
-            background: var(--page-bg);
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, .07), transparent 30rem),
+                radial-gradient(circle at top right, rgba(14, 165, 233, .05), transparent 28rem),
+                linear-gradient(180deg, #fbfdff 0%, var(--page-bg) 100%);
             font-family: 'Inter', 'Segoe UI', sans-serif;
             font-size: 14.5px;
             color: var(--ink);
@@ -47,12 +50,16 @@
             left: 0;
             width: var(--sidebar-w);
             height: 100vh;
-            background: linear-gradient(180deg, #0b1220 0%, #0e1628 100%);
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, .32), transparent 15rem),
+                radial-gradient(circle at bottom right, rgba(14, 165, 233, .16), transparent 14rem),
+                linear-gradient(180deg, #07101f 0%, #0b1630 56%, #101827 100%);
             color: #fff;
             display: flex;
             flex-direction: column;
             z-index: 1000;
-            border-right: 1px solid rgba(255, 255, 255, .06);
+            border-right: 1px solid rgba(147, 197, 253, .14);
+            box-shadow: 18px 0 40px rgba(15, 23, 42, .12);
         }
 
         .logo {
@@ -160,9 +167,10 @@
         }
 
         .sidebar-menu a.active-menu {
-            background: rgba(37, 99, 235, .16);
+            background: linear-gradient(135deg, rgba(37, 99, 235, .30), rgba(14, 165, 233, .16));
             color: #fff;
             font-weight: 600;
+            box-shadow: inset 0 0 0 1px rgba(147, 197, 253, .10);
         }
 
         .sidebar-menu a.active-menu::before {
@@ -298,13 +306,15 @@
             position: sticky;
             top: 0;
             z-index: 900;
-            background: rgba(255, 255, 255, .92);
-            backdrop-filter: blur(8px);
+            background:
+                linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(239, 246, 255, .92));
+            backdrop-filter: blur(12px);
             padding: 12px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--line);
+            border-bottom: 1px solid rgba(191, 219, 254, .75);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, .06);
         }
 
         .topbar h4 {
@@ -337,7 +347,7 @@
             height: 38px;
             border: 1px solid var(--line);
             border-radius: var(--radius);
-            background: #fff;
+            background: linear-gradient(135deg, #fff, #f8fbff);
             cursor: pointer;
             transition: background .18s ease, border-color .18s ease;
         }
@@ -379,12 +389,12 @@
         /* =========================CONTENT CARD========================= */
 
         .content-card {
-            background: var(--surface);
+            background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(248,251,255,.98));
             border-radius: var(--radius);
             padding: 24px;
             margin-top: 22px;
-            box-shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 8px 24px rgba(15, 23, 42, .04);
-            border: 1px solid var(--line);
+            box-shadow: 0 12px 34px rgba(37, 99, 235, .08);
+            border: 1px solid rgba(191, 219, 254, .70);
         }
 
         /* =========================DASHBOARD CARDS========================= */
@@ -405,7 +415,7 @@
         }
 
         .card-orange {
-            background: linear-gradient(135deg, #ea580c, #c2410c);
+            background: linear-gradient(135deg, #0891b2, #0e7490);
         }
 
         .card-purple {
