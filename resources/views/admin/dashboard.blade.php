@@ -22,19 +22,21 @@
 
     .stat-card {
         position: relative;
-        background: #fff;
-        border: 1px solid var(--line);
+        background:
+            linear-gradient(135deg, rgba(255,255,255,.98), var(--card-soft, #eff6ff));
+        border: 1px solid var(--card-line, #bfdbfe);
         border-radius: var(--radius);
         padding: 20px;
         height: 100%;
         overflow: hidden;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
-        transition: box-shadow .2s ease, transform .2s ease;
+        box-shadow: 0 12px 30px var(--card-shadow, rgba(37, 99, 235, .10));
+        transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
     }
 
     .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 28px rgba(15, 23, 42, .09);
+        transform: translateY(-4px);
+        border-color: var(--accent, #2563eb);
+        box-shadow: 0 18px 44px var(--card-shadow-strong, rgba(37, 99, 235, .18));
     }
 
     .stat-card::before {
@@ -43,8 +45,20 @@
         top: 0;
         left: 0;
         right: 0;
-        height: 3px;
-        background: var(--accent, #2563eb);
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent, #2563eb), var(--accent-2, #60a5fa));
+    }
+
+    .stat-card::after {
+        content: '';
+        position: absolute;
+        width: 96px;
+        height: 96px;
+        right: -36px;
+        bottom: -44px;
+        border-radius: 50%;
+        background: var(--accent-glow, rgba(37, 99, 235, .12));
+        pointer-events: none;
     }
 
     .stat-head {
@@ -71,7 +85,9 @@
         border-radius: var(--radius);
         font-size: 19px;
         color: var(--accent, #2563eb);
-        background: var(--accent-soft, #eff6ff);
+        background: rgba(255, 255, 255, .70);
+        border: 1px solid var(--card-line, #bfdbfe);
+        box-shadow: 0 8px 20px var(--card-shadow, rgba(37, 99, 235, .10));
     }
 
     .stat-value {
@@ -90,10 +106,42 @@
         font-weight: 500;
     }
 
-    .stat-blue   { --accent: #2563eb; --accent-soft: #eff6ff; }
-    .stat-green  { --accent: #16a34a; --accent-soft: #f0fdf4; }
-    .stat-orange { --accent: #ea580c; --accent-soft: #fff7ed; }
-    .stat-purple { --accent: #9333ea; --accent-soft: #faf5ff; }
+    .stat-blue {
+        --accent: #2563eb;
+        --accent-2: #06b6d4;
+        --card-soft: #e0f2fe;
+        --card-line: #bfdbfe;
+        --card-shadow: rgba(37, 99, 235, .13);
+        --card-shadow-strong: rgba(37, 99, 235, .22);
+        --accent-glow: rgba(37, 99, 235, .14);
+    }
+    .stat-green {
+        --accent: #16a34a;
+        --accent-2: #14b8a6;
+        --card-soft: #dcfce7;
+        --card-line: #bbf7d0;
+        --card-shadow: rgba(22, 163, 74, .13);
+        --card-shadow-strong: rgba(22, 163, 74, .22);
+        --accent-glow: rgba(20, 184, 166, .15);
+    }
+    .stat-orange {
+        --accent: #0891b2;
+        --accent-2: #2563eb;
+        --card-soft: #e0f7ff;
+        --card-line: #bae6fd;
+        --card-shadow: rgba(8, 145, 178, .12);
+        --card-shadow-strong: rgba(8, 145, 178, .20);
+        --accent-glow: rgba(14, 165, 233, .13);
+    }
+    .stat-purple {
+        --accent: #9333ea;
+        --accent-2: #ec4899;
+        --card-soft: #f3e8ff;
+        --card-line: #e9d5ff;
+        --card-shadow: rgba(147, 51, 234, .13);
+        --card-shadow-strong: rgba(147, 51, 234, .22);
+        --accent-glow: rgba(236, 72, 153, .14);
+    }
 
     /* =========================CONTENT CARDS========================= */
 
@@ -122,13 +170,14 @@
         align-items: center;
         gap: 12px;
         padding: 11px 10px;
-        border-radius: var(--radius);
+        border-radius: 12px;
         border-bottom: 1px solid #f1f5f9;
-        transition: background .15s ease;
+        transition: background .15s ease, transform .15s ease;
     }
 
     .school-item:hover {
-        background: #f8fafc;
+        background: linear-gradient(135deg, #eff6ff, #f0fdfa);
+        transform: translateX(2px);
     }
 
     .school-item:last-child {
@@ -149,8 +198,8 @@
         width: 40px;
         height: 40px;
         min-width: 40px;
-        border-radius: var(--radius);
-        background: #eff6ff;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #dbeafe, #e0f2fe);
         color: var(--primary);
         border: 1px solid #dbeafe;
         display: flex;
@@ -168,7 +217,7 @@
         font-size: 13px;
         font-weight: 600;
         color: var(--primary);
-        background: #eff6ff;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
         border: 1px solid #dbeafe;
         border-radius: var(--radius);
         text-decoration: none;
@@ -188,8 +237,8 @@
         align-items: center;
         gap: 14px;
         padding: 14px 16px;
-        background: #fff;
-        border: 1px solid var(--line);
+        background: linear-gradient(135deg, #fff, var(--qa-soft, #eff6ff));
+        border: 1px solid var(--qa-line, #bfdbfe);
         border-radius: var(--radius);
         text-decoration: none;
         transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
@@ -197,7 +246,7 @@
 
     .quick-action:hover {
         border-color: var(--qa, #2563eb);
-        box-shadow: 0 8px 20px rgba(15, 23, 42, .08);
+        box-shadow: 0 12px 28px var(--qa-shadow, rgba(37, 99, 235, .12));
         transform: translateY(-2px);
     }
 
@@ -210,7 +259,8 @@
         border-radius: var(--radius);
         font-size: 18px;
         color: var(--qa, #2563eb);
-        background: var(--qa-soft, #eff6ff);
+        background: rgba(255, 255, 255, .72);
+        border: 1px solid var(--qa-line, #bfdbfe);
     }
 
     .quick-action strong {
@@ -237,9 +287,9 @@
         transform: translateX(3px);
     }
 
-    .qa-blue   { --qa: #2563eb; --qa-soft: #eff6ff; }
-    .qa-green  { --qa: #16a34a; --qa-soft: #f0fdf4; }
-    .qa-orange { --qa: #ea580c; --qa-soft: #fff7ed; }
+    .qa-blue   { --qa: #2563eb; --qa-soft: #eff6ff; --qa-line: #bfdbfe; --qa-shadow: rgba(37, 99, 235, .14); }
+    .qa-green  { --qa: #16a34a; --qa-soft: #f0fdf4; --qa-line: #bbf7d0; --qa-shadow: rgba(22, 163, 74, .14); }
+    .qa-orange { --qa: #0891b2; --qa-soft: #ecfeff; --qa-line: #bae6fd; --qa-shadow: rgba(8, 145, 178, .13); }
 
     @media (max-width: 1199px) {
         .chart-box {
@@ -504,7 +554,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         {{ $totalUsers ?? 0 }},
                         {{ $totalRoles ?? 0 }}
                     ],
-                    backgroundColor: ['#2563eb', '#16a34a', '#ea580c'],
+                    backgroundColor: ['#2563eb', '#16a34a', '#0891b2'],
                     borderWidth: 2,
                     borderColor: '#fff',
                     hoverOffset: 6
