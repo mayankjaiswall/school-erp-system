@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AccountController extends Controller
 {
     public function profile()
     {
+        $user = auth()->user()->load(['role', 'school']);
+        $hasProfilePhoto = $user->photo && Storage::disk('public')->exists($user->photo);
+
         return view('account.profile', [
-            'user' => auth()->user()->load(['role', 'school']),
+            'user' => $user,
             'layout' => $this->layoutForUser(),
+            'hasProfilePhoto' => $hasProfilePhoto,
+            'profilePhotoName' => $hasProfilePhoto ? $this->profilePhotoDisplayName($user) : null,
         ]);
     }
 
@@ -43,7 +49,19 @@ class AccountController extends Controller
         $user->phone = $validated['phone'] ?? null;
 
         if ($request->hasFile('photo')) {
-            $user->photo = $request->file('photo')->store('profile-photos', 'public');
+            $photo = $request->file('photo');
+            $originalName = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $photo->getClientOriginalExtension();
+            $safeName = Str::slug($originalName) ?: Str::slug($user->name ?: 'profile-photo');
+            $fileName = "{$safeName}.{$extension}";
+            $counter = 1;
+
+            while (Storage::disk('public')->exists("profile-photos/{$fileName}")) {
+                $fileName = "{$safeName}-{$counter}.{$extension}";
+                $counter++;
+            }
+
+            $user->photo = $photo->storeAs('profile-photos', $fileName, 'public');
         }
 
         $user->save();
@@ -81,5 +99,13 @@ class AccountController extends Controller
             'parent' => 'layouts.parent',
             default => 'layouts.admin',
         };
+    }
+
+    private function profilePhotoDisplayName($user): string
+    {
+        $extension = pathinfo($user->photo, PATHINFO_EXTENSION) ?: 'jpg';
+        $name = Str::headline($user->name ?: 'Profile');
+
+        return "{$name} Profile Photo.{$extension}";
     }
 }
