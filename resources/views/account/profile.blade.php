@@ -6,7 +6,7 @@
 @section('content')
 @php
     $avatarFallback = 'https://ui-avatars.com/api/?name=' . urlencode($user->name ?? 'User') . '&background=2563eb&color=fff';
-    $avatarUrl = $user->photo ? route('account.profile.photo', ['v' => optional($user->updated_at)->timestamp]) : $avatarFallback;
+    $avatarUrl = $hasProfilePhoto ? route('account.profile.photo', ['v' => optional($user->updated_at)->timestamp]) : $avatarFallback;
 @endphp
 
 <style>
@@ -17,6 +17,14 @@
     .form-control{border:1px solid #dbe2ea;border-radius:12px;min-height:48px}
     .form-control:focus{border-color:#2563eb;box-shadow:0 0 0 .2rem rgba(37,99,235,.12)}
     .locked-field{background:#f8fafc;color:#64748b}
+    .photo-upload{display:flex;align-items:center;border:1px solid #dbe2ea;border-radius:12px;min-height:48px;overflow:hidden;background:#fff}
+    .photo-upload-button{align-items:center;align-self:stretch;background:#f8fafc;border:0;border-right:1px solid #dbe2ea;color:#0f172a;cursor:pointer;display:inline-flex;font-weight:600;gap:8px;margin:0;padding:0 16px;white-space:nowrap}
+    .photo-upload-button:hover{background:#eff6ff;color:#1d4ed8}
+    .photo-upload-name{color:#334155;flex:1;min-width:0;overflow:hidden;padding:0 16px;text-overflow:ellipsis;white-space:nowrap}
+    .photo-upload-name.is-empty{color:#64748b}
+    .photo-upload.is-invalid{border-color:#dc3545}
+    .photo-upload.is-invalid + .invalid-feedback{display:block}
+    .photo-input{height:1px;opacity:0;position:absolute;width:1px}
     .profile-meta{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:18px;height:100%}
     .profile-meta small{color:#64748b;display:block;font-weight:700;margin-bottom:6px;text-transform:uppercase}
     .profile-meta strong{color:#0f172a}
@@ -61,7 +69,18 @@
             </div>
             <div class="col-md-6 mb-4">
                 <label for="photo" class="form-label">Profile Photo</label>
-                <input type="file" name="photo" id="photo" class="form-control @error('photo') is-invalid @enderror" accept="image/*">
+                <div class="photo-upload @error('photo') is-invalid @enderror">
+                    <label for="photo" class="photo-upload-button">
+                        <i class="bi bi-upload"></i>
+                        Choose File
+                    </label>
+                    <span
+                        class="photo-upload-name {{ $profilePhotoName ? '' : 'is-empty' }}"
+                        data-photo-file-name
+                        data-empty-text="No image uploaded"
+                    >{{ $profilePhotoName ?? 'No image uploaded' }}</span>
+                    <input type="file" name="photo" id="photo" class="photo-input @error('photo') is-invalid @enderror" accept="image/*">
+                </div>
                 @error('photo')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
         </div>
@@ -95,4 +114,24 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const photoInput = document.getElementById('photo');
+        const photoFileName = document.querySelector('[data-photo-file-name]');
+
+        if (!photoInput || !photoFileName) {
+            return;
+        }
+
+        const emptyText = photoFileName.dataset.emptyText || 'No image uploaded';
+
+        photoInput.addEventListener('change', () => {
+            const selectedFile = photoInput.files && photoInput.files.length ? photoInput.files[0].name : '';
+
+            photoFileName.textContent = selectedFile || emptyText;
+            photoFileName.classList.toggle('is-empty', !selectedFile && emptyText === 'No image uploaded');
+        });
+    });
+</script>
 @endsection
