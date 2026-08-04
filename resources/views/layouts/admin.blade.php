@@ -13,7 +13,7 @@
         :root {
             --radius: 10px;
             --radius-sm: 4px;
-            --sidebar-bg: #08111f;
+            --sidebar-bg: #f8fbff;
             --sidebar-w: 256px;
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
@@ -50,16 +50,13 @@
             left: 0;
             width: var(--sidebar-w);
             height: 100vh;
-            background:
-                radial-gradient(circle at top left, rgba(37, 99, 235, .32), transparent 15rem),
-                radial-gradient(circle at bottom right, rgba(14, 165, 233, .16), transparent 14rem),
-                linear-gradient(180deg, #07101f 0%, #0b1630 56%, #101827 100%);
-            color: #fff;
+            background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 54%, #eaf4ff 100%);
+            color: var(--ink);
             display: flex;
             flex-direction: column;
             z-index: 1000;
-            border-right: 1px solid rgba(147, 197, 253, .14);
-            box-shadow: 18px 0 40px rgba(15, 23, 42, .12);
+            border-right: 1px solid #dbeafe;
+            box-shadow: 10px 0 30px rgba(37, 99, 235, .08);
         }
 
         .logo {
@@ -67,7 +64,7 @@
             align-items: center;
             gap: 12px;
             padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, .06);
+            border-bottom: 1px solid #dbeafe;
         }
 
         .logo-mark {
@@ -100,7 +97,7 @@
             font-weight: 500;
             letter-spacing: .14em;
             text-transform: uppercase;
-            color: #475569;
+            color: #64748b;
             margin-top: 2px;
         }
 
@@ -109,7 +106,7 @@
             padding: 14px 12px 20px;
             overflow-y: auto;
             scrollbar-width: thin;
-            scrollbar-color: #1e293b transparent;
+            scrollbar-color: #bfdbfe transparent;
         }
 
         .sidebar-menu::-webkit-scrollbar {
@@ -117,7 +114,7 @@
         }
 
         .sidebar-menu::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #bfdbfe;
         }
 
         .menu-label {
@@ -127,7 +124,7 @@
             font-weight: 600;
             letter-spacing: .13em;
             text-transform: uppercase;
-            color: #475569;
+            color: #64748b;
         }
 
         .menu-label:first-child {
@@ -139,7 +136,7 @@
             display: flex;
             align-items: center;
             gap: 11px;
-            color: #94a3b8;
+            color: #475569;
             text-decoration: none;
             padding: 10px 12px;
             border-radius: var(--radius);
@@ -158,19 +155,19 @@
         }
 
         .sidebar-menu a:hover {
-            background: rgba(148, 163, 184, .08);
-            color: #e2e8f0;
+            background: #eaf4ff;
+            color: #1d4ed8;
         }
 
         .sidebar-menu a:hover i {
-            color: #cbd5e1;
+            color: #2563eb;
         }
 
         .sidebar-menu a.active-menu {
-            background: linear-gradient(135deg, rgba(37, 99, 235, .30), rgba(14, 165, 233, .16));
-            color: #fff;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            color: #1d4ed8;
             font-weight: 600;
-            box-shadow: inset 0 0 0 1px rgba(147, 197, 253, .10);
+            box-shadow: inset 0 0 0 1px #bfdbfe, 0 8px 18px rgba(37, 99, 235, .10);
         }
 
         .sidebar-menu a.active-menu::before {
@@ -185,7 +182,7 @@
         }
 
         .sidebar-menu a.active-menu i {
-            color: #60a5fa;
+            color: #2563eb;
         }
 
         .sidebar-dropdown {
@@ -197,7 +194,7 @@
             background: transparent;
             border: none;
             border-radius: var(--radius);
-            color: #94a3b8;
+            color: #475569;
             display: flex;
             font-weight: 500;
             font-size: 14px;
@@ -218,8 +215,8 @@
         .sidebar-dropdown-toggle:hover,
         .sidebar-dropdown.open .sidebar-dropdown-toggle,
         .sidebar-dropdown.active .sidebar-dropdown-toggle {
-            background: rgba(148, 163, 184, .08);
-            color: #e2e8f0;
+            background: #eaf4ff;
+            color: #1d4ed8;
         }
 
         .sidebar-dropdown-toggle .dropdown-arrow {
@@ -248,7 +245,7 @@
             min-height: 0;
             padding: 4px 0 4px 21px;
             margin-left: 21px;
-            border-left: 1px solid rgba(148, 163, 184, .15);
+            border-left: 1px solid #bfdbfe;
         }
 
         .sidebar-menu .sidebar-submenu a {
@@ -259,7 +256,7 @@
         }
 
         .sidebar-menu .sidebar-submenu a.active-menu {
-            background: rgba(37, 99, 235, .16);
+            background: #dbeafe;
         }
 
         .sidebar-menu .sidebar-submenu a.active-menu::before {
@@ -268,7 +265,7 @@
 
         .logout-wrapper {
             padding: 14px 12px;
-            border-top: 1px solid rgba(255, 255, 255, .06);
+            border-top: 1px solid #dbeafe;
         }
 
         .logout-btn {
@@ -281,9 +278,9 @@
             padding: 10px;
             font-weight: 600;
             font-size: 14px;
-            color: #f87171;
-            background: rgba(248, 113, 113, .08);
-            border: 1px solid rgba(248, 113, 113, .22);
+            color: #dc2626;
+            background: #fff;
+            border: 1px solid #fecaca;
             transition: background .18s ease, color .18s ease;
         }
 
