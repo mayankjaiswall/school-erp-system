@@ -155,7 +155,7 @@
 
             <thead>
 
-                <tr>
+                <!-- <tr>
                     <th>#</th>
                     <th>School</th>
                     <th>Code</th>
@@ -163,7 +163,7 @@
                     <th>Status</th>
                     <th>Created</th>
                     <th width="170">Actions</th>
-                </tr>
+                </tr> -->
 
             </thead>
 
