@@ -625,7 +625,7 @@
                     <span>Subscriptions</span>
                     <i class="bi bi-chevron-down dropdown-arrow"></i>
                 </button>
-                <!-- <div class="sidebar-submenu">
+                <div class="sidebar-submenu">
                     <div class="sidebar-submenu-inner">
                         <a href="{{ route('subscription-plans.index') }}"
                             class="{{ request()->routeIs('subscription-plans.*') ? 'active-menu' : '' }}">
@@ -637,7 +637,7 @@
                             <span>Payments</span>
                         </a>
                     </div>
-                </div> -->
+                </div>
             </div>
             @endif
 
@@ -687,7 +687,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-sidebar-dropdown]').forEach((dropdown) => {
                 const toggle = dropdown.querySelector('.sidebar-dropdown-toggle');
@@ -723,7 +723,7 @@
                 });
             });
         });
-    </script> -->
+    </script>
     @stack('scripts')
 </body>
 
