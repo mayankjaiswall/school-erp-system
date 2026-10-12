@@ -1546,14 +1546,14 @@
         @if($subscriptionPlans->isNotEmpty())
             <div class="pricing-carousel">
                 @if($subscriptionPlans->count() > 1)
-                    <div class="pricing-carousel-nav" aria-label="Subscription plan carousel controls">
+                    <!-- <div class="pricing-carousel-nav" aria-label="Subscription plan carousel controls">
                         <button class="pricing-carousel-btn" type="button" data-pricing-prev aria-label="Previous plans">
                             <i class="fas fa-chevron-left"></i>
                         </button>
                         <button class="pricing-carousel-btn" type="button" data-pricing-next aria-label="Next plans">
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                    </div>
+                    </div> -->
                 @endif
 
                 <div class="pricing-grid" data-pricing-carousel>
@@ -1599,7 +1599,7 @@
 
 <!-- Testimonials -->
 <section class="testimonials" id="testimonials">
-    <div class="container">
+    <!-- <div class="container">
         <div class="text-center">
             <span class="section-tag">Testimonials</span>
             <h2 class="section-title">What School Leaders<br><span class="gradient-text">Are Saying</span></h2>
@@ -1641,7 +1641,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 
 <!-- ═══════════════════════════════════════════════
