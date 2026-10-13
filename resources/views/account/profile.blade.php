@@ -44,15 +44,15 @@
         @csrf
         @method('PATCH')
 
-        <div class="d-flex flex-wrap align-items-center gap-4 mb-4">
+        <!-- <div class="d-flex flex-wrap align-items-center gap-4 mb-4">
             <img class="profile-avatar" src="{{ $avatarUrl }}" alt="{{ $user->name }}" onerror="this.onerror=null;this.src='{{ $avatarFallback }}';">
             <div>
                 <h4 class="mb-1">{{ $user->name }}</h4>
                 <p class="text-muted mb-0">{{ $user->role?->name ?? 'No Role Assigned' }}</p>
             </div>
-        </div>
+        </div> -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-6 mb-4">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="form-control @error('name') is-invalid @enderror" required>
@@ -83,7 +83,7 @@
                 </div>
                 @error('photo')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
-        </div>
+        </div> -->
 
         <div class="row g-3 mb-4">
             <div class="col-md-4">
