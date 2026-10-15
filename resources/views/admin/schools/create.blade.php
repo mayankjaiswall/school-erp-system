@@ -6,7 +6,7 @@
 
 @section('content')
 
-<style>
+<!-- <style>
     .form-page-header{
         background: linear-gradient(135deg,#2563eb,#1d4ed8);
         color:#fff;
@@ -48,7 +48,7 @@
         padding-top:20px;
         margin-top:30px;
     }
-</style>
+</style> -->
 
 <div class="form-page-header">
 
