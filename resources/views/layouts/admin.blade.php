@@ -687,7 +687,7 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-sidebar-dropdown]').forEach((dropdown) => {
                 const toggle = dropdown.querySelector('.sidebar-dropdown-toggle');
@@ -723,7 +723,7 @@
                 });
             });
         });
-    </script> -->
+    </script>
     @stack('scripts')
 </body>
 
