@@ -665,7 +665,7 @@
     <!-- Main -->
     <div class="main-content">
         <!-- Topbar -->
-        <!-- <div class="topbar">
+        <div class="topbar">
             <div>
                 <h4>@yield('page-title')</h4>
                 @hasSection('page-subtitle')
@@ -684,10 +684,10 @@
         <!-- Page Content -->
         <div class="page-content">
             @yield('content')
-        </div> -->
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('[data-sidebar-dropdown]').forEach((dropdown) => {
                 const toggle = dropdown.querySelector('.sidebar-dropdown-toggle');
@@ -723,7 +723,7 @@
                 });
             });
         });
-    </script>
+    </script> -->
     @stack('scripts')
 </body>
 
