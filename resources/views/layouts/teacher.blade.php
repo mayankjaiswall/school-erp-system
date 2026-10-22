@@ -257,7 +257,7 @@
 </head>
 
 <body>
-    <div class="sidebar">
+    <!-- <div class="sidebar">
         <div class="logo">
             Edu<span>ERP</span>
             <small>Teacher Panel</small>
@@ -330,7 +330,7 @@
                 </button>
             </form>
         </div>
-    </div>
+    </div> -->
     <div class="main-content">
         <div class="topbar">
             <h4>@yield('page-title')</h4>
@@ -343,7 +343,7 @@
             @yield('content')
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     @stack('scripts')
 </body>
 
