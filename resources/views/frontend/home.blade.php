@@ -1487,7 +1487,7 @@
             <p class="section-subtitle">EduERP covers every aspect of school administration — from gate to classroom to parent.</p>
         </div>
 
-        <div class="modules-grid">
+        <!-- <div class="modules-grid">
             <div class="module-card">
                 <div class="mc-icon-wrap"><i class="fas fa-user-graduate mc-icon"></i></div>
                 <div class="mc-title">Student Portal</div>
@@ -1528,7 +1528,7 @@
                 <div class="mc-title">Online Classes</div>
                 <div class="mc-desc">Live classes, recordings, assignments, quizzes</div>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 
