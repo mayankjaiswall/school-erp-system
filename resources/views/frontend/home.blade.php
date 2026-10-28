@@ -1721,14 +1721,14 @@
             </div>
         </div>
 
-        <!-- <div class="footer-bottom">
+        <div class="footer-bottom">
             <p class="footer-copy">&copy; {{ date('Y') }} EduERP. All rights reserved. Made with ❤️ for educators.</p>
             <div class="footer-badges">
                 <span class="footer-badge">🔐 SSL Secured</span>
                 <span class="footer-badge">☁️ Cloud Hosted</span>
                 <span class="footer-badge">🇮🇳 Made in India</span>
             </div>
-        </div> -->
+        </div> 
     </div>
 </footer>
 
