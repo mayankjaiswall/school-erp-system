@@ -1,12 +1,12 @@
 @forelse($plans as $plan)
     <tr>
         <td>{{ $loop->iteration }}</td>
-        <td>
+        <!-- <td>
             <strong class="plan-name">{{ $plan->plan_name }}</strong>
             @if($plan->description)
                 <div class="plan-description">{{ \Illuminate\Support\Str::limit($plan->description, 80) }}</div>
             @endif
-        </td>
+        </td> -->
         <td>{{ $plan->duration }} {{ $plan->duration_type }}</td>
         <td>₹{{ number_format((float) $plan->price, 2) }}</td>
         <td>
@@ -23,7 +23,7 @@
             </label>
         </td>
         <td>{{ $plan->created_at->format('d M Y') }}</td>
-        <td>
+        <!-- <td>
             <button type="button" class="btn-action btn-view view-plan" data-id="{{ $plan->id }}" title="View">
                 <i class="bi bi-eye"></i>
             </button>
@@ -33,7 +33,7 @@
             <button type="button" class="btn-action btn-delete delete-plan" data-id="{{ $plan->id }}" data-name="{{ $plan->plan_name }}" title="Delete">
                 <i class="bi bi-trash"></i>
             </button>
-        </td>
+        </td> -->
     </tr>
 @empty
     <tr>
