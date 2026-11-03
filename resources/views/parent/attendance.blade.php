@@ -7,14 +7,14 @@
 <style>.attendance-calendar{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}.calendar-day{border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#fff;min-height:78px}.calendar-day strong{display:block;font-size:18px;color:#0f172a}.calendar-day span{font-size:12px;font-weight:700;text-transform:uppercase}.calendar-day.present{border-color:#86efac;background:#f0fdf4}.calendar-day.absent{border-color:#fecaca;background:#fef2f2}.calendar-day.late{border-color:#fed7aa;background:#fff7ed}</style>
 <div class="content-card mt-0">
     <div class="row g-3 align-items-end">
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <label class="form-label fw-semibold">Child</label>
             <select id="student_id" class="form-select">
                 @foreach($children as $child)
                     <option value="{{ $child->id }}">{{ $child->name }} - {{ $child->admission_no }}</option>
                 @endforeach
             </select>
-        </div>
+        </div> -->
         <div class="col-md-3">
             <label class="form-label fw-semibold">Month</label>
             <select id="month" class="form-select">
