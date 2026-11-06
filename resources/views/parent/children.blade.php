@@ -10,21 +10,21 @@
         <div class="col-lg-6">
             <a class="child-card-link" href="{{ route('parent.children.show', $child->id) }}">
                 <div class="child-card">
-                    <div class="d-flex gap-3 align-items-center mb-3">
+                    <!-- <div class="d-flex gap-3 align-items-center mb-3">
                         <img class="child-photo" src="{{ $child->photo ? asset($child->photo) : 'https://ui-avatars.com/api/?name='.urlencode($child->name).'&background=2563eb&color=fff' }}" alt="{{ $child->name }}">
                         <div>
                             <h4 class="mb-1">{{ $child->name }}</h4>
                             <span class="badge bg-success">{{ $child->pivot->relationship }}</span>
                         </div>
-                    </div>
-                    <div class="row g-3">
+                    </div> -->
+                    <!-- <div class="row g-3">
                         <div class="col-md-6"><small class="text-muted">Admission Number</small><div class="fw-semibold">{{ $child->admission_no }}</div></div>
                         <div class="col-md-6"><small class="text-muted">Class</small><div class="fw-semibold">{{ $child->class?->name ?? '-' }}</div></div>
                         <div class="col-md-6"><small class="text-muted">Section</small><div class="fw-semibold">{{ $child->class?->section ?? '-' }}</div></div>
                         <div class="col-md-6"><small class="text-muted">Roll Number</small><div class="fw-semibold">{{ $child->roll_no ?? '-' }}</div></div>
                         <div class="col-md-6"><small class="text-muted">Date of Birth</small><div class="fw-semibold">{{ $child->dob?->format('d M Y') ?? '-' }}</div></div>
                         <div class="col-md-6"><small class="text-muted">Academic Status</small><div class="fw-semibold">{{ $child->status ? 'Active' : 'Inactive' }}</div></div>
-                    </div>
+                    </div> -->
                 </div>
             </a>
         </div>
