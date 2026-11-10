@@ -20,7 +20,7 @@
 <style>
     /* =========================STAT CARDS========================= */
 
-    /* .stat-card {
+    .stat-card {
         position: relative;
         background:
             linear-gradient(135deg, rgba(255,255,255,.98), var(--card-soft, #eff6ff));
@@ -88,7 +88,7 @@
         background: rgba(255, 255, 255, .70);
         border: 1px solid var(--card-line, #bfdbfe);
         box-shadow: 0 8px 20px var(--card-shadow, rgba(37, 99, 235, .10));
-    } */
+    }
 
     .stat-value {
         font-size: 30px;
