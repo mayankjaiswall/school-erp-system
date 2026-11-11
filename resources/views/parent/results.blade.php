@@ -19,7 +19,7 @@
 @endsection
 
 @push('scripts')
-<script>
+<!-- <script>
 $(function () {
     const url = "{{ route('parent.results') }}";
     function escapeHtml(value) { return $('<div>').text(value === null || value === undefined ? '' : value).html(); }
@@ -47,5 +47,5 @@ $(function () {
     $('#student_id, #exam_id, #subject_id').on('change', loadResults);
     loadResults();
 });
-</script>
+</script> -->
 @endpush
