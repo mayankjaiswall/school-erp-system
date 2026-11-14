@@ -12,17 +12,17 @@ class SchoolController extends Controller
     {
         $search = trim((string) request('search'));
 
-        // $schools = School::when($search, function ($query) use ($search) {
-        //         $query->where(function ($query) use ($search) {
-        //             $query->where('name', 'like', "%{$search}%")
-        //                 ->orWhere('code', 'like', "%{$search}%")
-        //                 ->orWhere('email', 'like', "%{$search}%")
-        //                 ->orWhere('phone', 'like', "%{$search}%")
-        //                 ->orWhere('address', 'like', "%{$search}%");
-        //         });
-        //     })
-        //     ->latest()
-        //     ->get();
+        $schools = School::when($search, function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('code', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('address', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
 
         return view('admin.schools.index', compact('schools', 'search'));
     }
@@ -34,14 +34,14 @@ class SchoolController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'code' => 'required|string|max:50',
-        //     'email' => 'nullable|email|max:255',
-        //     'address' => 'nullable|string|max:500',
-        //     'phone' => 'nullable|digits:10',
-        //     'status' => 'required|boolean',
-        // ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'address' => 'nullable|string|max:500',
+            'phone' => 'nullable|digits:10',
+            'status' => 'required|boolean',
+        ]);
 
         School::create($request->only('name', 'address', 'email', 'phone', 'code', 'status'));
 
