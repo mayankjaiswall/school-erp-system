@@ -13,7 +13,7 @@ class SubscriptionPlanController extends Controller
     {
         $search = trim((string) $request->query('search'));
 
-        // $plans = $this->plansQuery($search)->get();
+        $plans = $this->plansQuery($search)->get();
         $totalPlans = SubscriptionPlan::count();
         $activePlans = SubscriptionPlan::where('status', true)->count();
         $inactivePlans = SubscriptionPlan::where('status', false)->count();
@@ -24,7 +24,7 @@ class SubscriptionPlanController extends Controller
                 'totalPlans' => $totalPlans,
                 'activePlans' => $activePlans,
                 'inactivePlans' => $inactivePlans,
-                // 'recordsFound' => $plans->count(),
+                'recordsFound' => $plans->count(),
             ]);
         }
 
