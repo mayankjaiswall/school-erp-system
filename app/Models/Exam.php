@@ -13,6 +13,7 @@ class Exam extends Model
         'exam_date',
         'academic_year',
         'status',
+        'exam_status'
     ];
 
     protected $casts = [
@@ -25,8 +26,8 @@ class Exam extends Model
         return $this->belongsTo(School::class);
     }
 
-    public function marks()
-    {
-        return $this->hasMany(Mark::class);
-    }
+    // public function marks()
+    // {
+    //     return $this->hasMany(Mark::class);
+    // }
 }
