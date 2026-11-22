@@ -996,7 +996,7 @@
         /* ─── Back to top ───────────────────────── */
         .back-to-top {
             position: fixed;
-            bottom: 32px; right: 32px;
+            bottom: 35px; right: 35px;
             width: 48px; height: 48px;
             background: var(--grad1);
             border-radius: 50%;
@@ -1141,7 +1141,7 @@
             <li><a href="#pricing">Pricing</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#testimonials">Reviews</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact">Contact Us</a></li>
         </ul>
 
         <div class="nav-cta">
