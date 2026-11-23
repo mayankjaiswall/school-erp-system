@@ -1135,13 +1135,13 @@
         </a>
 
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
+            <!-- <li><a href="#home">Home</a></li> -->
             <li><a href="#features">Features</a></li>
             <li><a href="#modules">Modules</a></li>
-            <li><a href="#pricing">Pricing</a></li>
+            <!-- <li><a href="#pricing">Pricing</a></li> -->
             <li><a href="#how-it-works">How It Works</a></li>
             <li><a href="#testimonials">Reviews</a></li>
-            <li><a href="#contact">Contact Us</a></li>
+            <!-- <li><a href="#contact">Contact Us</a></li -->
         </ul>
 
         <div class="nav-cta">
